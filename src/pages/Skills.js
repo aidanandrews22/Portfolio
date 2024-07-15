@@ -20,7 +20,6 @@ const Skills = () => {
 
   return (
     <div className="container">
-      <h2 className="text-2xl font-bold mb-6">Skills</h2>
       <ul className="flex flex-wrap gap-4">
         {skills.map((skill, index) => (
           <SkillTag key={index} {...skill} />

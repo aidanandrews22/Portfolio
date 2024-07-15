@@ -1,4 +1,5 @@
 import React from 'react';
+import Skills from './Skills';
 
 const About = () => {
   return (
@@ -47,6 +48,11 @@ const About = () => {
             and their applications in physical sciences and neuroscience.
           </p>
         </div>
+      </section>
+
+      <section className="mb-12">
+        <h2 className="text-2xl font-bold mb-4">Skills</h2>
+        <Skills />
       </section>
     </div>
   );

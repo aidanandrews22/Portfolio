@@ -13,25 +13,25 @@ AWS.config.update({
 
 const lambda = new AWS.Lambda();
 
-const NoteEdit = () => {
-  const [note, setNote] = useState({ title: '', content: '', category: 'Misc' });
+const PostEdit = () => {
+  const [post, setPost] = useState({ title: '', content: '', category: 'Misc' });
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isPreview, setIsPreview] = useState(false);
-  const { noteId } = useParams();
+  const { postId } = useParams();
   const navigate = useNavigate();
 
-  const fetchNote = useCallback(async () => {
-    if (noteId && noteId !== 'new') {
+  const fetchPost = useCallback(async () => {
+    if (postId && postId !== 'new') {
       try {
-        const response = await fetch(`/content/notes/${noteId}.md`);
+        const response = await fetch(`/content/posts/${postId}.md`);
         if (!response.ok) {
-          throw new Error('Failed to fetch note');
+          throw new Error('Failed to fetch post');
         }
         const content = await response.text();
         const title = content.split('\n')[0].replace('#', '').trim();
-        setNote({ id: noteId, title, content, category: 'Misc' }); // You might want to fetch the category from somewhere
+        setPost({ id: postId, title, content, category: 'Misc' });
       } catch (err) {
         setError(err.message);
       } finally {
@@ -40,15 +40,15 @@ const NoteEdit = () => {
     } else {
       setLoading(false);
     }
-  }, [noteId]);
+  }, [postId]);
 
   useEffect(() => {
-    fetchNote();
-  }, [fetchNote]);
+    fetchPost();
+  }, [fetchPost]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setNote(prevNote => ({ ...prevNote, [name]: value }));
+    setPost(prevPost => ({ ...prevPost, [name]: value }));
   };
 
   const handlePasswordChange = (e) => {
@@ -61,15 +61,15 @@ const NoteEdit = () => {
     setError(null);
 
     const params = {
-      FunctionName: 'saveContentFunction',
-      Payload: JSON.stringify({
-        content: note.content,
-        title: note.title,
-        category: note.category,
-        password: password,
-        contentId: noteId === 'new' ? null : noteId,
-        contentType: 'note'
-      })
+        FunctionName: 'saveContentFunction',
+        Payload: JSON.stringify({
+            content: post.content,
+            title: post.title,
+            category: post.category,
+            password: password,
+            contentId: postId === 'new' ? null : postId,
+            contentType: 'post'
+        })
     };
 
     try {
@@ -77,7 +77,7 @@ const NoteEdit = () => {
       const result = JSON.parse(response.Payload);
 
       if (result.statusCode === 200) {
-        navigate('/notes');
+        navigate('/blog');
       } else if (result.statusCode === 401) {
         setError('Incorrect password. Please try again.');
       } else {
@@ -101,7 +101,7 @@ const NoteEdit = () => {
           type="text"
           id="title"
           name="title"
-          value={note.title}
+          value={post.title}
           onChange={handleChange}
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
           required
@@ -112,14 +112,14 @@ const NoteEdit = () => {
         <select
           id="category"
           name="category"
-          value={note.category}
+          value={post.category}
           onChange={handleChange}
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
         >
           <option value="Misc">Misc</option>
-          <option value="School">School</option>
-          <option value="Work">Work</option>
-          <option value="Personal">Personal</option>
+          <option value="CS">CS</option>
+          <option value="ML">ML</option>
+          <option value="Physics">Physics</option>
         </select>
       </div>
       <div>
@@ -135,13 +135,13 @@ const NoteEdit = () => {
         </div>
         {isPreview ? (
           <div className="prose mt-4 p-4 border rounded-md">
-            <ReactMarkdown>{note.content}</ReactMarkdown>
+            <ReactMarkdown>{post.content}</ReactMarkdown>
           </div>
         ) : (
           <textarea
             id="content"
             name="content"
-            value={note.content}
+            value={post.content}
             onChange={handleChange}
             rows="10"
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
@@ -165,10 +165,10 @@ const NoteEdit = () => {
         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
         disabled={loading}
       >
-        {loading ? 'Saving...' : 'Save Note'}
+        {loading ? 'Saving...' : 'Save Post'}
       </button>
     </form>
   );
 };
 
-export default NoteEdit;
+export default PostEdit;

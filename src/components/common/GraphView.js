@@ -37,13 +37,22 @@ const GraphView = ({ data, type }) => {
     const fg = fgRef.current;
     fg.d3Force('charge').strength(-120);
     fg.d3Force('link').distance(link => link.distance);
-  }, []);
+
+    // Ensure all nodes are visible on initial render
+    if (fg && data.nodes.length > 0) {
+      // Give the force simulation some time to settle
+      setTimeout(() => {
+        fg.zoomToFit(400, 20);
+      }, 500);
+    }
+  }, [data]);
 
   return (
     <div className="w-full h-[600px] border border-gray-200 rounded-lg overflow-hidden">
       <ForceGraph3D
         ref={fgRef}
         graphData={data}
+        backgroundColor='#fff'
         nodeLabel="name"
         nodeColor={getNodeColor}
         nodeVal={(node) => node.isCategory ? 20 : 10}

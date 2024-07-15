@@ -16,7 +16,7 @@ const Header = () => {
               <a href="https://linkedin.com/in/aidanandrewss" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">LinkedIn</a>
             </div>
           </div>
-          <img src='header.png' alt="Aidan Andrews" className="w-32 h-32 rounded-full object-cover" />
+          <img src='assets/header.png' alt="Aidan Andrews" className="w-32 h-32 rounded-full object-cover" />
         </div>
         <Navigation />
       </div>

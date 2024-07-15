@@ -1,35 +1,60 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom';
 import PostList from '../components/blog/PostList';
 import PostView from '../components/blog/PostView';
+import PostEdit from '../components/blog/PostEdit';
 import GraphView from '../components/common/GraphView';
 import { useAppContext } from '../context/AppContext';
+
+const CACHE_KEY = 'blogPosts';
+const CACHE_EXPIRY = 5 * 60 * 1000; // 5 minutes
 
 const Blog = () => {
   const [posts, setPosts] = useState([]);
   const [showGraph, setShowGraph] = useState(false);
-  const { loading, error, showLoading, hideLoading, showError, clearError } = useAppContext();
+  const [selectedCategory, setSelectedCategory] = useState('All');
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { showLoading, hideLoading, showError, clearError } = useAppContext();
+  const [isFetching, setIsFetching] = useState(false);
 
-  useEffect(() => {
-    fetchPosts();
-  }, []);
+  const isEditMode = location.pathname.includes('/edit') || location.pathname.includes('/new');
 
   const fetchPosts = useCallback(async () => {
+    if (isFetching) return;
+    setIsFetching(true);
     clearError();
     showLoading();
+
     try {
+      const cachedData = localStorage.getItem(CACHE_KEY);
+      if (cachedData) {
+        const { data, timestamp } = JSON.parse(cachedData);
+        if (Date.now() - timestamp < CACHE_EXPIRY) {
+          console.log('Using cached blog posts data');
+          setPosts(data);
+          hideLoading();
+          setIsFetching(false);
+          return;
+        }
+      }
+
+      console.log('Fetching fresh blog posts data');
       const response = await fetch('/blog-posts.json');
       if (!response.ok) {
-        throw new Error('Failed to fetch blog posts');
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
       setPosts(data);
+      localStorage.setItem(CACHE_KEY, JSON.stringify({ data, timestamp: Date.now() }));
     } catch (err) {
-      showError(err.message);
+      console.error('Fetch failed:', err);
+      showError("Failed to load blog posts. Please try again later.");
     } finally {
       hideLoading();
+      setIsFetching(false);
     }
-  }, [clearError, showLoading, showError, hideLoading]);
+  }, [clearError, showLoading, hideLoading, showError]);
 
   useEffect(() => {
     fetchPosts();
@@ -41,44 +66,94 @@ const Blog = () => {
     const categories = ['Misc', 'CS', 'ML', 'Physics'];
 
     categories.forEach(category => {
-      nodes.push({ id: category, name: category, isCategory: true });
+        if (selectedCategory === 'All' || category === selectedCategory) {
+          nodes.push({ id: category, name: category, isCategory: true });
+        }
     });
 
     posts.forEach(post => {
-      nodes.push({ id: post.id, name: post.title, isCategory: false });
-      links.push({ source: post.category, target: post.id, distance: 50 });
+        if (selectedCategory === 'All' || post.category === selectedCategory) {
+          nodes.push({ id: post.id, name: post.title, isCategory: false });
+          links.push({ source: post.category, target: post.id, distance: 50 });
+        }
     });
 
-    // Add links between categories
-    for (let i = 0; i < categories.length; i++) {
-      for (let j = i + 1; j < categories.length; j++) {
-        links.push({ source: categories[i], target: categories[j], distance: 100 });
-      }
-    }
-
     return { nodes, links };
-  }, [posts]);
+  }, [posts, selectedCategory]);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  const filteredPosts = useMemo(() => {
+    return selectedCategory === 'All'
+      ? posts
+      : posts.filter(post => post.category === selectedCategory);
+  }, [posts, selectedCategory]);
+
+  const clearCache = () => {
+    localStorage.removeItem(CACHE_KEY);
+    fetchPosts();
+  };
 
   return (
     <div className="container">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">Blog Posts</h2>
-        <button
-          onClick={() => setShowGraph(!showGraph)}
-          className="bg-primary text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300"
-        >
-          {showGraph ? 'Show List' : 'Show Graph'}
-        </button>
+        <div className="space-x-2">
+          {!isEditMode && (
+            <>
+              <button
+                onClick={() => setShowGraph(!showGraph)}
+                className="bg-primary text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300"
+              >
+                {showGraph ? 'Show List' : 'Show Graph'}
+              </button>
+              <Link 
+                to="/blog/new" 
+                className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition duration-300"
+              >
+                New Post
+              </Link>
+              <button
+                onClick={clearCache}
+                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-300"
+              >
+                Clear Cache and Reload
+              </button>
+            </>
+          )}
+          {isEditMode && (
+            <button
+              onClick={() => navigate('/blog')}
+              className="bg-primary text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300"
+            >
+              Back to All Posts
+            </button>
+          )}
+        </div>
       </div>
-      {showGraph ? (
+      {!isEditMode && (
+        <div className="mb-4 flex space-x-2">
+          {['All', 'Misc', 'CS', 'ML', 'Physics'].map(category => (
+            <button
+              key={category}
+              onClick={() => setSelectedCategory(category)}
+              className={`px-3 py-1 rounded ${
+                selectedCategory === category
+                  ? 'bg-primary text-white'
+                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+              }`}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
+      )}
+      {showGraph && !isEditMode ? (
         <GraphView data={graphData} type="blog" />
       ) : (
         <Routes>
-          <Route index element={<PostList posts={posts} />} />
+          <Route index element={<PostList posts={filteredPosts} />} />
           <Route path=":postId" element={<PostView />} />
+          <Route path=":postId/edit" element={<PostEdit onUpdate={fetchPosts} />} />
+          <Route path="new" element={<PostEdit onUpdate={fetchPosts} />} />
         </Routes>
       )}
     </div>
