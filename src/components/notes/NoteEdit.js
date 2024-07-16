@@ -61,7 +61,7 @@ const NoteEdit = () => {
     setError(null);
 
     const params = {
-      FunctionName: 'saveContentFunction',
+      FunctionName: 'saveNoteFunction',
       Payload: JSON.stringify({
         content: note.content,
         title: note.title,
