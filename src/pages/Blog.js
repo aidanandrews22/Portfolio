@@ -6,8 +6,9 @@ import PostEdit from '../components/blog/PostEdit';
 import GraphView from '../components/common/GraphView';
 import { useAppContext } from '../context/AppContext';
 
+const CONTENT_BASE_URL = 'https://raw.githubusercontent.com/aidanandrews22/website-data/main';
 const CACHE_KEY = 'blogPosts';
-const CACHE_EXPIRY = 5 * 60 * 1000; // 5 minutes
+const CACHE_EXPIRY = 1 * 60 * 1000;
 
 const Blog = () => {
   const [posts, setPosts] = useState([]);
@@ -18,31 +19,34 @@ const Blog = () => {
   const navigate = useNavigate();
   const { showLoading, hideLoading, showError, clearError } = useAppContext();
   const [isFetching, setIsFetching] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const isEditMode = location.pathname.includes('/edit') || location.pathname.includes('/new');
   const isViewingPost = location.pathname.split('/').length > 2 && !isEditMode;
 
-  const fetchPosts = useCallback(async () => {
+  const fetchPosts = useCallback(async (forceRefresh = false) => {
     if (isFetching) return;
     setIsFetching(true);
+    setIsRefreshing(true);
     clearError();
     showLoading();
 
     try {
       const cachedData = localStorage.getItem(CACHE_KEY);
-      if (cachedData) {
+      if (!forceRefresh && cachedData) {
         const { data, timestamp } = JSON.parse(cachedData);
         if (Date.now() - timestamp < CACHE_EXPIRY) {
           console.log('Using cached blog posts data');
           setPosts(data);
           hideLoading();
           setIsFetching(false);
+          setIsRefreshing(false);
           return;
         }
       }
 
       console.log('Fetching fresh blog posts data');
-      const response = await fetch('/blog-posts.json');
+      const response = await fetch(`${CONTENT_BASE_URL}/content/posts.json`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -55,6 +59,7 @@ const Blog = () => {
     } finally {
       hideLoading();
       setIsFetching(false);
+      setIsRefreshing(false);
     }
   }, [clearError, showLoading, hideLoading, showError]);
 
@@ -83,16 +88,16 @@ const Blog = () => {
     const categories = ['Misc', 'CS', 'ML', 'Physics'];
 
     categories.forEach(category => {
-        if (selectedCategory === 'All' || category === selectedCategory) {
-          nodes.push({ id: category, name: category, isCategory: true });
-        }
+      if (selectedCategory === 'All' || category === selectedCategory) {
+        nodes.push({ id: category, name: category, isCategory: true });
+      }
     });
 
     posts.forEach(post => {
-        if (selectedCategory === 'All' || post.category === selectedCategory) {
-          nodes.push({ id: post.id, name: post.title, isCategory: false });
-          links.push({ source: post.category, target: post.id, distance: 50 });
-        }
+      if (selectedCategory === 'All' || post.category === selectedCategory) {
+        nodes.push({ id: post.id, name: post.title, isCategory: false });
+        links.push({ source: post.category, target: post.id, distance: 50 });
+      }
     });
 
     return { nodes, links };

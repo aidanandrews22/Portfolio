@@ -3,6 +3,8 @@ import { Link, useParams } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
+const CONTENT_BASE_URL = 'https://raw.githubusercontent.com/aidanandrews22/website-data/main';
+
 const PostView = () => {
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -15,10 +17,13 @@ const PostView = () => {
 
   const fetchPost = async () => {
     try {
-      const response = await fetch(`/content/posts/${postId}.md`);
+      const response = await fetch(`${CONTENT_BASE_URL}/content/posts/${postId}.md`);
       console.log('Response status:', response.status);
       console.log('Response headers:', response.headers);
       if (!response.ok) {
+        if (response.status === 404) {
+          throw new Error('Post not found');
+        }
         throw new Error('Failed to fetch post');
       }
       const content = await response.text();

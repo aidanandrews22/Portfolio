@@ -3,6 +3,8 @@ import { Link, useParams } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
+const CONTENT_BASE_URL = 'https://raw.githubusercontent.com/aidanandrews22/website-data/main';
+
 const NoteView = () => {
   const [note, setNote] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -15,14 +17,18 @@ const NoteView = () => {
 
   const fetchNote = async () => {
     try {
-      const response = await fetch(`/content/notes/${noteId}.md`);
+      const response = await fetch(`${CONTENT_BASE_URL}/content/notes/${noteId}.md`);
       if (!response.ok) {
+        if (response.status === 404) {
+          throw new Error('Note not found');
+        }
         throw new Error('Failed to fetch note');
       }
       const content = await response.text();
       setNote({ id: noteId, content });
       setLoading(false);
     } catch (err) {
+      console.error('Error fetching note:', err);
       setError(err.message);
       setLoading(false);
     }

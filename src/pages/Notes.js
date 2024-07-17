@@ -7,7 +7,8 @@ import GraphView from '../components/common/GraphView';
 import { useAppContext } from '../context/AppContext';
 
 const CACHE_KEY = 'notesList';
-const CACHE_EXPIRY = 5 * 60 * 1000; // 5 minutes
+const CACHE_EXPIRY = 1 * 60 * 1000;
+const CONTENT_BASE_URL = 'https://raw.githubusercontent.com/aidanandrews22/website-data/main';
 
 const Notes = () => {
   const [notes, setNotes] = useState([]);
@@ -18,31 +19,34 @@ const Notes = () => {
   const navigate = useNavigate();
   const { showLoading, hideLoading, showError, clearError } = useAppContext();
   const [isFetching, setIsFetching] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const isEditMode = location.pathname.includes('/edit') || location.pathname.includes('/new');
-  const isViewingPost = location.pathname.split('/').length > 2 && !isEditMode;
+  const isViewingNote = location.pathname.split('/').length > 2 && !isEditMode;
 
-  const fetchNotes = useCallback(async () => {
+  const fetchNotes = useCallback(async (forceRefresh = false) => {
     if (isFetching) return;
     setIsFetching(true);
+    setIsRefreshing(true);
     clearError();
     showLoading();
 
     try {
       const cachedData = localStorage.getItem(CACHE_KEY);
-      if (cachedData) {
+      if (!forceRefresh && cachedData) {
         const { data, timestamp } = JSON.parse(cachedData);
         if (Date.now() - timestamp < CACHE_EXPIRY) {
           console.log('Using cached notes data');
           setNotes(data);
           hideLoading();
           setIsFetching(false);
+          setIsRefreshing(false);
           return;
         }
       }
 
       console.log('Fetching fresh notes data');
-      const response = await fetch('/notes.json');
+      const response = await fetch(`${CONTENT_BASE_URL}/content/notes.json`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -55,6 +59,7 @@ const Notes = () => {
     } finally {
       hideLoading();
       setIsFetching(false);
+      setIsRefreshing(false);
     }
   }, [clearError, showLoading, hideLoading, showError]);
 
@@ -83,16 +88,16 @@ const Notes = () => {
     const categories = ['School', 'Work', 'Personal', 'Misc'];
 
     categories.forEach(category => {
-        if (selectedCategory === 'All' || category === selectedCategory) {
-          nodes.push({ id: category, name: category, isCategory: true });
-        }
+      if (selectedCategory === 'All' || category === selectedCategory) {
+        nodes.push({ id: category, name: category, isCategory: true });
+      }
     });
   
     notes.forEach(note => {
-        if (selectedCategory === 'All' || note.category === selectedCategory) {
-          nodes.push({ id: note.id, name: note.title, isCategory: false });
-          links.push({ source: note.category, target: note.id, distance: 50 });
-        }
+      if (selectedCategory === 'All' || note.category === selectedCategory) {
+        nodes.push({ id: note.id, name: note.title, isCategory: false });
+        links.push({ source: note.category, target: note.id, distance: 50 });
+      }
     });
 
     return { nodes, links };
@@ -114,7 +119,7 @@ const Notes = () => {
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">Notes</h2>
         <div className="space-x-2">
-          {!isEditMode && !isViewingPost && (
+          {!isEditMode && !isViewingNote && (
             <>
               <button
                 onClick={() => setShowGraph(!showGraph)}
@@ -146,7 +151,7 @@ const Notes = () => {
           )}
         </div>
       </div>
-      {!isEditMode && !isViewingPost && lastViewedNote && (
+      {!isEditMode && !isViewingNote && lastViewedNote && (
         <div className="mb-4">
           <h3 className="text-lg font-semibold">Last Viewed Note:</h3>
           <Link to={`/notes/${lastViewedNote.id}`} className="text-primary hover:underline">
