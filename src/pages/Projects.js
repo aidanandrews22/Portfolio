@@ -3,7 +3,7 @@ import React from 'react';
 const ProjectCard = ({ title, description, demoLink, githubLink, tags }) => (
   <div className="bg-white shadow rounded-lg p-6 mb-6">
     <h3 className="text-xl font-semibold mb-2">
-      <a href={demoLink} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">{title}</a>
+      <a href={demoLink} target="_blank" rel="noopener noreferrer" className="text-primary">{title}</a>
     </h3>
     <p className="text-text-secondary mb-4">{description}</p>
     <div className="flex flex-wrap gap-2 mb-4">
@@ -11,7 +11,7 @@ const ProjectCard = ({ title, description, demoLink, githubLink, tags }) => (
         <span key={index} className="bg-secondary text-text-secondary px-2 py-1 rounded-full text-sm">{tag}</span>
       ))}
     </div>
-    {githubLink && <a href={githubLink} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">View on GitHub</a>}
+    {githubLink && <a href={githubLink} target="_blank" rel="noopener noreferrer" className="text-primary">View on GitHub</a>}
   </div>
 );
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { AppProvider } from './context/AppContext';
+import Navigation from './components/layout/Navigation';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
 import About from './pages/About';
@@ -20,8 +21,9 @@ const AppContent = () => {
   if (error) return <ErrorMessage message={error} />;
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen pt-10">
       <Header />
+      <Navigation />
       <main className="flex-grow container mx-auto px-4 py-8">
         <Routes>
           <Route path="/" element={<About />} />

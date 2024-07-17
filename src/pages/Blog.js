@@ -13,12 +13,14 @@ const Blog = () => {
   const [posts, setPosts] = useState([]);
   const [showGraph, setShowGraph] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('All');
+  const [lastViewedPost, setLastViewedPost] = useState(null);
   const location = useLocation();
   const navigate = useNavigate();
   const { showLoading, hideLoading, showError, clearError } = useAppContext();
   const [isFetching, setIsFetching] = useState(false);
 
   const isEditMode = location.pathname.includes('/edit') || location.pathname.includes('/new');
+  const isViewingPost = location.pathname.split('/').length > 2 && !isEditMode;
 
   const fetchPosts = useCallback(async () => {
     if (isFetching) return;
@@ -58,7 +60,22 @@ const Blog = () => {
 
   useEffect(() => {
     fetchPosts();
+    const storedLastViewedPost = localStorage.getItem('lastViewedPost');
+    if (storedLastViewedPost) {
+      setLastViewedPost(JSON.parse(storedLastViewedPost));
+    }
   }, [fetchPosts]);
+
+  useEffect(() => {
+    const postId = location.pathname.split('/').pop();
+    if (postId && postId !== 'new' && postId !== 'edit') {
+      const currentPost = posts.find(post => post.id === postId);
+      if (currentPost) {
+        setLastViewedPost(currentPost);
+        localStorage.setItem('lastViewedPost', JSON.stringify(currentPost));
+      }
+    }
+  }, [location, posts]);
 
   const graphData = useMemo(() => {
     const nodes = [];
@@ -97,23 +114,23 @@ const Blog = () => {
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">Blog Posts</h2>
         <div className="space-x-2">
-          {!isEditMode && (
+          {!isEditMode && !isViewingPost && (
             <>
               <button
                 onClick={() => setShowGraph(!showGraph)}
-                className="bg-primary text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300"
+                className="bg-secondary text-text-secondary px-4 py-2 rounded transition hover:bg-gray-300 duration-300"
               >
                 {showGraph ? 'Show List' : 'Show Graph'}
               </button>
               <Link 
                 to="/blog/new" 
-                className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition duration-300"
+                className="bg-secondary text-text-secondary px-4 py-2 rounded transition hover:bg-gray-300 duration-300"
               >
                 New Post
               </Link>
               <button
                 onClick={clearCache}
-                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-300"
+                className="bg-secondary text-text-secondary px-4 py-2 rounded transition hover:bg-gray-300 duration-300"
               >
                 Clear Cache and Reload
               </button>
@@ -122,13 +139,21 @@ const Blog = () => {
           {isEditMode && (
             <button
               onClick={() => navigate('/blog')}
-              className="bg-primary text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300"
+              className="bg-secondary text-text-secondary px-4 py-2 rounded hover:bg-gray-300 transition duration-300"
             >
               Back to All Posts
             </button>
           )}
         </div>
       </div>
+      {!isEditMode && !isViewingPost && lastViewedPost && (
+        <div className="mb-4">
+          <h3 className="text-lg font-semibold">Last Viewed Post:</h3>
+          <Link to={`/blog/${lastViewedPost.id}`} className="text-primary hover:underline">
+            {lastViewedPost.title}
+          </Link>
+        </div>
+      )}
       {!isEditMode && (
         <div className="mb-4 flex space-x-2">
           {['All', 'Misc', 'CS', 'ML', 'Physics'].map(category => (
@@ -138,7 +163,7 @@ const Blog = () => {
               className={`px-3 py-1 rounded ${
                 selectedCategory === category
                   ? 'bg-primary text-white'
-                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                  : 'bg-secondary text-text-secondary hover:bg-gray-300'
               }`}
             >
               {category}

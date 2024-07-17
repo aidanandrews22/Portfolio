@@ -3,13 +3,13 @@ import { NavLink } from 'react-router-dom';
 
 const Navigation = () => {
   return (
-    <nav className="mt-4">
-      <ul className="flex flex-wrap justify-center md:justify-start space-x-4">
-        <li><NavLink to="/" className={({ isActive }) => isActive ? "text-primary font-bold border-b-2 border-primary" : "text-primary hover:underline"}>About</NavLink></li>
-        <li><NavLink to="/projects" className={({ isActive }) => isActive ? "text-primary font-bold border-b-2 border-primary" : "text-primary hover:underline"}>Projects</NavLink></li>
-        <li><NavLink to="/bookshelf" className={({ isActive }) => isActive ? "text-primary font-bold border-b-2 border-primary" : "text-primary hover:underline"}>Bookshelf</NavLink></li>
-        <li><NavLink to="/blog" className={({ isActive }) => isActive ? "text-primary font-bold border-b-2 border-primary" : "text-primary hover:underline"}>Blog</NavLink></li>
-        <li><NavLink to="/notes" className={({ isActive }) => isActive ? "text-primary font-bold border-b-2 border-primary" : "text-primary hover:underline"}>Notes</NavLink></li>
+    <nav className="mt-8">
+      <ul className="flex flex-wrap justify-center space-x-4 text-xl">
+        <li><NavLink to="/" className={({ isActive }) => isActive ? "nav-link-active" : "nav-link"}>About</NavLink></li>
+        <li><NavLink to="/projects" className={({ isActive }) => isActive ? "nav-link-active" : "nav-link"}>Projects</NavLink></li>
+        <li><NavLink to="/bookshelf" className={({ isActive }) => isActive ? "nav-link-active" : "nav-link"}>Bookshelf</NavLink></li>
+        <li><NavLink to="/blog" className={({ isActive }) => isActive ? "nav-link-active" : "nav-link"}>Blog</NavLink></li>
+        <li><NavLink to="/notes" className={({ isActive }) => isActive ? "nav-link-active" : "nav-link"}>Notes</NavLink></li>
       </ul>
     </nav>
   );

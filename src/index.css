@@ -12,7 +12,7 @@
   }
 
   a {
-    @apply text-primary hover:underline cursor-pointer;
+    @apply text-primary cursor-pointer;
   }
 
   h1, h2, h3, h4 {
@@ -27,5 +27,15 @@
 @layer components {
   .container {
     @apply max-w-4xl mx-auto px-4;
+  }
+}
+
+@layer components {
+  .nav-link {
+    @apply text-black text-lg hover:underline;
+  }
+  
+  .nav-link-active {
+    @apply text-black font-bold border-b-2 border-black;
   }
 }

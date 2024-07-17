@@ -10,7 +10,7 @@ const BookItem = ({ title, author, link, image, description }) => (
       )}
       <div>
         <h3 className="text-xl font-semibold">
-          <a href={link} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">{title}</a>
+          <a href={link} target="_blank" rel="noopener noreferrer" className="text-primary">{title}</a>
         </h3>
         <p className="text-lg">By {author}</p>
       </div>

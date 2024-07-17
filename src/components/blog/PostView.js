@@ -22,7 +22,6 @@ const PostView = () => {
         throw new Error('Failed to fetch post');
       }
       const content = await response.text();
-      console.log('Fetched content:', content);
       setPost({ id: postId, content });
       setLoading(false);
     } catch (err) {

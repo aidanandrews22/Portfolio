@@ -13,12 +13,14 @@ const Notes = () => {
   const [notes, setNotes] = useState([]);
   const [showGraph, setShowGraph] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('All');
+  const [lastViewedNote, setLastViewedNote] = useState(null);
   const location = useLocation();
   const navigate = useNavigate();
   const { showLoading, hideLoading, showError, clearError } = useAppContext();
   const [isFetching, setIsFetching] = useState(false);
 
   const isEditMode = location.pathname.includes('/edit') || location.pathname.includes('/new');
+  const isViewingPost = location.pathname.split('/').length > 2 && !isEditMode;
 
   const fetchNotes = useCallback(async () => {
     if (isFetching) return;
@@ -58,7 +60,22 @@ const Notes = () => {
 
   useEffect(() => {
     fetchNotes();
+    const storedLastViewedNote = localStorage.getItem('lastViewedNote');
+    if (storedLastViewedNote) {
+      setLastViewedNote(JSON.parse(storedLastViewedNote));
+    }
   }, [fetchNotes]);
+
+  useEffect(() => {
+    const noteId = location.pathname.split('/').pop();
+    if (noteId && noteId !== 'new' && noteId !== 'edit') {
+      const currentNote = notes.find(note => note.id === noteId);
+      if (currentNote) {
+        setLastViewedNote(currentNote);
+        localStorage.setItem('lastViewedNote', JSON.stringify(currentNote));
+      }
+    }
+  }, [location, notes]);
 
   const graphData = useMemo(() => {
     const nodes = [];
@@ -97,23 +114,23 @@ const Notes = () => {
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">Notes</h2>
         <div className="space-x-2">
-          {!isEditMode && (
+          {!isEditMode && !isViewingPost && (
             <>
               <button
                 onClick={() => setShowGraph(!showGraph)}
-                className="bg-primary text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300"
+                className="bg-secondary text-text-secondary px-4 py-2 rounded transition hover:bg-gray-300 duration-300"
               >
                 {showGraph ? 'Show List' : 'Show Graph'}
               </button>
               <Link 
                 to="/notes/new" 
-                className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition duration-300"
+                className="bg-secondary text-text-secondary px-4 py-2 rounded transition hover:bg-gray-300 duration-300"
               >
                 New Note
               </Link>
               <button
                 onClick={clearCache}
-                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-300"
+                className="bg-secondary text-text-secondary px-4 py-2 rounded transition hover:bg-gray-300 duration-300"
               >
                 Clear Cache and Reload
               </button>
@@ -122,13 +139,21 @@ const Notes = () => {
           {isEditMode && (
             <button
               onClick={() => navigate('/notes')}
-              className="bg-primary text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300"
+              className="bg-secondary text-text-secondary px-4 py-2 rounded transition hover:bg-gray-300 duration-300"
             >
               Back to All Notes
             </button>
           )}
         </div>
       </div>
+      {!isEditMode && !isViewingPost && lastViewedNote && (
+        <div className="mb-4">
+          <h3 className="text-lg font-semibold">Last Viewed Note:</h3>
+          <Link to={`/notes/${lastViewedNote.id}`} className="text-primary hover:underline">
+            {lastViewedNote.title}
+          </Link>
+        </div>
+      )}
       {!isEditMode && (
         <div className="mb-4 flex space-x-2">
           {['All', 'School', 'Work', 'Personal', 'Misc'].map(category => (
@@ -138,7 +163,7 @@ const Notes = () => {
               className={`px-3 py-1 rounded ${
                 selectedCategory === category
                   ? 'bg-primary text-white'
-                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                  : 'bg-secondary text-text-secondary hover:bg-gray-300'
               }`}
             >
               {category}

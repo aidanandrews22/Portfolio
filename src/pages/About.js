@@ -7,12 +7,22 @@ const About = () => {
       <section className="mb-12">
         <h2 className="text-2xl font-bold mb-4">About Me</h2>
         <p className="text-text-secondary mb-4">
-          I stream myself working on <a href="https://www.youtube.com/@aidanandrews/streams" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">youtube</a>. 
+          I stream myself working on <a href="https://www.youtube.com/@aidanandrews/streams" target="_blank" rel="noopener noreferrer" className="text-primary">youtube</a>. 
           As a current student and a researcher focused on machine learning applications in physics and neuroscience, 
           I am deeply committed to using technology to solve complex problems. My academic and recreational projects 
           are where I try to apply my knowledge. I spend all of my time learning, researching, playing chess, and 
           exercising (mainly playing hockey).
         </p>
+      </section>
+
+      <section className="mb-12">
+        <h2 className="text-2xl font-bold mb-4">Documents</h2>
+        <div className="mt-2 space-x-5">
+          <a href="/assets/PDF/Aidan Andrews Official Transcript.pdf" target="_blank" rel="noopener noreferrer" className="text-primary">Official-Transcript</a>
+          <a href="/assets/PDF/Aidan Andrews Unofficial Transcript.pdf" target="_blank" rel="noopener noreferrer" className="text-primary">Unofficial-Transcript</a>
+          <a href="/assets/PDF/Aidan Andrews Resume.pdf" target="_blank" rel="noopener noreferrer" className="text-primary">Resume</a>
+          <a href="/assets/PDF/cover-letter.pdf" target="_blank" rel="noopener noreferrer" className="text-primary">Cover Letter</a>
+        </div>
       </section>
 
       <section className="mb-12">

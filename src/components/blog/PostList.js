@@ -6,7 +6,7 @@ const PostList = ({ posts }) => {
     <div className="space-y-4">
       {posts.map((post) => (
         <div key={post.id} className="bg-white shadow rounded-lg p-4">
-          <Link to={`/blog/${post.id}`} className="text-lg font-semibold text-primary hover:underline">
+          <Link to={`/blog/${post.id}`} className="text-lg font-semibold text-primary">
             {post.title}
           </Link>
           <p className="text-sm text-gray-500 mt-1">
