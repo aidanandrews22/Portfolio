@@ -19,7 +19,7 @@ const Header = () => {
                 <a href="https://www.youtube.com/@aidanandrews/streams" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">YouTube</a>
               </div>
             </div>
-            <img src='public/assets/header.png' alt="Aidan Andrews" className="w-32 h-32 rounded-full object-cover" />
+            <img src='/assets/header.png' alt="Aidan Andrews" className="w-32 h-32 rounded-full object-cover" />
           </div>
         </div>
       </div>
