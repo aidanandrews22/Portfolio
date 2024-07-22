@@ -4,10 +4,10 @@ import ProjectView from '../components/project/ProjectView';
 
 const CONTENT_BASE_URL = 'https://raw.githubusercontent.com/aidanandrews22/website-data/main';
 
-const ProjectCard = ({ title, description, demoLink, githubLink, tags }) => (
+const ProjectCard = ({ id, title, description, demoLink, githubLink, tags }) => (
   <div className="bg-white shadow rounded-lg p-6 mb-6">
     <h3 className="text-xl font-semibold mb-2">
-      <Link to={`/projects/${title}`} className="text-primary">{title}</Link>
+      <Link to={`/projects/${id}`} className="text-primary">{title}</Link>
     </h3>
     <p className="text-text-secondary mb-4">{description}</p>
     <div className="flex flex-wrap gap-2 mb-4">
@@ -29,7 +29,6 @@ const Projects = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        console.log('Fetching fresh project data');
         const response = await fetch(`${CONTENT_BASE_URL}/content/projects.json`);
         if (!response.ok) {
           throw new Error('Failed to fetch projects');
