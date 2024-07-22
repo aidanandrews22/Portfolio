@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, Route, Routes, useNavigate } from 'react-router-dom';
+import { Link, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import NoteList from '../components/notes/NoteList';
 import NoteView from '../components/notes/NoteView';
 import NoteEdit from '../components/notes/NoteEdit';
@@ -13,6 +13,8 @@ const Notes = () => {
   const [error, setError] = useState(null);
   const [showGraph, setShowGraph] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('All');
+  const [lastViewedNote, setLastViewedNote] = useState(null);
+  const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,7 +33,23 @@ const Notes = () => {
       }
     };
     fetchNotes();
+
+    const storedLastViewedNote = localStorage.getItem('lastViewedNote');
+    if (storedLastViewedNote) {
+      setLastViewedNote(JSON.parse(storedLastViewedNote));
+    }
   }, []);
+
+  useEffect(() => {
+    const noteId = location.pathname.split('/').pop();
+    if (noteId && noteId !== 'new' && noteId !== 'edit') {
+      const currentNote = notes.find(note => note.id === noteId);
+      if (currentNote) {
+        setLastViewedNote(currentNote);
+        localStorage.setItem('lastViewedNote', JSON.stringify(currentNote));
+      }
+    }
+  }, [location, notes]);
 
   if (loading) return <div>Loading notes...</div>;
   if (error) return <div>Error: {error}</div>;
@@ -47,6 +65,9 @@ const Notes = () => {
     ],
     links: filteredNotes.map(note => ({ source: note.category, target: note.id, distance: 50 }))
   };
+
+  const isEditMode = location.pathname.includes('/edit') || location.pathname.includes('/new');
+  const isViewingNote = location.pathname.split('/').length > 2 && !isEditMode;
 
   return (
     <div className="container">
@@ -67,6 +88,14 @@ const Notes = () => {
           </Link>
         </div>
       </div>
+      {!isEditMode && !isViewingNote && lastViewedNote && (
+        <div className="mb-4">
+          <h3 className="text-lg font-semibold">Last Viewed Note:</h3>
+          <Link to={`/notes/${lastViewedNote.id}`} className="text-primary hover:underline">
+            {lastViewedNote.title}
+          </Link>
+        </div>
+      )}
       <div className="mb-4 flex space-x-2">
         {['All', 'School', 'Work', 'Personal', 'Misc'].map(category => (
           <button

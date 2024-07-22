@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, Route, Routes, useNavigate } from 'react-router-dom';
+import { Link, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import PostList from '../components/blog/PostList';
 import PostView from '../components/blog/PostView';
 import PostEdit from '../components/blog/PostEdit';
@@ -13,6 +13,8 @@ const Blog = () => {
   const [error, setError] = useState(null);
   const [showGraph, setShowGraph] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('All');
+  const [lastViewedPost, setLastViewedPost] = useState(null);
+  const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,7 +33,23 @@ const Blog = () => {
       }
     };
     fetchPosts();
+
+    const storedLastViewedPost = localStorage.getItem('lastViewedPost');
+    if (storedLastViewedPost) {
+      setLastViewedPost(JSON.parse(storedLastViewedPost));
+    }
   }, []);
+
+  useEffect(() => {
+    const postId = location.pathname.split('/').pop();
+    if (postId && postId !== 'new' && postId !== 'edit') {
+      const currentPost = posts.find(post => post.id === postId);
+      if (currentPost) {
+        setLastViewedPost(currentPost);
+        localStorage.setItem('lastViewedPost', JSON.stringify(currentPost));
+      }
+    }
+  }, [location, posts]);
 
   if (loading) return <div>Loading blog posts...</div>;
   if (error) return <div>Error: {error}</div>;
@@ -47,6 +65,9 @@ const Blog = () => {
     ],
     links: filteredPosts.map(post => ({ source: post.category, target: post.id, distance: 50 }))
   };
+
+  const isEditMode = location.pathname.includes('/edit') || location.pathname.includes('/new');
+  const isViewingPost = location.pathname.split('/').length > 2 && !isEditMode;
 
   return (
     <div className="container">
@@ -67,6 +88,14 @@ const Blog = () => {
           </Link>
         </div>
       </div>
+      {!isEditMode && !isViewingPost && lastViewedPost && (
+        <div className="mb-4">
+          <h3 className="text-lg font-semibold">Last Viewed Post:</h3>
+          <Link to={`/blog/${lastViewedPost.id}`} className="text-primary hover:underline">
+            {lastViewedPost.title}
+          </Link>
+        </div>
+      )}
       <div className="mb-4 flex space-x-2">
         {['All', 'Misc', 'CS', 'ML', 'Physics'].map(category => (
           <button

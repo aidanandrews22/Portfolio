@@ -77,6 +77,10 @@ const NoteEdit = () => {
     }
   };
 
+  const handleCancel = () => {
+    navigate('/notes');
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -128,7 +132,7 @@ const NoteEdit = () => {
           name="title"
           value={note.title}
           onChange={handleChange}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          className="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
           required
         />
       </div>
@@ -170,7 +174,7 @@ const NoteEdit = () => {
             onChange={handleChange}
             onKeyDown={handleTabKey}
             rows="10"
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+            className="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
             required
           />
         )}
@@ -182,17 +186,26 @@ const NoteEdit = () => {
           id="password"
           value={password}
           onChange={handlePasswordChange}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          className="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
           required
         />
       </div>
-      <button
-        type="submit"
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-        disabled={loading}
-      >
-        {loading ? 'Saving...' : 'Save Note'}
-      </button>
+      <div className="flex justify-between">
+        <button
+          type="button"
+          onClick={handleCancel}
+          className="bg-secondary text-text-secondary px-4 py-2 rounded transition hover:bg-gray-300 duration-300"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          disabled={loading}
+        >
+          {loading ? 'Saving...' : 'Save Note'}
+        </button>
+      </div>
     </form>
   );
 };
