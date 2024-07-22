@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import AWS from 'aws-sdk';
 import ReactMarkdown from 'react-markdown';
+import fetchNotes from '../../pages/Notes';
 
 // Configure AWS
 AWS.config.update({
@@ -12,6 +13,8 @@ AWS.config.update({
 });
 
 const lambda = new AWS.Lambda();
+
+const CONTENT_BASE_URL = 'https://raw.githubusercontent.com/aidanandrews22/website-data/main';
 
 const NoteEdit = () => {
   const [note, setNote] = useState({ title: '', content: '', category: 'Misc' });
@@ -25,13 +28,14 @@ const NoteEdit = () => {
   const fetchNote = useCallback(async () => {
     if (noteId && noteId !== 'new') {
       try {
-        const response = await fetch(`/content/notes/${noteId}.md`);
+        const response = await fetch(`${CONTENT_BASE_URL}/content/notes/${noteId}.md`);
         if (!response.ok) {
           throw new Error('Failed to fetch note');
         }
         const content = await response.text();
         const title = content.split('\n')[0].replace('#', '').trim();
-        setNote({ id: noteId, title, content, category: 'Misc' }); // You might want to fetch the category from somewhere
+        const bodyContent = content.split('\n').slice(1).join('\n').trim();
+        setNote({ id: noteId, title, content: bodyContent, category: 'Misc' });
       } catch (err) {
         setError(err.message);
       } finally {
@@ -55,15 +59,35 @@ const NoteEdit = () => {
     setPassword(e.target.value);
   };
 
+  const handleTabKey = (e) => {
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      const { selectionStart, selectionEnd } = e.target;
+      const newContent = 
+        note.content.substring(0, selectionStart) + 
+        '\t' + 
+        note.content.substring(selectionEnd);
+      
+      setNote(prevNote => ({ ...prevNote, content: newContent }));
+      
+      // Set cursor position after inserted tab
+      setTimeout(() => {
+        e.target.selectionStart = e.target.selectionEnd = selectionStart + 1;
+      }, 0);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
 
+    const fullContent = `# ${note.title}\n\n${note.content}`;
+
     const params = {
       FunctionName: 'saveNoteFunction',
       Payload: JSON.stringify({
-        content: note.content,
+        content: fullContent,
         title: note.title,
         category: note.category,
         password: password,
@@ -77,6 +101,7 @@ const NoteEdit = () => {
       const result = JSON.parse(response.Payload);
 
       if (result.statusCode === 200) {
+        await fetchNotes();
         navigate('/notes');
       } else if (result.statusCode === 401) {
         setError('Incorrect password. Please try again.');
@@ -143,6 +168,7 @@ const NoteEdit = () => {
             name="content"
             value={note.content}
             onChange={handleChange}
+            onKeyDown={handleTabKey}
             rows="10"
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
             required
