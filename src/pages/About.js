@@ -34,7 +34,7 @@ const About = () => {
           <p className="mt-2">
             Implementing a various amount of models for a chatbot. The models include (but are not limited to) intent
             classification, retrieval augmented generation, and llm's. I am running an llm locally with dedicated prompt
-            engineering algorithms and RAG algorithms.<br></br>Relevant notes: <a href="https://aidanandrews.info/notes/note1720138895991" target='_blank'>Researching Rag</a>, <a href="https://aidanandrews.info/notes/note1720467342277" target='_blank'>Building Rag</a>, <a href="https://aidanandrews.info/notes/note1720910307291" target='_blank'>New Rag</a>
+            engineering algorithms and RAG algorithms.<br></br>Relevant notes: <a href="https://aidanandrews.info/notes/note1721519215188" target='_blank'>Intent </a>, <a href="https://aidanandrews.info/notes/note1720138895991" target='_blank'>Researching Rag</a>, <a href="https://aidanandrews.info/notes/note1720467342277" target='_blank'>Building Rag</a>, <a href="https://aidanandrews.info/notes/note1720910307291" target='_blank'>New Rag</a>
           </p>
         </div>
         <div className="mb-6">
