@@ -18,9 +18,9 @@ const About = () => {
       <section className="mb-12">
         <h2 className="text-2xl font-bold mb-4">Documents</h2>
         <div className="mt-2 space-x-5">
-          <a href="/assets/PDF/Aidan Andrews Official Transcript.pdf" target="_blank" rel="noopener noreferrer" className="text-primary">Official-Transcript</a>
-          <a href="/assets/PDF/Aidan Andrews Unofficial Transcript.pdf" target="_blank" rel="noopener noreferrer" className="text-primary">Unofficial-Transcript</a>
-          <a href="/assets/PDF/Aidan Andrews Resume.pdf" target="_blank" rel="noopener noreferrer" className="text-primary">Resume</a>
+          <a href="/assets/PDF/Aidan_Andrews_Official_Transcript.pdf" target="_blank" rel="noopener noreferrer" className="text-primary">Official-Transcript</a>
+          <a href="/assets/PDF/Aidan_Andrews_Unofficial_Transcript.pdf" target="_blank" rel="noopener noreferrer" className="text-primary">Unofficial-Transcript</a>
+          <a href="/assets/PDF/Aidan_Andrews_Resume.pdf" target="_blank" rel="noopener noreferrer" className="text-primary">Resume</a>
           <a href="/assets/PDF/cover-letter.pdf" target="_blank" rel="noopener noreferrer" className="text-primary">Cover Letter</a>
         </div>
       </section>
