@@ -30,6 +30,7 @@ const AppContent = () => {
           <Route path="/blog/*" element={<Blog />} />
           <Route path="/notes/*" element={<Notes />} />
           <Route path="/projects/*" element={<Projects />} />
+          <Route path="/assets/*" />
           <Route path="/skills" element={<Skills />} />
           <Route path="/bookshelf" element={<Bookshelf />} />
         </Routes>
