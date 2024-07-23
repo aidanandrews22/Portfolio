@@ -11,7 +11,7 @@ const About = () => {
           As a current student and a researcher focused on machine learning applications in physics and neuroscience, 
           I am deeply committed to using technology to solve complex problems. My academic and recreational projects 
           are where I try to apply my knowledge. I spend all of my time learning, researching, playing chess, and 
-          exercising (mainly playing hockey).
+          exercising (mainly playing hockey and tennis).
         </p>
       </section>
 
@@ -28,9 +28,31 @@ const About = () => {
       <section className="mb-12">
         <h2 className="text-2xl font-bold mb-4">Work Experience</h2>
         <div className="mb-6">
+          <h3 className="text-xl font-semibold">Startup (signed an NDA)</h3>
+          <h4 className="text-lg">Machine Learning Researcher/Engineer</h4>
+          <p className="text-sm text-text-secondary">2024 - Present</p>
+          <p className="mt-2">
+            Implementing a various amount of models for a chatbot. The models include (but are not limited to) intent
+            classification, retrieval augmented generation, and llm's. I am running an llm locally with dedicated prompt
+            engineering algorithms and RAG algorithms.<br></br>Relevant notes: <a href="https://aidanandrews.info/notes/note1720138895991" target='_blank'>Researching Rag</a>, <a href="https://aidanandrews.info/notes/note1720467342277" target='_blank'>Building Rag</a>, <a href="https://aidanandrews.info/notes/note1720910307291" target='_blank'>New Rag</a>
+          </p>
+        </div>
+        <div className="mb-6">
+          <h3 className="text-xl font-semibold">Dr. Andrews Plastic Surgery</h3>
+          <h4 className="text-lg">Machine Learning Researcher/Intern</h4>
+          <p className="text-sm text-text-secondary">2024 - Present</p>
+          <p className="mt-2">
+            Researching machine learning models to predict the effectiveness of procedures based off of a generalized
+            score given to patients. Essentially, the model will take variables like age, gender, resting heart rate,
+            and a plethera of other medically derived data like medications. Then uses previous patient data to predict
+            how effective a procedure will be given the patients input variable, then quantifying the result as a normalized
+            score.
+          </p>
+        </div>
+        <div className="mb-6">
           <h3 className="text-xl font-semibold">The Grainger College of Engineering</h3>
           <h4 className="text-lg">Project Manager & Course Assistant</h4>
-          <p className="text-sm text-text-secondary">2024 - Present</p>
+          <p className="text-sm text-text-secondary">December 2023 - May 2024</p>
           <p className="mt-2">
             Managing projects and assisting courses within the CS department, focusing on enhancing 
             the educational experiences of undergraduate students through innovative approaches and technologies.
@@ -52,10 +74,10 @@ const About = () => {
         <h2 className="text-2xl font-bold mb-4">Education</h2>
         <div>
           <h3 className="text-xl font-semibold">University of Illinois Urbana-Champaign</h3>
-          <p className="text-sm text-text-secondary">2023 - Present</p>
+          <p className="text-sm text-text-secondary">2023 - 2026</p>
           <p className="mt-2">
-            BS in Physics and Master of Science in Computer Science, focusing on machine learning, AI, 
-            and their applications in physical sciences and neuroscience.
+            Studying B.S. in Physics from the Grainger College of Engineering. Planning on adding a double major
+            in Math+CS from the college of Liberal Arts and Sciences.
           </p>
         </div>
       </section>
