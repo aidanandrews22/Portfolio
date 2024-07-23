@@ -22,6 +22,7 @@
     "react-pdf": "^9.1.0",
     "react-router-dom": "^6.24.1",
     "react-scripts": "5.0.1",
+    "react-syntax-highlighter": "^15.5.0",
     "remark-gfm": "^4.0.0",
     "tailwind-merge": "^2.4.0",
     "three": "^0.166.1",

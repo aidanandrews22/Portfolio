@@ -105,8 +105,8 @@ const NoteEdit = () => {
       const result = JSON.parse(response.Payload);
 
       if (result.statusCode === 200) {
-        await fetchNotes();
         navigate('/notes');
+        await fetchNotes();
       } else if (result.statusCode === 401) {
         setError('Incorrect password. Please try again.');
       } else {

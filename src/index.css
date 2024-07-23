@@ -28,6 +28,12 @@
   .container {
     @apply max-w-4xl mx-auto px-4;
   }
+  .prose pre {
+    margin: 0 !important;
+    padding: 0 !important;
+    background-color: transparent !important;
+  }
+  
 }
 
 @layer components {
