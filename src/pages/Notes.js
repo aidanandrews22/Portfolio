@@ -1,47 +1,30 @@
-import React, { useState, useEffect } from 'react';
-import { Link, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Link, Route, Routes, useLocation } from 'react-router-dom';
+import { useDataContext } from '../context/DataContext';
+import { useDataReload } from '../hooks/useDataReload';
 import NoteList from '../components/notes/NoteList';
 import NoteView from '../components/notes/NoteView';
 import NoteEdit from '../components/notes/NoteEdit';
 import GraphView from '../components/common/GraphView';
-
-const CONTENT_BASE_URL = 'https://raw.githubusercontent.com/aidanandrews22/website-data/main';
+import LoadingSpinner from '../components/common/LoadingSpinner';
+import ErrorMessage from '../components/common/ErrorMessage';
 
 const Notes = () => {
-  const [notes, setNotes] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { notes, loading, error } = useDataContext();
+  const reloadData = useDataReload();
   const [showGraph, setShowGraph] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [lastViewedNote, setLastViewedNote] = useState(null);
   const location = useLocation();
-  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchNotes = async () => {
-      try {
-        const response = await fetch(`${CONTENT_BASE_URL}/content/notes.json`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch notes');
-        }
-        const data = await response.json();
-        setNotes(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchNotes();
-
     const storedLastViewedNote = localStorage.getItem('lastViewedNote');
     if (storedLastViewedNote) {
       setLastViewedNote(JSON.parse(storedLastViewedNote));
     }
   }, []);
 
-  useEffect(() => {
-    const noteId = location.pathname.split('/').pop();
+  const updateLastViewedNote = useCallback((noteId) => {
     if (noteId && noteId !== 'new' && noteId !== 'edit') {
       const currentNote = notes.find(note => note.id === noteId);
       if (currentNote) {
@@ -49,10 +32,15 @@ const Notes = () => {
         localStorage.setItem('lastViewedNote', JSON.stringify(currentNote));
       }
     }
-  }, [location, notes]);
+  }, [notes]);
 
-  if (loading) return <div>Loading notes...</div>;
-  if (error) return <div>Error: {error}</div>;
+  useEffect(() => {
+    const noteId = location.pathname.split('/').pop();
+    updateLastViewedNote(noteId);
+  }, [location, updateLastViewedNote]);
+
+  if (loading) return <LoadingSpinner />;
+  if (error) return <ErrorMessage message={error} />;
 
   const filteredNotes = selectedCategory === 'All'
     ? notes
@@ -70,10 +58,16 @@ const Notes = () => {
   const isViewingNote = location.pathname.split('/').length > 2 && !isEditMode;
 
   return (
-    <div className="container">
+    <div className="container mx-auto px-4">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">Notes</h2>
         <div className="space-x-2">
+          <button
+            onClick={reloadData}
+            className="bg-secondary text-text-secondary px-4 py-2 rounded transition hover:bg-gray-300 duration-300"
+          >
+            Reload Data
+          </button>
           <button
             onClick={() => setShowGraph(!showGraph)}
             className="bg-secondary text-text-secondary px-4 py-2 rounded transition hover:bg-gray-300 duration-300"
@@ -116,7 +110,7 @@ const Notes = () => {
       ) : (
         <Routes>
           <Route index element={<NoteList notes={filteredNotes} />} />
-          <Route path=":noteId" element={<NoteView notes={notes} />} />
+          <Route path=":noteId" element={<NoteView />} />
           <Route path=":noteId/edit" element={<NoteEdit />} />
           <Route path="new" element={<NoteEdit />} />
         </Routes>

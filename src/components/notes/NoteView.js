@@ -4,8 +4,9 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
-
-const CONTENT_BASE_URL = 'https://raw.githubusercontent.com/aidanandrews22/website-data/main';
+import { fetchContent } from '../../services/DataService';
+import LoadingSpinner from '../common/LoadingSpinner';
+import ErrorMessage from '../common/ErrorMessage';
 
 const HeaderRenderer = ({ level, children }) => {
   const Tag = `h${level}`;
@@ -50,31 +51,24 @@ const NoteView = () => {
   const { noteId } = useParams();
 
   useEffect(() => {
-    fetchNote();
+    const loadNote = async () => {
+      try {
+        const content = await fetchContent('note', noteId);
+        setNote({ id: noteId, content });
+        setLoading(false);
+      } catch (err) {
+        console.error('Error fetching note:', err);
+        setError(err.message);
+        setLoading(false);
+      }
+    };
+
+    loadNote();
   }, [noteId]);
 
-  const fetchNote = async () => {
-    try {
-      const response = await fetch(`${CONTENT_BASE_URL}/content/notes/${noteId}.md`);
-      if (!response.ok) {
-        if (response.status === 404) {
-          throw new Error('Note not found');
-        }
-        throw new Error('Failed to fetch note');
-      }
-      const content = await response.text();
-      setNote({ id: noteId, content });
-      setLoading(false);
-    } catch (err) {
-      console.error('Error fetching note:', err);
-      setError(err.message);
-      setLoading(false);
-    }
-  };
-
-  if (loading) return <div>Loading note...</div>;
-  if (error) return <div>Error: {error}</div>;
-  if (!note) return <div>Note not found</div>;
+  if (loading) return <LoadingSpinner />;
+  if (error) return <ErrorMessage message={error} />;
+  if (!note) return <ErrorMessage message="Note not found" />;
 
   return (
     <div>

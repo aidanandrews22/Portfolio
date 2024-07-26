@@ -4,8 +4,9 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
-
-const CONTENT_BASE_URL = 'https://raw.githubusercontent.com/aidanandrews22/website-data/main';
+import { fetchContent } from '../../services/DataService';
+import LoadingSpinner from '../common/LoadingSpinner';
+import ErrorMessage from '../common/ErrorMessage';
 
 const HeaderRenderer = ({ level, children }) => {
   const Tag = `h${level}`;
@@ -50,33 +51,24 @@ const PostView = () => {
   const { postId } = useParams();
 
   useEffect(() => {
-    fetchPost();
+    const loadPost = async () => {
+      try {
+        const content = await fetchContent('post', postId);
+        setPost({ id: postId, content });
+        setLoading(false);
+      } catch (err) {
+        console.error('Error fetching post:', err);
+        setError(err.message);
+        setLoading(false);
+      }
+    };
+
+    loadPost();
   }, [postId]);
 
-  const fetchPost = async () => {
-    try {
-      const response = await fetch(`${CONTENT_BASE_URL}/content/posts/${postId}.md`);
-      console.log('Response status:', response.status);
-      console.log('Response headers:', response.headers);
-      if (!response.ok) {
-        if (response.status === 404) {
-          throw new Error('Post not found');
-        }
-        throw new Error('Failed to fetch post');
-      }
-      const content = await response.text();
-      setPost({ id: postId, content });
-      setLoading(false);
-    } catch (err) {
-      console.error('Error fetching post:', err);
-      setError(err.message);
-      setLoading(false);
-    }
-  };
-
-  if (loading) return <div>Loading post...</div>;
-  if (error) return <div>Error: {error}</div>;
-  if (!post) return <div>Post not found</div>;
+  if (loading) return <LoadingSpinner />;
+  if (error) return <ErrorMessage message={error} />;
+  if (!post) return <ErrorMessage message="Post not found" />;
 
   return (
     <div>
