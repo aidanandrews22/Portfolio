@@ -1,7 +1,38 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Skills from './Skills';
+import { s3 } from '../App'
 
 const About = () => {
+  const [pdfUrls, setPdfUrls] = useState({});
+
+  useEffect(() => {
+    const generatePdfUrls = async () => {
+      const pdfNames = [
+        'Aidan_Andrews_Official_Transcript.pdf',
+        'Aidan_Andrews_Unofficial_Transcript.pdf',
+        'Aidan_Andrews_Resume.pdf',
+        'cover-letter.pdf'
+      ];
+
+      const urls = {};
+      for (const pdfName of pdfNames) {
+        try {
+          const url = await s3.getSignedUrlPromise('getObject', {
+            Bucket: 'aidanandrews-content',
+            Key: `content/pdf/${pdfName}`,
+            Expires: 3600 // URL expires in 1 hour
+          });
+          urls[pdfName] = url;
+        } catch (error) {
+          console.error(`Error generating URL for ${pdfName}:`, error);
+        }
+      }
+      setPdfUrls(urls);
+    };
+
+    generatePdfUrls();
+  }, []);
+
   return (
     <div className="max-w-3xl mx-auto">
       <section className="mb-12">
@@ -18,10 +49,18 @@ const About = () => {
       <section className="mb-12">
         <h2 className="text-2xl font-bold mb-4">Documents</h2>
         <div className="mt-2 space-x-5">
-          <a href={`${process.env.PUBLIC_URL}/assets/PDF/Aidan_Andrews_Official_Transcript.pdf`} target="_blank" rel="noopener noreferrer" className="text-primary">Official-Transcript</a>
-          <a href={`${process.env.PUBLIC_URL}/assets/PDF/Aidan_Andrews_Unofficial_Transcript.pdf`} target="_blank" rel="noopener noreferrer" className="text-primary">Unofficial-Transcript</a>
-          <a href={`${process.env.PUBLIC_URL}/assets/PDF/Aidan_Andrews_Resume.pdf`} target="_blank" rel="noopener noreferrer" className="text-primary">Resume</a>
-          <a href={`${process.env.PUBLIC_URL}/assets/PDF/cover-letter.pdf`} target="_blank" rel="noopener noreferrer" className="text-primary">Cover Letter</a>
+          {pdfUrls['Aidan_Andrews_Official_Transcript.pdf'] && (
+            <a href={pdfUrls['Aidan_Andrews_Official_Transcript.pdf']} target="_blank" rel="noopener noreferrer" className="text-primary">Official-Transcript</a>
+          )}
+          {pdfUrls['Aidan_Andrews_Unofficial_Transcript.pdf'] && (
+            <a href={pdfUrls['Aidan_Andrews_Unofficial_Transcript.pdf']} target="_blank" rel="noopener noreferrer" className="text-primary">Unofficial-Transcript</a>
+          )}
+          {pdfUrls['Aidan_Andrews_Resume.pdf'] && (
+            <a href={pdfUrls['Aidan_Andrews_Resume.pdf']} target="_blank" rel="noopener noreferrer" className="text-primary">Resume</a>
+          )}
+          {pdfUrls['cover-letter.pdf'] && (
+            <a href={pdfUrls['cover-letter.pdf']} target="_blank" rel="noopener noreferrer" className="text-primary">Cover Letter</a>
+          )}
         </div>
       </section>
 
