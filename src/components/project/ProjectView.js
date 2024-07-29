@@ -4,8 +4,9 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
-
-const CONTENT_BASE_URL = 'https://raw.githubusercontent.com/aidanandrews22/website-data/main';
+import { fetchContent } from '../../services/DataService';
+import LoadingSpinner from '../common/LoadingSpinner';
+import ErrorMessage from '../common/ErrorMessage';
 
 const HeaderRenderer = ({ level, children }) => {
   const Tag = `h${level}`;
@@ -50,26 +51,23 @@ const ProjectView = ({ projects }) => {
   const { projectId } = useParams();
 
   useEffect(() => {
-    const fetchProjectContent = async () => {
+    const loadProjectContent = async () => {
       try {
-        const response = await fetch(`${CONTENT_BASE_URL}/content/projects/${projectId}.md`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch project content');
-        }
-        const content = await response.text();
+        const content = await fetchContent('project', projectId);
         setProjectContent(content);
+        setLoading(false);
       } catch (err) {
+        console.error('Error fetching project content:', err);
         setError(err.message);
-      } finally {
         setLoading(false);
       }
     };
 
-    fetchProjectContent();
+    loadProjectContent();
   }, [projectId]);
 
-  if (loading) return <div>Loading project content...</div>;
-  if (error) return <div>Error: {error}</div>;
+  if (loading) return <LoadingSpinner />;
+  if (error) return <ErrorMessage message={error} />;
 
   const project = projects.find(p => p.id === projectId);
 
@@ -89,6 +87,7 @@ const ProjectView = ({ projects }) => {
           {project.githubLink && <a href={project.githubLink} target="_blank" rel="noopener noreferrer" className="text-primary">View on GitHub</a>}
         </div>
       )}
+      <hr className="my-8 border-t border-gray-300" />
       <div className="prose max-w-none">
         <ReactMarkdown 
           remarkPlugins={[remarkGfm]}

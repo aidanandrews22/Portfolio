@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Link, Route, Routes, useNavigate } from 'react-router-dom';
+import { Link, Route, Routes } from 'react-router-dom';
 import ProjectView from '../components/project/ProjectView';
-
-const CONTENT_BASE_URL = 'https://raw.githubusercontent.com/aidanandrews22/website-data/main';
+import { fetchAllData } from '../services/DataService';
+import LoadingSpinner from '../components/common/LoadingSpinner';
+import ErrorMessage from '../components/common/ErrorMessage';
 
 const ProjectCard = ({ id, title, description, demoLink, githubLink, tags }) => (
   <div className="bg-white shadow rounded-lg p-6 mb-6">
@@ -24,39 +25,44 @@ const Projects = () => {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchProjects = async () => {
+    const loadProjects = async () => {
       try {
-        const response = await fetch(`${CONTENT_BASE_URL}/content/projects.json`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch projects');
+        const data = await fetchAllData();
+        if (data && Array.isArray(data.projects)) {
+          setProjects(data.projects);
+        } else {
+          console.warn('Projects data is empty or not in the expected format');
+          setProjects([]);
         }
-        const data = await response.json();
-        setProjects(data);
       } catch (err) {
+        console.error('Error fetching projects:', err);
         setError(err.message);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchProjects();
+    loadProjects();
   }, []);
 
-  if (loading) return <div>Loading projects...</div>;
-  if (error) return <div>Error: {error}</div>;
+  if (loading) return <LoadingSpinner />;
+  if (error) return <ErrorMessage message={error} />;
 
   return (
-    <div className="container">
+    <div className="container mx-auto px-4">
       <Routes>
         <Route path="/" element={
           <>
             <h2 className="text-2xl font-bold mb-6">Projects</h2>
-            {projects.map((project, index) => (
-              <ProjectCard key={index} {...project} />
-            ))}
+            {projects.length > 0 ? (
+              projects.map((project) => (
+                <ProjectCard key={project.id} {...project} />
+              ))
+            ) : (
+              <p>No projects available. Create your first project!</p>
+            )}
           </>
         } />
         <Route path=":projectId" element={<ProjectView projects={projects} />} />

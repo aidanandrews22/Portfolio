@@ -12,7 +12,15 @@ export const fetchAllData = async () => {
     const posts = JSON.parse(postsResponse.Body.toString());
     const notes = JSON.parse(notesResponse.Body.toString());
 
-    return { posts, notes };
+    let projects = [];
+    try {
+      const projectsResponse = await s3.getObject({ Bucket: BUCKET_NAME, Key: 'content/projects.json' }).promise();
+      projects = JSON.parse(projectsResponse.Body.toString());
+    } catch (projectError) {
+      console.warn('Projects data not found, initializing with empty array');
+    }
+
+    return { posts, notes, projects };
   } catch (error) {
     console.error('Error fetching data from S3:', error);
     throw new Error('Failed to fetch data');
