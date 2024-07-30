@@ -5,10 +5,19 @@
 @layer base {
   html {
     @apply font-sans text-text-primary bg-white;
+    background-color: white;
+    overflow-y: scroll;
+    overscroll-behavior-y: none;
   }
 
   body {
-    @apply m-0 pb-16;
+    @apply m-0 pb-16 min-h-screen bg-white;
+    background-color: white;
+  }
+
+  #root {
+    min-height: 100vh;
+    background-color: white;
   }
 
   a {

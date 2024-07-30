@@ -77,7 +77,6 @@ const AppContent = () => {
           <Route path="/bookshelf" element={<Bookshelf />} />
         </Routes>
       </main>
-      <Footer />
     </div>
   );
 };
