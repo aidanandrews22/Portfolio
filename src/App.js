@@ -1,5 +1,4 @@
 import AWS from 'aws-sdk';
-
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { DataProvider, useDataContext } from './context/DataContext';

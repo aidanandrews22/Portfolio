@@ -57,55 +57,61 @@ const Blog = () => {
   const isEditMode = location.pathname.includes('/edit') || location.pathname.includes('/new');
   const isViewingPost = location.pathname.split('/').length > 2 && !isEditMode;
 
+  const isListView = location.pathname === '/blog';
+
   return (
     <div className="container mx-auto px-4">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">Blog Posts</h2>
-        <div className="space-x-2">
-          <button
-            onClick={reloadData}
-            className="bg-secondary text-text-secondary px-4 py-2 rounded transition hover:bg-gray-300 duration-300"
-          >
-            Reload Data
-          </button>
-          <button
-            onClick={() => setShowGraph(!showGraph)}
-            className="bg-secondary text-text-secondary px-4 py-2 rounded transition hover:bg-gray-300 duration-300"
-          >
-            {showGraph ? 'Show List' : 'Show Graph'}
-          </button>
-          <Link 
-            to="/blog/new" 
-            className="bg-secondary text-text-secondary px-4 py-2 rounded transition hover:bg-gray-300 duration-300"
-          >
-            New Post
-          </Link>
-        </div>
-      </div>
-      {!isEditMode && !isViewingPost && lastViewedPost && (
-        <div className="mb-4">
-          <h3 className="text-lg font-semibold">Last Viewed Post:</h3>
-          <Link to={`/blog/${lastViewedPost.id}`} className="text-primary hover:underline">
-            {lastViewedPost.title}
-          </Link>
-        </div>
+      {isListView && (
+        <>
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
+            <h2 className="text-2xl font-bold mb-4 sm:mb-0">Blog Posts</h2>
+            <div className="flex flex-wrap gap-2">
+              <button
+                onClick={reloadData}
+                className="bg-secondary text-text-secondary px-4 py-2 rounded transition hover:bg-gray-300 duration-300"
+              >
+                Reload Data
+              </button>
+              <button
+                onClick={() => setShowGraph(!showGraph)}
+                className="bg-secondary text-text-secondary px-4 py-2 rounded transition hover:bg-gray-300 duration-300"
+              >
+                {showGraph ? 'Show List' : 'Show Graph'}
+              </button>
+              <Link 
+                to="/blog/new" 
+                className="bg-secondary text-text-secondary px-4 py-2 rounded transition hover:bg-gray-300 duration-300"
+              >
+                New Post
+              </Link>
+            </div>
+          </div>
+          {!isEditMode && lastViewedPost && (
+            <div className="mb-4">
+              <h3 className="text-lg font-semibold">Last Viewed Post:</h3>
+              <Link to={`/blog/${lastViewedPost.id}`} className="text-primary hover:underline">
+                {lastViewedPost.title}
+              </Link>
+            </div>
+          )}
+          <div className="mb-4 flex flex-wrap gap-2">
+            {['All', 'Misc', 'CS', 'ML', 'Physics'].map(category => (
+              <button
+                key={category}
+                onClick={() => setSelectedCategory(category)}
+                className={`px-3 py-1 rounded ${
+                  selectedCategory === category
+                    ? 'bg-primary text-white'
+                    : 'bg-secondary text-text-secondary hover:bg-gray-300'
+                }`}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
+        </>
       )}
-      <div className="mb-4 flex space-x-2">
-        {['All', 'Misc', 'CS', 'ML', 'Physics'].map(category => (
-          <button
-            key={category}
-            onClick={() => setSelectedCategory(category)}
-            className={`px-3 py-1 rounded ${
-              selectedCategory === category
-                ? 'bg-primary text-white'
-                : 'bg-secondary text-text-secondary hover:bg-gray-300'
-            }`}
-          >
-            {category}
-          </button>
-        ))}
-      </div>
-      {showGraph ? (
+      {showGraph && isListView ? (
         <GraphView data={graphData} type="blog" />
       ) : (
         <Routes>

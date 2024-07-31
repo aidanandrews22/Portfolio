@@ -2,17 +2,29 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import rehypeRaw from 'rehype-raw';
+import rehypeSanitize from 'rehype-sanitize';
+import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { fetchContent } from '../../services/DataService';
 import LoadingSpinner from '../common/LoadingSpinner';
 import ErrorMessage from '../common/ErrorMessage';
 
-const HeaderRenderer = ({ level, children }) => {
-  const Tag = `h${level}`;
-  const className = level <= 2 ? 'border-b pb-2 mb-4' : '';
-  return <Tag className={className}>{children}</Tag>;
-};
+// Import all available styles
+import * as styles from 'react-syntax-highlighter/dist/esm/styles/prism';
+
+// Import common languages
+import javascript from 'react-syntax-highlighter/dist/esm/languages/prism/javascript';
+import python from 'react-syntax-highlighter/dist/esm/languages/prism/python';
+import java from 'react-syntax-highlighter/dist/esm/languages/prism/java';
+import csharp from 'react-syntax-highlighter/dist/esm/languages/prism/csharp';
+import cpp from 'react-syntax-highlighter/dist/esm/languages/prism/cpp';
+
+// Register the languages
+SyntaxHighlighter.registerLanguage('javascript', javascript);
+SyntaxHighlighter.registerLanguage('python', python);
+SyntaxHighlighter.registerLanguage('java', java);
+SyntaxHighlighter.registerLanguage('csharp', csharp);
+SyntaxHighlighter.registerLanguage('cpp', cpp);
 
 const CopyButton = ({ content }) => {
   const [copied, setCopied] = useState(false);
@@ -27,7 +39,7 @@ const CopyButton = ({ content }) => {
   return (
     <button
       onClick={handleCopy}
-      className="absolute top-2 right-2 p-1 rounded-md bg-gray-300 text-text-secondary opacity-50 hover:opacity-100 transition-opacity"
+      className="absolute top-2 right-2 p-1 rounded-md bg-gray-300 text-white opacity-50 hover:opacity-100 transition-opacity"
       title="Copy to clipboard"
     >
       {copied ? (
@@ -48,6 +60,9 @@ const ProjectView = ({ projects }) => {
   const [projectContent, setProjectContent] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedStyle, setSelectedStyle] = useState(() => {
+    return localStorage.getItem('selectedCodeStyle') || 'oneLight';
+  });
   const { projectId } = useParams();
 
   useEffect(() => {
@@ -55,16 +70,20 @@ const ProjectView = ({ projects }) => {
       try {
         const content = await fetchContent('project', projectId);
         setProjectContent(content);
-        setLoading(false);
       } catch (err) {
         console.error('Error fetching project content:', err);
         setError(err.message);
+      } finally {
         setLoading(false);
       }
     };
 
     loadProjectContent();
   }, [projectId]);
+
+  useEffect(() => {
+    localStorage.setItem('selectedCodeStyle', selectedStyle);
+  }, [selectedStyle]);
 
   if (loading) return <LoadingSpinner />;
   if (error) return <ErrorMessage message={error} />;
@@ -87,27 +106,39 @@ const ProjectView = ({ projects }) => {
           {project.githubLink && <a href={project.githubLink} target="_blank" rel="noopener noreferrer" className="text-primary">View on GitHub</a>}
         </div>
       )}
+      <div className="mb-4">
+        <label htmlFor="styleSelect" className="mr-2">Select Code Block Style:</label>
+        <select
+          id="styleSelect"
+          value={selectedStyle}
+          onChange={(e) => setSelectedStyle(e.target.value)}
+          className="border rounded p-1"
+        >
+          {Object.keys(styles).map((styleName) => (
+            <option key={styleName} value={styleName}>
+              {styleName}
+            </option>
+          ))}
+        </select>
+      </div>
       <hr className="my-8 border-t border-gray-300" />
-      <div className="prose max-w-none">
-        <ReactMarkdown 
+      {projectContent ? (
+        <ReactMarkdown
+          className="prose max-w-none"
           remarkPlugins={[remarkGfm]}
+          rehypePlugins={[rehypeRaw, rehypeSanitize]}
           components={{
-            h1: ({ node, ...props }) => <HeaderRenderer level={1} {...props} />,
-            h2: ({ node, ...props }) => <HeaderRenderer level={2} {...props} />,
-            code({ node, inline, className, children, ...props }) {
-              const match = /language-(\w+)/.exec(className || '');
-              return !inline && match ? (
-                <div className="not-prose relative">
+            code({node, inline, className, children, ...props}) {
+              const match = /language-(\w+)/.exec(className || '')
+              const language = match ? match[1] : ''
+              return !inline ? (
+                <div className="relative">
                   <CopyButton content={String(children)} />
                   <SyntaxHighlighter
-                    style={oneLight}
-                    language={match[1]}
+                    style={styles[selectedStyle]}
+                    language={language}
                     PreTag="div"
-                    customStyle={{
-                      margin: 0,
-                      borderRadius: '0.375rem',
-                      background: '#f6f8fa',
-                    }}
+                    className="rounded-lg"
                     {...props}
                   >
                     {String(children).replace(/\n$/, '')}
@@ -117,13 +148,15 @@ const ProjectView = ({ projects }) => {
                 <code className={className} {...props}>
                   {children}
                 </code>
-              );
-            },
+              )
+            }
           }}
         >
           {projectContent}
         </ReactMarkdown>
-      </div>
+      ) : (
+        <p>No content available for this project.</p>
+      )}
     </div>
   );
 };

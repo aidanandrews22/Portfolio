@@ -2,17 +2,29 @@ import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import rehypeRaw from 'rehype-raw';
+import rehypeSanitize from 'rehype-sanitize';
+import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { fetchContent } from '../../services/DataService';
 import LoadingSpinner from '../common/LoadingSpinner';
 import ErrorMessage from '../common/ErrorMessage';
 
-const HeaderRenderer = ({ level, children }) => {
-  const Tag = `h${level}`;
-  const className = level <= 2 ? 'border-b pb-2 mb-4' : '';
-  return <Tag className={className}>{children}</Tag>;
-};
+// Import all available styles
+import * as styles from 'react-syntax-highlighter/dist/esm/styles/prism';
+
+// Import common languages
+import javascript from 'react-syntax-highlighter/dist/esm/languages/prism/javascript';
+import python from 'react-syntax-highlighter/dist/esm/languages/prism/python';
+import java from 'react-syntax-highlighter/dist/esm/languages/prism/java';
+import csharp from 'react-syntax-highlighter/dist/esm/languages/prism/csharp';
+import cpp from 'react-syntax-highlighter/dist/esm/languages/prism/cpp';
+
+// Register the languages
+SyntaxHighlighter.registerLanguage('javascript', javascript);
+SyntaxHighlighter.registerLanguage('python', python);
+SyntaxHighlighter.registerLanguage('java', java);
+SyntaxHighlighter.registerLanguage('csharp', csharp);
+SyntaxHighlighter.registerLanguage('cpp', cpp);
 
 const CopyButton = ({ content }) => {
   const [copied, setCopied] = useState(false);
@@ -27,7 +39,7 @@ const CopyButton = ({ content }) => {
   return (
     <button
       onClick={handleCopy}
-      className="absolute top-2 right-2 p-1 rounded-md bg-gray-300 text-text-secondary opacity-50 hover:opacity-100 transition-opacity"
+      className="absolute top-2 right-2 p-1 rounded-md bg-gray-300 text-white opacity-50 hover:opacity-100 transition-opacity"
       title="Copy to clipboard"
     >
       {copied ? (
@@ -48,6 +60,9 @@ const PostView = () => {
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedStyle, setSelectedStyle] = useState(() => {
+    return localStorage.getItem('selectedCodeStyle') || 'oneLight';
+  });
   const { postId } = useParams();
 
   useEffect(() => {
@@ -66,6 +81,10 @@ const PostView = () => {
     loadPost();
   }, [postId]);
 
+  useEffect(() => {
+    localStorage.setItem('selectedCodeStyle', selectedStyle);
+  }, [selectedStyle]);
+
   if (loading) return <LoadingSpinner />;
   if (error) return <ErrorMessage message={error} />;
   if (!post) return <ErrorMessage message="Post not found" />;
@@ -73,26 +92,43 @@ const PostView = () => {
   return (
     <div>
       <Link to="/blog" className="text-primary hover:underline mb-4 inline-block">&larr; Back to all posts</Link>
-      <div className="prose max-w-none">
+      <div className="mb-4">
+        <label htmlFor="styleSelect" className="mr-2">Select Code Block Style:</label>
+        <select
+          id="styleSelect"
+          value={selectedStyle}
+          onChange={(e) => setSelectedStyle(e.target.value)}
+          className="border rounded p-1"
+        >
+          {Object.keys(styles).map((styleName) => (
+            <option key={styleName} value={styleName}>
+              {styleName}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div className="mt-10 prose max-w-none">
         <ReactMarkdown 
           remarkPlugins={[remarkGfm]}
+          rehypePlugins={[rehypeRaw, rehypeSanitize]}
           components={{
-            h1: ({ node, ...props }) => <HeaderRenderer level={1} {...props} />,
-            h2: ({ node, ...props }) => <HeaderRenderer level={2} {...props} />,
-            code({ node, inline, className, children, ...props }) {
-              const match = /language-(\w+)/.exec(className || '');
-              return !inline && match ? (
-                <div className="not-prose relative">
+            h1: ({node, ...props}) => (
+              <div>
+                <h1 {...props} />
+                <hr className="mt-4 mb-4" />
+              </div>
+            ),
+            code({node, inline, className, children, ...props}) {
+              const match = /language-(\w+)/.exec(className || '')
+              const language = match ? match[1] : ''
+              return !inline ? (
+                <div className="relative">
                   <CopyButton content={String(children)} />
                   <SyntaxHighlighter
-                    style={oneLight}
-                    language={match[1]}
+                    style={styles[selectedStyle]}
+                    language={language}
                     PreTag="div"
-                    customStyle={{
-                      margin: 0,
-                      borderRadius: '0.375rem',
-                      background: '#f6f8fa',
-                    }}
+                    className="rounded-lg"
                     {...props}
                   >
                     {String(children).replace(/\n$/, '')}
@@ -102,7 +138,7 @@ const PostView = () => {
                 <code className={className} {...props}>
                   {children}
                 </code>
-              );
+              )
             },
           }}
         >

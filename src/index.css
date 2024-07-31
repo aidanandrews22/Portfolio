@@ -36,21 +36,27 @@
 @layer components {
   .container {
     @apply max-w-4xl mx-auto px-4;
-  }
-  .prose pre {
-    margin: 0 !important;
-    padding: 0 !important;
-    background-color: transparent !important;
-  }
-  
-}
+  }  
 
-@layer components {
   .nav-link {
     @apply text-black text-lg hover:underline;
   }
   
   .nav-link-active {
     @apply text-black font-bold border-b-2 border-black;
+  }
+
+  .prose pre {
+    background-color: white !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding: 0 !important;
+  }
+
+  .prose pre code {
+    font-weight: 400 !important;
+    font-size: 0.875em !important;
+    line-height: 1.7142857 !important;
+    padding: 0 !important;
   }
 }
