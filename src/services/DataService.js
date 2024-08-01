@@ -41,6 +41,33 @@ export const fetchContent = async (contentType, contentId) => {
   }
 };
 
+export const fetchNoteWithMetadata = async (noteId) => {
+  try {
+    const [content, allData] = await Promise.all([
+      fetchContent('note', noteId),
+      fetchAllData()
+    ]);
+
+    const noteMetadata = allData.notes.find(note => note.id === noteId);
+
+    if (!noteMetadata) {
+      throw new Error('Note metadata not found');
+    }
+
+    return {
+      id: noteId,
+      title: noteMetadata.title,
+      content: content.trim(),
+      category: noteMetadata.category,
+      date: noteMetadata.date,
+      lastEdited: noteMetadata.lastEdited
+    };
+  } catch (error) {
+    console.error('Error fetching note with metadata:', error);
+    throw new Error('Failed to fetch note with metadata');
+  }
+};
+
 export const saveContent = async (contentType, contentId, content, title, category, password) => {
   console.log('Attempting to save content...');
   try {

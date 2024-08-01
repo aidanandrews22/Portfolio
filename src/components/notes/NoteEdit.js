@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
-import { fetchContent, saveContent } from '../../services/DataService';
+import { fetchNoteWithMetadata, saveContent } from '../../services/DataService';
 import { useDataReload } from '../../hooks/useDataReload';
 import LoadingSpinner from '../common/LoadingSpinner';
 import ErrorMessage from '../common/ErrorMessage';
@@ -20,10 +20,8 @@ const NoteEdit = () => {
   const fetchNote = useCallback(async () => {
     if (noteId && noteId !== 'new') {
       try {
-        const content = await fetchContent('note', noteId);
-        const title = content.split('\n')[0].replace('#', '').trim();
-        const bodyContent = content.split('\n').slice(1).join('\n').trim();
-        setNote({ id: noteId, title, content: bodyContent, category: 'Misc' });
+        const fetchedNote = await fetchNoteWithMetadata(noteId);
+        setNote(fetchedNote);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -65,10 +63,8 @@ const NoteEdit = () => {
     setSaving(true);
     setError(null);
 
-    const fullContent = `# ${note.title}\n\n${note.content}`;
-
     try {
-      await saveContent('note', noteId === 'new' ? null : noteId, fullContent, note.title, note.category, password);
+      await saveContent('note', noteId === 'new' ? null : noteId, note.content, note.title, note.category, password);
       await reloadData();
       navigate('/notes');
     } catch (err) {
