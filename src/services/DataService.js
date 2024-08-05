@@ -136,7 +136,7 @@ const saveFirebaseNote = async (noteId, content, title, category, isPublic) => {
   let existingDate;
   if (noteId) {
     // Fetch existing note data
-    const existingNoteRef = ref(database, `notes/${isPublic ? 'public' : `private/${user.uid}`}/${noteId}`);
+    const existingNoteRef = ref(database, `notes/${isPublic ? 'public' : `private/${user.uid}`}/`);
     const existingNoteSnapshot = await get(existingNoteRef);
     if (existingNoteSnapshot.exists()) {
       existingDate = existingNoteSnapshot.val().date;
