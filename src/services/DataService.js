@@ -150,7 +150,7 @@ const saveFirebaseNote = async (noteId, content, title, category, isPublic) => {
     isPublic: isAdminUser ? isPublic : false,
     lastEdited: now,
     userId: user.uid,
-    date: existingDate || now, // Use existing date if available, otherwise use current time
+    date: existingDate || now.toString(), // Use existing date if available, otherwise use current time as string
   };
 
   let notePath;
@@ -161,10 +161,10 @@ const saveFirebaseNote = async (noteId, content, title, category, isPublic) => {
   }
 
   if (!noteId) {
-    // If it's a new note, use push to generate a unique ID
-    const newNoteRef = push(ref(database, notePath));
-    await set(newNoteRef, noteData);
-    return { success: true, id: newNoteRef.key };
+    // If it's a new note, generate a unique ID
+    noteId = `note${now}`;
+    await set(ref(database, `${notePath}`), noteData);
+    return { success: true, id: noteId };
   } else {
     // If it's an existing note, update it
     await set(ref(database, notePath), noteData);
