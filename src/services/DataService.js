@@ -150,7 +150,7 @@ const saveFirebaseNote = async (noteId, content, title, category, isPublic) => {
     isPublic: isAdminUser ? isPublic : false,
     lastEdited: now,
     userId: user.uid,
-    date: existingDate || now.toString(), // Use existing date if available, otherwise use current time as string
+    date: existingDate || now,
   };
 
   let notePath;

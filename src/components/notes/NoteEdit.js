@@ -83,7 +83,7 @@ const NoteEdit = () => {
   
     try {
       const result = await saveContent('note', noteId === 'new' ? null : noteId, note.content, note.title, note.category, note.isPublic);
-      navigate(`/notes/${noteId}`);
+      navigate(`/notes/${result.id}`);
       await reloadData();
     } catch (err) {
       setError(err.message);
