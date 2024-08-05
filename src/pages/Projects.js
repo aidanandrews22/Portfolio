@@ -12,7 +12,7 @@ const ProjectCard = ({ id, title, description, demoLink, githubLink, tags }) => 
     </h3>
     <p className="text-text-secondary mb-4">{description}</p>
     <div className="flex flex-wrap gap-2 mb-4">
-      {tags.map((tag, index) => (
+      {tags && tags.map((tag, index) => (
         <span key={index} className="bg-secondary text-text-secondary px-2 py-1 rounded-full text-sm">{tag}</span>
       ))}
     </div>
@@ -30,8 +30,8 @@ const Projects = () => {
     const loadProjects = async () => {
       try {
         const data = await fetchAllData();
-        if (data && Array.isArray(data.projects)) {
-          setProjects(data.projects);
+        if (data && data.projects) {
+          setProjects(Object.values(data.projects));
         } else {
           console.warn('Projects data is empty or not in the expected format');
           setProjects([]);

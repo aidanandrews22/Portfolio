@@ -98,7 +98,7 @@ const ProjectView = ({ projects }) => {
           <h2 className="text-2xl font-bold">{project.title}</h2>
           <p className="text-text-secondary">{project.description}</p>
           <div className="flex flex-wrap gap-2 my-2">
-            {project.tags.map((tag, index) => (
+            {project.tags && project.tags.map((tag, index) => (
               <span key={index} className="bg-secondary text-text-secondary px-2 py-1 rounded-full text-sm">{tag}</span>
             ))}
           </div>

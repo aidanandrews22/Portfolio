@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
 import rehypeSanitize from 'rehype-sanitize';
 import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { fetchContent, fetchAllData } from '../../services/DataService';
+import { fetchContent, isUserAdmin } from '../../services/DataService';
 import LoadingSpinner from '../common/LoadingSpinner';
 import ErrorMessage from '../common/ErrorMessage';
+import { useAuth } from '../../context/AuthContext';
 
 // Import all available styles
 import * as styles from 'react-syntax-highlighter/dist/esm/styles/prism';
@@ -59,24 +60,23 @@ const CopyButton = ({ content }) => {
 
 const NoteView = () => {
   const [note, setNote] = useState(null);
-  const [noteMetadata, setNoteMetadata] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedStyle, setSelectedStyle] = useState(() => {
     return localStorage.getItem('selectedCodeStyle') || 'oneLight';
   });
+  const [isAdmin, setIsAdmin] = useState(false);
   const { noteId } = useParams();
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loadNote = async () => {
       try {
-        const [content, allData] = await Promise.all([
-          fetchContent('note', noteId),
-          fetchAllData()
-        ]);
-        setNote({ id: noteId, content });
-        const metadata = allData.notes.find(n => n.id === noteId);
-        setNoteMetadata(metadata);
+        const noteData = await fetchContent('note', noteId);
+        setNote(noteData);
+        const adminStatus = await isUserAdmin();
+        setIsAdmin(adminStatus);
         setLoading(false);
       } catch (err) {
         console.error('Error fetching note:', err);
@@ -94,22 +94,24 @@ const NoteView = () => {
 
   if (loading) return <LoadingSpinner />;
   if (error) return <ErrorMessage message={error} />;
-  if (!note || !noteMetadata) return <ErrorMessage message="Note not found" />;
+  if (!note) return <ErrorMessage message="Note not found" />;
+
+  const canEdit = isAdmin || (user && user.uid === note.userId);
 
   return (
     <div>
       <Link to="/notes" className="text-primary hover:underline mb-4 inline-block">&larr; Back to all notes</Link>
-      < hr className="mt-4 mb-4" />
+      <hr className="mt-4 mb-4" />
       <div className="mb-6">
-        <h1 className="text-4xl font-bold mb-2">{noteMetadata.title}</h1>
+        <h1 className="text-4xl font-bold mb-2">{note.title}</h1>
         <div className="text-sm text-gray-600">
-          <span>Created on: {new Date(noteMetadata.date).toLocaleDateString()}</span>
+          <span>Created on: {new Date(note.date).toLocaleDateString()}</span>
           <span className="mx-2">|</span>
-          <span>Category: {noteMetadata.category}</span>
-          {noteMetadata.lastEdited && (
+          <span>Category: {note.category}</span>
+          {note.lastEdited && (
             <>
               <span className="mx-2">|</span>
-              <span>Last edited: {new Date(noteMetadata.lastEdited).toLocaleDateString()}</span>
+              <span>Last edited: {new Date(note.lastEdited).toLocaleDateString()}</span>
             </>
           )}
         </div>
@@ -169,9 +171,11 @@ const NoteView = () => {
           {note.content}
         </ReactMarkdown>
       </div>
-      <Link to={`/notes/${noteId}/edit`} className="mt-4 inline-block bg-primary text-white px-4 py-2 rounded hover:bg-primary-dark">
-        Edit Note
-      </Link>
+      {canEdit && (
+        <Link to={`/notes/${noteId}/edit`} className="mt-4 inline-block bg-primary text-white px-4 py-2 rounded hover:bg-primary-dark">
+          Edit Note
+        </Link>
+      )}
     </div>
   );
 };

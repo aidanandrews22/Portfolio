@@ -6,6 +6,7 @@ import rehypeRaw from 'rehype-raw';
 import rehypeSanitize from 'rehype-sanitize';
 import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { fetchContent } from '../../services/DataService';
+import { useAuth } from '../../context/AuthContext';
 import LoadingSpinner from '../common/LoadingSpinner';
 import ErrorMessage from '../common/ErrorMessage';
 
@@ -57,6 +58,7 @@ const CopyButton = ({ content }) => {
 };
 
 const PostView = () => {
+  const { user, isAdmin } = useAuth();
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -145,9 +147,11 @@ const PostView = () => {
           {post.content}
         </ReactMarkdown>
       </div>
-      <Link to={`/blog/${postId}/edit`} className="mt-4 inline-block bg-primary text-white px-4 py-2 rounded hover:bg-primary-dark">
-        Edit Post
-      </Link>
+      {user && isAdmin && (
+        <Link to={`/blog/${postId}/edit`} className="mt-4 inline-block bg-primary text-white px-4 py-2 rounded hover:bg-primary-dark">
+          Edit Post
+        </Link>
+      )}
     </div>
   );
 };

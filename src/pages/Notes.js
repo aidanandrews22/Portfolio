@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Link, Route, Routes, useLocation } from 'react-router-dom';
+import { Link, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { useDataContext } from '../context/DataContext';
 import { useDataReload } from '../hooks/useDataReload';
+import { useAuth } from '../context/AuthContext';
 import NoteList from '../components/notes/NoteList';
 import NoteView from '../components/notes/NoteView';
 import NoteEdit from '../components/notes/NoteEdit';
@@ -12,10 +13,12 @@ import ErrorMessage from '../components/common/ErrorMessage';
 const Notes = () => {
   const { notes, loading, error } = useDataContext();
   const reloadData = useDataReload();
+  const { user, isAdmin } = useAuth();
   const [showGraph, setShowGraph] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [lastViewedNote, setLastViewedNote] = useState(null);
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const storedLastViewedNote = localStorage.getItem('lastViewedNote');
@@ -42,9 +45,11 @@ const Notes = () => {
   if (loading) return <LoadingSpinner />;
   if (error) return <ErrorMessage message={error} />;
 
+  const notesArray = Array.isArray(notes) ? notes : [];
+
   const filteredNotes = selectedCategory === 'All'
-    ? notes
-    : notes.filter(note => note.category === selectedCategory);
+    ? notesArray
+    : notesArray.filter(note => note.category === selectedCategory);
 
   const graphData = {
     nodes: [
@@ -58,6 +63,15 @@ const Notes = () => {
   const isViewingNote = location.pathname.split('/').length > 2 && !isEditMode;
 
   const isListView = location.pathname === '/notes';
+
+  const handleNewNote = () => {
+    if (user) {
+      navigate('/notes/new');
+    } else {
+      alert('Please log in to create a new note.');
+      navigate('/signin');
+    }
+  };
 
   return (
     <div className="container mx-auto px-4">
@@ -78,12 +92,12 @@ const Notes = () => {
               >
                 {showGraph ? 'Show List' : 'Show Graph'}
               </button>
-              <Link 
-                to="/notes/new" 
+              <button 
+                onClick={handleNewNote}
                 className="bg-secondary text-text-secondary px-4 py-2 rounded transition hover:bg-gray-300 duration-300"
               >
                 New Note
-              </Link>
+              </button>
             </div>
           </div>
           {!isEditMode && lastViewedNote && (
@@ -125,4 +139,4 @@ const Notes = () => {
   );
 };
 
-export default Notes; 
+export default Notes;

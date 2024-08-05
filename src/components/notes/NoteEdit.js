@@ -1,27 +1,42 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
-import { fetchNoteWithMetadata, saveContent } from '../../services/DataService';
+import { fetchContent, saveContent, isUserAdmin } from '../../services/DataService';
 import { useDataReload } from '../../hooks/useDataReload';
 import LoadingSpinner from '../common/LoadingSpinner';
 import ErrorMessage from '../common/ErrorMessage';
+import { useAuth } from '../../context/AuthContext';
 
 const NoteEdit = () => {
-  const [note, setNote] = useState({ title: '', content: '', category: 'Misc' });
-  const [password, setPassword] = useState('');
+  const [note, setNote] = useState({ title: '', content: '', category: 'Misc', isPublic: false });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
   const [isPreview, setIsPreview] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const { noteId } = useParams();
   const navigate = useNavigate();
   const reloadData = useDataReload();
+  const { user } = useAuth();
+
+  useEffect(() => {
+    const checkAdminStatus = async () => {
+      const adminStatus = await isUserAdmin();
+      setIsAdmin(adminStatus);
+    };
+    checkAdminStatus();
+  }, []);
 
   const fetchNote = useCallback(async () => {
     if (noteId && noteId !== 'new') {
       try {
-        const fetchedNote = await fetchNoteWithMetadata(noteId);
-        setNote(fetchedNote);
+        const fetchedNote = await fetchContent('note', noteId);
+        setNote({
+          title: fetchedNote.title,
+          content: fetchedNote.content,
+          category: fetchedNote.category || 'Misc',
+          isPublic: fetchedNote.isPublic || false
+        });
       } catch (err) {
         setError(err.message);
       } finally {
@@ -37,8 +52,11 @@ const NoteEdit = () => {
   }, [fetchNote]);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setNote(prevNote => ({ ...prevNote, [name]: value }));
+    const { name, value, type, checked } = e.target;
+    setNote(prevNote => ({
+      ...prevNote,
+      [name]: type === 'checkbox' ? checked : value
+    }));
   };
 
   const handleTabKey = (e) => {
@@ -62,11 +80,11 @@ const NoteEdit = () => {
     e.preventDefault();
     setSaving(true);
     setError(null);
-
+  
     try {
-      await saveContent('note', noteId === 'new' ? null : noteId, note.content, note.title, note.category, password);
+      const result = await saveContent('note', noteId === 'new' ? null : noteId, note.content, note.title, note.category, note.isPublic);
+      navigate(`/notes/${noteId}`);
       await reloadData();
-      navigate('/notes');
     } catch (err) {
       setError(err.message);
     } finally {
@@ -142,17 +160,19 @@ const NoteEdit = () => {
         >
           Cancel
         </button>
-        <div>
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
+        {isAdmin && (
+        <div className="flex items-center">
           <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            required
+            type="checkbox"
+            id="isPublic"
+            name="isPublic"
+            checked={note.isPublic}
+            onChange={handleChange}
+            className="mr-2"
           />
+          <label htmlFor="isPublic" className="text-sm font-medium text-gray-700">Make this note public</label>
         </div>
+      )}
         <button
           type="submit"
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"

@@ -1,7 +1,9 @@
+// src/pages/Blog.js
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link, Route, Routes, useLocation } from 'react-router-dom';
 import { useDataContext } from '../context/DataContext';
 import { useDataReload } from '../hooks/useDataReload';
+import { useAuth } from '../context/AuthContext';
 import PostList from '../components/blog/PostList';
 import PostView from '../components/blog/PostView';
 import PostEdit from '../components/blog/PostEdit';
@@ -16,6 +18,7 @@ const Blog = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [lastViewedPost, setLastViewedPost] = useState(null);
   const location = useLocation();
+  const { user, isAdmin } = useAuth();
 
   useEffect(() => {
     const storedLastViewedPost = localStorage.getItem('lastViewedPost');
@@ -25,7 +28,7 @@ const Blog = () => {
   }, []);
 
   const updateLastViewedPost = useCallback((postId) => {
-    if (postId && postId !== 'new' && postId !== 'edit') {
+    if (postId && postId !== 'new' && postId !== 'edit' && posts) {
       const currentPost = posts.find(post => post.id === postId);
       if (currentPost) {
         setLastViewedPost(currentPost);
@@ -56,7 +59,6 @@ const Blog = () => {
 
   const isEditMode = location.pathname.includes('/edit') || location.pathname.includes('/new');
   const isViewingPost = location.pathname.split('/').length > 2 && !isEditMode;
-
   const isListView = location.pathname === '/blog';
 
   return (
@@ -78,12 +80,14 @@ const Blog = () => {
               >
                 {showGraph ? 'Show List' : 'Show Graph'}
               </button>
-              <Link 
-                to="/blog/new" 
-                className="bg-secondary text-text-secondary px-4 py-2 rounded transition hover:bg-gray-300 duration-300"
-              >
-                New Post
-              </Link>
+              {user && isAdmin && (
+                <Link 
+                  to="/blog/new" 
+                  className="bg-secondary text-text-secondary px-4 py-2 rounded transition hover:bg-gray-300 duration-300"
+                >
+                  New Post
+                </Link>
+              )}
             </div>
           </div>
           {!isEditMode && lastViewedPost && (

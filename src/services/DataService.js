@@ -1,110 +1,217 @@
-import { s3, lambda } from '../App';
+import { Octokit } from "@octokit/rest";
+import { getDatabase, ref, get, set, push } from "firebase/database";
+import { getAuth } from "firebase/auth";
+import { database } from '../firebase';
 
-const BUCKET_NAME = 'aidanandrews-content';
+const octokit = new Octokit({ auth: process.env.REACT_APP_GIT_API });
+const db = getDatabase();
+const auth = getAuth();
+
+const REPO_OWNER = process.env.REACT_APP_GIT_REPO_OWNER;
+const REPO_NAME = process.env.REACT_APP_GIT_REPO_NAME;
 
 export const fetchAllData = async () => {
+  let firebaseData = {};
+  let githubData = {};
+
   try {
-    const [postsResponse, notesResponse] = await Promise.all([
-      s3.getObject({ Bucket: BUCKET_NAME, Key: 'content/posts.json' }).promise(),
-      s3.getObject({ Bucket: BUCKET_NAME, Key: 'content/notes.json' }).promise()
+    firebaseData = await fetchFirebaseData();
+  } catch (error) {
+    console.error('Error fetching Firebase data:', error);
+  }
+
+  try {
+    githubData = await fetchGitHubData();
+  } catch (error) {
+    console.error('Error fetching GitHub data:', error);
+  }
+
+  return {
+    ...firebaseData,
+    ...githubData
+  };
+};
+
+const fetchFirebaseData = async () => {
+  const user = auth.currentUser;
+  const publicNotesRef = ref(database, 'notes/public');
+  const publicSnapshot = await get(publicNotesRef);
+  const publicNotes = publicSnapshot.val() || {};
+
+  let privateNotes = {};
+  if (user) {
+    const privateNotesRef = ref(database, `notes/private/${user.uid}`);
+    const privateSnapshot = await get(privateNotesRef);
+    privateNotes = privateSnapshot.val() || {};
+  }
+
+  // Convert the notes object to an array
+  const notesArray = Object.entries({...publicNotes, ...privateNotes}).map(([id, note]) => ({
+    id,
+    ...note
+  }));
+
+  return { 
+    notes: notesArray
+  };
+};
+
+const fetchGitHubContent = async (path, isJson = true) => {
+  try {
+    const response = await octokit.repos.getContent({
+      owner: REPO_OWNER,
+      repo: REPO_NAME,
+      path: path,
+    });
+    const content = atob(response.data.content);
+    return isJson ? JSON.parse(content) : content;
+  } catch (error) {
+    console.error(`Error fetching content from GitHub: ${path}`, error);
+    return isJson ? [] : '';
+  }
+};
+
+const fetchGitHubData = async () => {
+  try {
+    const [posts, projects] = await Promise.all([
+      fetchGitHubContent('content/posts.json'),
+      fetchGitHubContent('content/projects.json')
     ]);
 
-    const posts = JSON.parse(postsResponse.Body.toString());
-    const notes = JSON.parse(notesResponse.Body.toString());
-
-    let projects = [];
-    try {
-      const projectsResponse = await s3.getObject({ Bucket: BUCKET_NAME, Key: 'content/projects.json' }).promise();
-      projects = JSON.parse(projectsResponse.Body.toString());
-    } catch (projectError) {
-      console.warn('Projects data not found, initializing with empty array');
-    }
-
-    return { posts, notes, projects };
+    return { posts, projects };
   } catch (error) {
-    console.error('Error fetching data from S3:', error);
-    throw new Error('Failed to fetch data');
+    console.error('Error fetching GitHub data:', error);
+    return { posts: [], projects: [] };
   }
 };
 
 export const fetchContent = async (contentType, contentId) => {
-  try {
-    const response = await s3.getObject({
-      Bucket: BUCKET_NAME,
-      Key: `content/${contentType}s/${contentId}.md`
-    }).promise();
-
-    return response.Body.toString();
-  } catch (error) {
-    console.error(`Error fetching ${contentType} from S3:`, error);
-    throw new Error(`Failed to fetch ${contentType}`);
+  if (contentType === 'note') {
+    return fetchFirebaseNote(contentId);
+  } else {
+    return fetchGitHubContent(`content/${contentType}s/${contentId}.md`, false);
   }
 };
 
-export const fetchNoteWithMetadata = async (noteId) => {
-  try {
-    const [content, allData] = await Promise.all([
-      fetchContent('note', noteId),
-      fetchAllData()
-    ]);
-
-    const noteMetadata = allData.notes.find(note => note.id === noteId);
-
-    if (!noteMetadata) {
-      throw new Error('Note metadata not found');
+const fetchFirebaseNote = async (noteId) => {
+  const user = auth.currentUser;
+  
+  // First, try to fetch from public notes
+  const publicNoteRef = ref(database, `notes/public/${noteId}`);
+  const publicSnapshot = await get(publicNoteRef);
+  
+  if (publicSnapshot.exists()) {
+    return publicSnapshot.val();
+  }
+  
+  // If not found in public notes and user is authenticated, try private notes
+  if (user) {
+    const privateNoteRef = ref(database, `notes/private/${user.uid}/${noteId}`);
+    const privateSnapshot = await get(privateNoteRef);
+    
+    if (privateSnapshot.exists()) {
+      return privateSnapshot.val();
     }
+  }
+  
+  throw new Error('Note not found');
+};
 
-    return {
-      id: noteId,
-      title: noteMetadata.title,
-      content: content.trim(),
-      category: noteMetadata.category,
-      date: noteMetadata.date,
-      lastEdited: noteMetadata.lastEdited
-    };
-  } catch (error) {
-    console.error('Error fetching note with metadata:', error);
-    throw new Error('Failed to fetch note with metadata');
+
+export const saveContent = async (contentType, contentId, content, title, category, isPublic = false) => {
+  if (contentType === 'note') {
+    return saveFirebaseNote(contentId, content, title, category, isPublic);
+  } else {
+    return saveGitHubContent(contentType, contentId, content, title, category);
   }
 };
 
-export const saveContent = async (contentType, contentId, content, title, category, password) => {
-  console.log('Attempting to save content...');
+const saveFirebaseNote = async (noteId, content, title, category, isPublic) => {
+  const user = auth.currentUser;
+  if (!user) throw new Error('User not authenticated');
+
+  const isAdminUser = await isUserAdmin();
+  const now = Date.now();
+
+  let existingDate;
+  if (noteId) {
+    // Fetch existing note data
+    const existingNoteRef = ref(database, `notes/${isPublic ? 'public' : `private/${user.uid}`}/${noteId}`);
+    const existingNoteSnapshot = await get(existingNoteRef);
+    if (existingNoteSnapshot.exists()) {
+      existingDate = existingNoteSnapshot.val().date;
+    }
+  }
+
+  const noteData = {
+    title,
+    content,
+    category,
+    isPublic: isAdminUser ? isPublic : false,
+    lastEdited: now,
+    userId: user.uid,
+    date: existingDate || now, // Use existing date if available, otherwise use current time
+  };
+
+  let notePath;
+  if (isAdminUser && isPublic) {
+    notePath = `notes/public/${noteId || `note${now}`}`;
+  } else {
+    notePath = `notes/private/${user.uid}/${noteId || `note${now}`}`;
+  }
+
+  if (!noteId) {
+    // If it's a new note, use push to generate a unique ID
+    const newNoteRef = push(ref(database, notePath));
+    await set(newNoteRef, noteData);
+    return { success: true, id: newNoteRef.key };
+  } else {
+    // If it's an existing note, update it
+    await set(ref(database, notePath), noteData);
+    return { success: true, id: noteId };
+  }
+};
+
+const saveGitHubContent = async (contentType, contentId, content, title, category) => {
   try {
-    const payload = {
-      content,
-      title,
-      category,
-      password,
-      contentId,
-      contentType
-    };
-    console.log('Lambda payload:', JSON.stringify(payload, null, 2));
+    const path = `content/${contentType}s/${contentId}.md`;
+    const message = `Update ${contentType}: ${title}`;
 
-    const response = await lambda.invoke({
-      FunctionName: 'arn:aws:lambda:us-east-1:387060174954:function:saveContentFunction',
-      Payload: JSON.stringify(payload),
-      InvocationType: 'RequestResponse'
-    }).promise();
-
-    console.log('Raw Lambda response:', JSON.stringify(response, null, 2));
-
-    if (response.FunctionError) {
-      throw new Error(`Lambda execution failed: ${response.FunctionError}`);
+    // First, get the current file (if it exists)
+    let sha;
+    try {
+      const { data } = await octokit.repos.getContent({
+        owner: REPO_OWNER,
+        repo: REPO_NAME,
+        path,
+      });
+      sha = data.sha;
+    } catch (error) {
+      // File doesn't exist yet, which is fine for new content
     }
 
-    const result = JSON.parse(response.Payload);
-    console.log('Parsed Lambda result:', result);
-
-    if (result.statusCode !== 200) {
-      const errorBody = JSON.parse(result.body);
-      throw new Error(errorBody.error || 'An unknown error occurred');
-    }
+    // Now create or update the file
+    await octokit.repos.createOrUpdateFileContents({
+      owner: REPO_OWNER,
+      repo: REPO_NAME,
+      path,
+      message,
+      content: Buffer.from(content).toString('base64'),
+      sha, // Include this if updating an existing file
+    });
 
     return { success: true };
   } catch (error) {
-    console.error('Error saving content:', error);
-    console.error('Error details:', JSON.stringify(error, null, 2));
+    console.error('Error saving content to GitHub:', error);
     throw new Error(`Failed to save ${contentType}: ${error.message}`);
   }
+};
+
+export const isUserAdmin = async () => {
+  const user = auth.currentUser;
+  if (!user) return false;
+
+  const adminRef = ref(database, `admins/${user.uid}`);
+  const snapshot = await get(adminRef);
+  return snapshot.exists();
 };

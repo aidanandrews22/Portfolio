@@ -1,22 +1,15 @@
+import React, { useState } from 'react';
 import { useCallback } from 'react';
-import { useDataContext } from '../context/DataContext';
-import { fetchAllData } from '../services/DataService';
 
 export const useDataReload = () => {
-  const { updateData, setLoading, setError } = useDataContext();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const reloadData = useCallback(async () => {
+    window.location.reload();
     setLoading(true);
     setError(null);
-    try {
-      const { posts, notes } = await fetchAllData();
-      updateData(posts, notes);
-    } catch (err) {
-      setError(err.message);
-    } finally { 
-      setLoading(false);
-    }
-  }, [updateData, setLoading, setError]);
+  }, [setLoading, setError]);
 
   return reloadData;
 };

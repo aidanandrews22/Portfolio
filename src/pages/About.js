@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Skills from './Skills';
-import { s3 } from '../App'
+import { Octokit } from "@octokit/rest";
+
+const octokit = new Octokit({ auth: process.env.REACT_APP_GIT_API });
+const REPO_OWNER = process.env.REACT_APP_GIT_REPO_OWNER;
+const REPO_NAME = process.env.REACT_APP_GIT_REPO_NAME;
 
 const About = () => {
   const [pdfUrls, setPdfUrls] = useState({});
@@ -17,14 +21,14 @@ const About = () => {
       const urls = {};
       for (const pdfName of pdfNames) {
         try {
-          const url = await s3.getSignedUrlPromise('getObject', {
-            Bucket: 'aidanandrews-content',
-            Key: `content/pdf/${pdfName}`,
-            Expires: 3600 // URL expires in 1 hour
+          const response = await octokit.repos.getContent({
+            owner: REPO_OWNER,
+            repo: REPO_NAME,
+            path: `content/pdf/${pdfName}`,
           });
-          urls[pdfName] = url;
+          urls[pdfName] = response.data.download_url;
         } catch (error) {
-          console.error(`Error generating URL for ${pdfName}:`, error);
+          console.error(`Error fetching URL for ${pdfName}:`, error);
         }
       }
       setPdfUrls(urls);

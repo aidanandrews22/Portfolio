@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import { fetchContent, saveContent } from '../../services/DataService';
 import { useDataReload } from '../../hooks/useDataReload';
+import { useAuth } from '../../context/AuthContext';
 import LoadingSpinner from '../common/LoadingSpinner';
 import ErrorMessage from '../common/ErrorMessage';
 
@@ -15,6 +16,7 @@ const PostEdit = () => {
   const { postId } = useParams();
   const navigate = useNavigate();
   const reloadData = useDataReload();
+  const { user, isAdmin, loading: authLoading } = useAuth();
 
   const fetchPost = useCallback(async () => {
     if (postId && postId !== 'new') {
@@ -34,8 +36,14 @@ const PostEdit = () => {
   }, [postId]);
 
   useEffect(() => {
-    fetchPost();
-  }, [fetchPost]);
+    if (!authLoading) {
+      if (!user || !isAdmin) {
+        navigate('/blog');
+      } else {
+        fetchPost();
+      }
+    }
+  }, [fetchPost, user, isAdmin, authLoading, navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

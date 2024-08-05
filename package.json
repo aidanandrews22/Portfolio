@@ -5,6 +5,7 @@
   "dependencies": {
     "@headlessui/react": "^2.1.2",
     "@heroicons/react": "^2.1.5",
+    "@octokit/rest": "^21.0.1",
     "@radix-ui/react-tabs": "^1.1.0",
     "@react-pdf/renderer": "^3.4.4",
     "@tailwindcss/typography": "^0.5.13",
@@ -13,6 +14,9 @@
     "@testing-library/user-event": "^13.5.0",
     "aws-sdk": "^2.1664.0",
     "clsx": "^2.1.1",
+    "dotenv": "^16.4.5",
+    "firebase": "^10.12.5",
+    "firebaseui": "^6.1.0",
     "pdfjs-dist": "^4.4.168",
     "prismjs": "^1.29.0",
     "react": "^18.3.1",
