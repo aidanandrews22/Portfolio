@@ -1,20 +1,34 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import ReactMarkdown from 'react-markdown';
 import { fetchContent, saveContent, isUserAdmin } from '../../services/DataService';
 import { useDataReload } from '../../hooks/useDataReload';
+import { useAuth } from '../../context/AuthContext';
+import CodeMirrorEditor from '../markdown/CodeMirrorEditor';
+import Preview from '../markdown/Preview';
 import LoadingSpinner from '../common/LoadingSpinner';
 import ErrorMessage from '../common/ErrorMessage';
-import { useAuth } from '../../context/AuthContext';
 
-const NoteEdit = () => {
-  const [note, setNote] = useState({ title: '', content: '', category: 'Misc', isPublic: false });
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-  const [error, setError] = useState(null);
-  const [isPreview, setIsPreview] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
-  const { noteId } = useParams();
+interface Note {
+  title: string;
+  content: string;
+  category: string;
+  isPublic: boolean;
+}
+
+interface SaveContentResult {
+  success: boolean;
+  id?: string;
+}
+
+
+const NoteEdit: React.FC = () => {
+  const [note, setNote] = useState<Note>({ title: '', content: '', category: 'Misc', isPublic: false });
+  const [loading, setLoading] = useState<boolean>(true);
+  const [saving, setSaving] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const [isPreview, setIsPreview] = useState<boolean>(false);
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
+  const { noteId } = useParams<{ noteId: string }>();
   const navigate = useNavigate();
   const reloadData = useDataReload();
   const { user } = useAuth();
@@ -38,7 +52,7 @@ const NoteEdit = () => {
           isPublic: fetchedNote.isPublic || false
         });
       } catch (err) {
-        setError(err.message);
+        setError(err instanceof Error ? err.message : String(err));
       } finally {
         setLoading(false);
       }
@@ -51,46 +65,35 @@ const NoteEdit = () => {
     fetchNote();
   }, [fetchNote]);
 
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setNote(prevNote => ({
-      ...prevNote,
-      [name]: type === 'checkbox' ? checked : value
-    }));
-  };
+  const handleChange = useCallback((newContent: string) => {
+    setNote(prevNote => ({ ...prevNote, content: newContent }));
+  }, []);
 
-  const handleTabKey = (e) => {
-    if (e.key === 'Tab') {
-      e.preventDefault();
-      const { selectionStart, selectionEnd } = e.target;
-      const newContent = 
-        note.content.substring(0, selectionStart) + 
-        '\t' + 
-        note.content.substring(selectionEnd);
-      
-      setNote(prevNote => ({ ...prevNote, content: newContent }));
-      
-      setTimeout(() => {
-        e.target.selectionStart = e.target.selectionEnd = selectionStart + 1;
-      }, 0);
-    }
-  };
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
     setError(null);
   
     try {
-      const result = await saveContent('note', noteId === 'new' ? null : noteId, note.content, note.title, note.category, note.isPublic);
-      navigate(`/notes/${result.id}`);
+      const result: SaveContentResult = await saveContent(
+        'note', 
+        noteId === 'new' ? null : noteId, 
+        note.content, 
+        note.title, 
+        note.category, 
+        note.isPublic
+      );
+      if (result.id) {
+        navigate(`/notes/${result.id}`);
+      }
       await reloadData();
     } catch (err) {
-      setError(err.message);
+      setError(err instanceof Error ? err.message : String(err));
     } finally {
       setSaving(false);
     }
   };
+  
 
   if (loading) return <LoadingSpinner />;
   if (error) return <ErrorMessage message={error} />;
@@ -104,7 +107,7 @@ const NoteEdit = () => {
           id="title"
           name="title"
           value={note.title}
-          onChange={handleChange}
+          onChange={(e) => setNote(prev => ({ ...prev, title: e.target.value }))}
           className="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
           required
         />
@@ -115,7 +118,7 @@ const NoteEdit = () => {
           id="category"
           name="category"
           value={note.category}
-          onChange={handleChange}
+          onChange={(e) => setNote(prev => ({ ...prev, category: e.target.value }))}
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
         >
           <option value="Misc">Misc</option>
@@ -136,19 +139,11 @@ const NoteEdit = () => {
           </button>
         </div>
         {isPreview ? (
-          <div className="prose mt-4 p-4 border rounded-md">
-            <ReactMarkdown>{note.content}</ReactMarkdown>
-          </div>
+          <Preview doc={note.content} />
         ) : (
-          <textarea
-            id="content"
-            name="content"
-            value={note.content}
+          <CodeMirrorEditor
+            initialDoc={note.content}
             onChange={handleChange}
-            onKeyDown={handleTabKey}
-            rows="10"
-            className="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            required
           />
         )}
       </div>
@@ -167,7 +162,7 @@ const NoteEdit = () => {
             id="isPublic"
             name="isPublic"
             checked={note.isPublic}
-            onChange={handleChange}
+            onChange={(e) => setNote(prev => ({ ...prev, isPublic: e.target.checked }))}
             className="mr-2"
           />
           <label htmlFor="isPublic" className="text-sm font-medium text-gray-700">Make this note public</label>
