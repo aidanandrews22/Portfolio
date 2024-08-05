@@ -1,4 +1,4 @@
-import { onAuthStateChanged, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import { onAuthStateChanged, signInWithPopup, GoogleAuthProvider, getAuth, signOut } from 'firebase/auth';
 import { getDatabase, ref, set, get } from 'firebase/database';
 import { auth } from './firebase';
 
@@ -67,4 +67,13 @@ export const getUserData = async (userId) => {
     console.error("Error fetching user data:", error);
     throw error;
   }
+};
+
+export const signOutUser = () => {
+  const auth = getAuth();
+  signOut(auth).then(() => {
+    console.log('User signed out successfully');
+  }).catch((error) => {
+    console.error('Error signing out: ', error);
+  });
 };

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
-import { checkAuthState } from './auth';
+import { checkAuthState, signOutUser } from './auth';
 import Header from './components/layout/Header';
 import Navigation from './components/layout/Navigation';
 // import Footer from './components/layout/Footer';
@@ -23,15 +23,24 @@ const AppContent = () => {
     });
   }, []);
 
+  const handleSignOut = () => {
+    signOutUser();
+    window.location.reload();
+  };
+
   return (
     <div className="flex flex-col min-h-screen pt-10">
+      <div className="absolute top-0 right-0 m-4">
+        {user ? (
+          <a href="#" onClick={handleSignOut} className="text-xs">
+            {user.displayName || user.email}
+          </a>
+        ) : (
+          <Link to="/signin" className="text-xs">Sign In</Link>
+        )}
+      </div>
       <Header />
       <Navigation />
-      {user ? (
-        <p>Welcome, {user.displayName || user.email}!</p>
-      ) : (
-        <Link to="/signin">Sign In</Link>
-      )}
       <main className="flex-grow container mx-auto px-4 py-8">
         <Routes>
           <Route path="/" element={<About />} />
