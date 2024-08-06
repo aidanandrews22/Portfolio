@@ -63,7 +63,7 @@ const Notes = () => {
         <>
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
             <h2 className="text-2xl font-bold mb-4 sm:mb-0">Public Notes</h2>
-            <div className="flex flex-wrap gap-2">
+            {/* <div className="flex flex-wrap gap-2">
               <button
                 onClick={reloadData}
                 className="bg-secondary text-text-secondary px-4 py-2 rounded transition hover:bg-gray-300 duration-300"
@@ -76,7 +76,7 @@ const Notes = () => {
               >
                 {showGraph ? 'Show List' : 'Show Graph'}
               </button>
-            </div>
+            </div> */}
           </div>
           {lastViewedNote && (
             <div className="mb-4">
