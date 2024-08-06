@@ -1,24 +1,24 @@
-// src/pages/Blog.js
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link, Route, Routes, useLocation } from 'react-router-dom';
 import { useDataContext } from '../context/DataContext';
 import { useDataReload } from '../hooks/useDataReload';
-import { useAuth } from '../context/AuthContext';
 import PostList from '../components/blog/PostList';
 import PostView from '../components/blog/PostView';
-import PostEdit from '../components/blog/PostEdit';
 import GraphView from '../components/common/GraphView';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import ErrorMessage from '../components/common/ErrorMessage';
 
 const Blog = () => {
-  const { posts, loading, error } = useDataContext();
+  const dataContext = useDataContext();
+  const posts = dataContext?.posts || [];
+  const loading = dataContext?.loading || false;
+  const error = dataContext?.error || null;
+
   const reloadData = useDataReload();
   const [showGraph, setShowGraph] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [lastViewedPost, setLastViewedPost] = useState(null);
   const location = useLocation();
-  const { user, isAdmin } = useAuth();
 
   useEffect(() => {
     const storedLastViewedPost = localStorage.getItem('lastViewedPost');
@@ -28,7 +28,7 @@ const Blog = () => {
   }, []);
 
   const updateLastViewedPost = useCallback((postId) => {
-    if (postId && postId !== 'new' && postId !== 'edit' && posts) {
+    if (postId && posts) {
       const currentPost = posts.find(post => post.id === postId);
       if (currentPost) {
         setLastViewedPost(currentPost);
@@ -57,8 +57,6 @@ const Blog = () => {
     links: filteredPosts.map(post => ({ source: post.category, target: post.id, distance: 50 }))
   };
 
-  const isEditMode = location.pathname.includes('/edit') || location.pathname.includes('/new');
-  const isViewingPost = location.pathname.split('/').length > 2 && !isEditMode;
   const isListView = location.pathname === '/blog';
 
   return (
@@ -80,17 +78,9 @@ const Blog = () => {
               >
                 {showGraph ? 'Show List' : 'Show Graph'}
               </button>
-              {user && isAdmin && (
-                <Link 
-                  to="/blog/new" 
-                  className="bg-secondary text-text-secondary px-4 py-2 rounded transition hover:bg-gray-300 duration-300"
-                >
-                  New Post
-                </Link>
-              )}
             </div>
           </div>
-          {!isEditMode && lastViewedPost && (
+          {lastViewedPost && (
             <div className="mb-4">
               <h3 className="text-lg font-semibold">Last Viewed Post:</h3>
               <Link to={`/blog/${lastViewedPost.id}`} className="text-primary hover:underline">
@@ -121,8 +111,6 @@ const Blog = () => {
         <Routes>
           <Route index element={<PostList posts={filteredPosts} />} />
           <Route path=":postId" element={<PostView />} />
-          <Route path=":postId/edit" element={<PostEdit />} />
-          <Route path="new" element={<PostEdit />} />
         </Routes>
       )}
     </div>

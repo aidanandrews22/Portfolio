@@ -1,11 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Link, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { Link, Route, Routes, useLocation } from 'react-router-dom';
 import { useDataContext } from '../context/DataContext';
 import { useDataReload } from '../hooks/useDataReload';
-import { useAuth } from '../context/AuthContext';
 import NoteList from '../components/notes/NoteList';
 import NoteView from '../components/notes/NoteView';
-import NoteEdit from '../components/notes/NoteEdit';
 import GraphView from '../components/common/GraphView';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import ErrorMessage from '../components/common/ErrorMessage';
@@ -13,12 +11,10 @@ import ErrorMessage from '../components/common/ErrorMessage';
 const Notes = () => {
   const { notes, loading, error } = useDataContext();
   const reloadData = useDataReload();
-  const { user, isAdmin } = useAuth();
   const [showGraph, setShowGraph] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [lastViewedNote, setLastViewedNote] = useState(null);
   const location = useLocation();
-  const navigate = useNavigate();
 
   useEffect(() => {
     const storedLastViewedNote = localStorage.getItem('lastViewedNote');
@@ -28,7 +24,7 @@ const Notes = () => {
   }, []);
 
   const updateLastViewedNote = useCallback((noteId) => {
-    if (noteId && noteId !== 'new' && noteId !== 'edit') {
+    if (noteId && notes) {
       const currentNote = notes.find(note => note.id === noteId);
       if (currentNote) {
         setLastViewedNote(currentNote);
@@ -59,26 +55,14 @@ const Notes = () => {
     links: filteredNotes.map(note => ({ source: note.category, target: note.id, distance: 50 }))
   };
 
-  const isEditMode = location.pathname.includes('/edit') || location.pathname.includes('/new');
-  const isViewingNote = location.pathname.split('/').length > 2 && !isEditMode;
-
   const isListView = location.pathname === '/notes';
-
-  const handleNewNote = () => {
-    if (user) {
-      navigate('/notes/new');
-    } else {
-      alert('Please log in to create a new note.');
-      navigate('/signin');
-    }
-  };
 
   return (
     <div className="container mx-auto px-4">
       {isListView && (
         <>
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
-            <h2 className="text-2xl font-bold mb-4 sm:mb-0">Notes</h2>
+            <h2 className="text-2xl font-bold mb-4 sm:mb-0">Public Notes</h2>
             <div className="flex flex-wrap gap-2">
               <button
                 onClick={reloadData}
@@ -92,15 +76,9 @@ const Notes = () => {
               >
                 {showGraph ? 'Show List' : 'Show Graph'}
               </button>
-              <button 
-                onClick={handleNewNote}
-                className="bg-secondary text-text-secondary px-4 py-2 rounded transition hover:bg-gray-300 duration-300"
-              >
-                New Note
-              </button>
             </div>
           </div>
-          {!isEditMode && lastViewedNote && (
+          {lastViewedNote && (
             <div className="mb-4">
               <h3 className="text-lg font-semibold">Last Viewed Note:</h3>
               <Link to={`/notes/${lastViewedNote.id}`} className="text-primary hover:underline">
@@ -131,8 +109,6 @@ const Notes = () => {
         <Routes>
           <Route index element={<NoteList notes={filteredNotes} />} />
           <Route path=":noteId" element={<NoteView />} />
-          <Route path=":noteId/edit" element={<NoteEdit />} />
-          <Route path="new" element={<NoteEdit />} />
         </Routes>
       )}
     </div>

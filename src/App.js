@@ -1,44 +1,28 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
-import { checkAuthState, signOutUser } from './auth';
-import Header from './components/layout/Header';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { AppProvider } from './context/AppContext';
 import Navigation from './components/layout/Navigation';
-// import Footer from './components/layout/Footer';
+import Header from './components/layout/Header';
+import Footer from './components/layout/Footer';
 import About from './pages/About';
 import Blog from './pages/Blog';
 import Notes from './pages/Notes';
 import Projects from './pages/Projects';
 import Skills from './pages/Skills';
 import Bookshelf from './pages/Bookshelf';
-import SignIn from './components/auth/SignIn';
+import LoadingSpinner from './components/common/LoadingSpinner';
+import ErrorMessage from './components/common/ErrorMessage';
+import { useAppContext } from './context/AppContext';
 import { DataProvider } from './context/DataContext';
-import { AuthProvider } from './context/AuthContext';
 
 const AppContent = () => {
-  const [user, setUser] = useState(null);
+  const { loading, error } = useAppContext();
 
-  useEffect(() => {
-    checkAuthState((user) => {
-      setUser(user);
-    });
-  }, []);
-
-  const handleSignOut = () => {
-    signOutUser();
-    window.location.reload();
-  };
+  if (loading) return <LoadingSpinner />;
+  if (error) return <ErrorMessage message={error} />;
 
   return (
     <div className="flex flex-col min-h-screen pt-10">
-      <div className="absolute top-0 right-0 m-4">
-        {user ? (
-          <a href="#" onClick={handleSignOut} className="text-xs">
-            {user.displayName || user.email}
-          </a>
-        ) : (
-          <Link to="/signin" className="text-xs">Sign In</Link>
-        )}
-      </div>
       <Header />
       <Navigation />
       <main className="flex-grow container mx-auto px-4 py-8">
@@ -47,24 +31,25 @@ const AppContent = () => {
           <Route path="/blog/*" element={<Blog />} />
           <Route path="/notes/*" element={<Notes />} />
           <Route path="/projects/*" element={<Projects />} />
+          <Route path="/assets/*" />
           <Route path="/skills" element={<Skills />} />
           <Route path="/bookshelf" element={<Bookshelf />} />
-          <Route path="/signin" element={<SignIn />} />
         </Routes>
       </main>
+      {/* <Footer /> */}
     </div>
   );
-}
+};
 
 function App() {
   return (
-    <AuthProvider>
+    <AppProvider>
       <DataProvider>
         <Router>
           <AppContent />
         </Router>
       </DataProvider>
-    </AuthProvider>
+    </AppProvider>
   );
 }
 

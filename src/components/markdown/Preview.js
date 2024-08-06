@@ -7,22 +7,18 @@ import RemarkCode from './RemarkCode';
 import { defaultSchema } from 'hast-util-sanitize';
 import 'github-markdown-css/github-markdown.css';
 
-interface PreviewProps {
-  doc: string;
-}
-
-const Preview: React.FC<PreviewProps> = ({ doc }) => {
+const Preview = ({ doc }) => {
   const md = unified()
     .use(remarkParse)
     .use(remarkGfm)
-    .use(remarkReact as any, {
+    .use(remarkReact, {
       createElement: React.createElement,
       sanitize: defaultSchema,
       remarkReactComponents: {
         code: RemarkCode
       }
     })
-    .processSync(doc).result as React.ReactNode;
+    .processSync(doc).result;
 
   return <div className="preview markdown-body">{md}</div>;
 };

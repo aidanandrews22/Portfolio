@@ -5,49 +5,49 @@ import LoadingSpinner from '../common/LoadingSpinner';
 import ErrorMessage from '../common/ErrorMessage';
 import Preview from '../markdown/Preview';
 
-const PostView = () => {
-  const [post, setPost] = useState(null);
+const NoteView = () => {
+  const [note, setNote] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { postId } = useParams();
+  const { noteId } = useParams();
 
   useEffect(() => {
-    const loadPost = async () => {
+    const loadNote = async () => {
       try {
-        const postData = await fetchContent('post', postId);
-        setPost(postData);
+        const noteData = await fetchContent('note', noteId);
+        setNote(noteData);
         setLoading(false);
       } catch (err) {
-        console.error('Error fetching post:', err);
-        setError(err.message);
+        console.error('Error fetching note:', err);
+        setError(err instanceof Error ? err.message : String(err));
         setLoading(false);
       }
     };
 
-    loadPost();
-  }, [postId]);
+    loadNote();
+  }, [noteId]);
 
   if (loading) return <LoadingSpinner />;
   if (error) return <ErrorMessage message={error} />;
-  if (!post) return <ErrorMessage message="Post not found" />;
+  if (!note) return <ErrorMessage message="Note not found" />;
 
   return (
     <div>
-      <Link to="/blog" className="text-primary hover:underline mb-4 inline-block">&larr; Back to all posts</Link>
+      <Link to="/notes" className="text-primary hover:underline mb-10 inline-block">&larr; Back to all notes</Link>
       <div className="mb-6">
-        <h1 className="text-4xl font-bold mb-2">{post.title}</h1>
+        <h1 className="text-4xl font-bold mb-2">{note.title}</h1>
         <div className="text-sm text-gray-600">
-          <span>Created on: {new Date(post.date).toLocaleDateString()}</span>
+          <span>Created on: {new Date(note.date).toLocaleDateString()}</span>
           <span className="mx-2">|</span>
-          <span>Category: {post.category}</span>
+          <span>Category: {note.category}</span>
         </div>
       </div>
       <hr />
       <div className="mt-10 prose max-w-none">
-        <Preview doc={post.content} />
+        <Preview doc={note.content} />
       </div>
     </div>
   );
 };
 
-export default PostView;
+export default NoteView;
