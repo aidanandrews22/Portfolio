@@ -35,7 +35,6 @@ const fetchFirebaseData = async () => {
   const publicSnapshot = await get(publicNotesRef);
   const publicNotes = publicSnapshot.val() || {};
 
-  // Convert the notes object to an array
   const notesArray = Object.entries(publicNotes).map(([id, note]) => ({
     id,
     ...note
@@ -78,6 +77,8 @@ const fetchGitHubData = async () => {
 export const fetchContent = async (contentType, contentId) => {
   if (contentType === 'note') {
     return fetchFirebaseNote(contentId);
+  } else if (contentType === 'post') {
+    return fetchGitHubPost(contentId);
   } else {
     return fetchGitHubContent(`content/${contentType}s/${contentId}.md`, false);
   }
@@ -92,4 +93,16 @@ const fetchFirebaseNote = async (noteId) => {
   }
   
   throw new Error('Note not found');
+};
+
+const fetchGitHubPost = async (postId) => {
+  const posts = await fetchGitHubContent('content/posts.json');
+  const post = posts.find(p => p.id === postId);
+  
+  if (post) {
+    const content = await fetchGitHubContent(post.content, false);
+    return { ...post, content };
+  }
+  
+  throw new Error('Post not found');
 };

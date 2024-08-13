@@ -19,7 +19,7 @@ const PostView = () => {
         setLoading(false);
       } catch (err) {
         console.error('Error fetching post:', err);
-        setError(err.message);
+        setError(err instanceof Error ? err.message : String(err));
         setLoading(false);
       }
     };
@@ -33,7 +33,7 @@ const PostView = () => {
 
   return (
     <div>
-      <Link to="/blog" className="text-primary hover:underline mb-4 inline-block">&larr; Back to all posts</Link>
+      <Link to="/blog" className="text-primary hover:underline mb-10 inline-block">&larr; Back to all posts</Link>
       <div className="mb-6">
         <h1 className="text-4xl font-bold mb-2">{post.title}</h1>
         <div className="text-sm text-gray-600">

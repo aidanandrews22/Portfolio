@@ -43,7 +43,7 @@ const About = () => {
         <h2 className="text-2xl font-bold mb-4">About Me</h2>
         <p className="text-text-secondary mb-4">
           I stream myself working on <a href="https://www.youtube.com/@aidanandrews/streams" target="_blank" rel="noopener noreferrer" className="text-primary">youtube</a>. 
-          As a current student and a researcher focused on machine learning applications in physics and neuroscience, 
+          As a current student and a researcher focused on machine learning applications in physics and biology, 
           I am deeply committed to using technology to solve complex problems. My academic and recreational projects 
           are where I try to apply my knowledge. I spend all of my time learning, researching, playing chess, and 
           exercising (mainly playing hockey and tennis).
@@ -73,11 +73,10 @@ const About = () => {
         <div className="mb-6">
           <h3 className="text-xl font-semibold">Startup (signed an NDA)</h3>
           <h4 className="text-lg">Machine Learning Researcher/Engineer</h4>
-          <p className="text-sm text-text-secondary">2024 - Present</p>
+          <p className="text-sm text-text-secondary">May 2024 - Aug 2024</p>
           <p className="mt-2">
-            Implementing a various amount of models for a chatbot. The models include (but are not limited to) intent
-            classification, retrieval augmented generation, and llm's. I am running an llm locally with dedicated prompt
-            engineering algorithms and RAG algorithms.
+            I developed advanced Natural Language Processing (NLP) systems, focusing on optimizing Retrieval-Augmented Generation (RAG) and enhancing intent classification. I designed and implemented a novel "wavular" RAG approach and a hybrid embedding-based classification system, demonstrating proficiency in large-scale information retrieval, machine learning, and deep learning methodologies. The work involved extensive use of Python, PyTorch, and TensorFlow, along with CUDA programming for GPU acceleration. I applied advanced NLP techniques including vector space models, similarity metrics (cosine similarity, Euclidean distance), and various text representation methods. The project required sophisticated data preprocessing and management for large-scale NLP datasets, showcasing my ability to develop innovative solutions for complex NLP challenges in resource-constrained environments.
+            <br></br>Research Paper: <a href="https://aidanandrews.info/blog/ml130824" target="_blank">Optimizing Natural Language Processing Systems: Advanced RAG and Intent Classification</a>
           </p>
         </div>
         <div className="mb-6">
