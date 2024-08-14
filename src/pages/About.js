@@ -37,6 +37,11 @@ const About = () => {
     generatePdfUrls();
   }, []);
 
+  const openPdfInNewTab = (url) => {
+    window.open(url, '_blank', 'noopener,noreferrer');
+  };
+
+
   return (
     <div className="max-w-3xl mx-auto">
       <section className="mb-12">
@@ -54,16 +59,16 @@ const About = () => {
         <h2 className="text-2xl font-bold mb-4">Documents</h2>
         <div className="mt-2 space-x-5">
           {pdfUrls['Aidan_Andrews_Official_Transcript.pdf'] && (
-            <a href={pdfUrls['Aidan_Andrews_Official_Transcript.pdf']} target="_blank" rel="noopener noreferrer" className="text-primary">Official-Transcript</a>
+            <button onClick={() => openPdfInNewTab(pdfUrls['Aidan_Andrews_Official_Transcript.pdf'])} className="text-primary">Official-Transcript</button>
           )}
           {pdfUrls['Aidan_Andrews_Unofficial_Transcript.pdf'] && (
-            <a href={pdfUrls['Aidan_Andrews_Unofficial_Transcript.pdf']} target="_blank" rel="noopener noreferrer" className="text-primary">Unofficial-Transcript</a>
+            <button onClick={() => openPdfInNewTab(pdfUrls['Aidan_Andrews_Unofficial_Transcript.pdf'])} className="text-primary">Unofficial-Transcript</button>
           )}
           {pdfUrls['Aidan_Andrews_Resume.pdf'] && (
-            <a href={pdfUrls['Aidan_Andrews_Resume.pdf']} target="_blank" rel="noopener noreferrer" className="text-primary">Resume</a>
+            <button onClick={() => openPdfInNewTab(pdfUrls['Aidan_Andrews_Resume.pdf'])} className="text-primary">Resume</button>
           )}
           {pdfUrls['cover-letter.pdf'] && (
-            <a href={pdfUrls['cover-letter.pdf']} target="_blank" rel="noopener noreferrer" className="text-primary">Cover Letter</a>
+            <button onClick={() => openPdfInNewTab(pdfUrls['cover-letter.pdf'])} className="text-primary">Cover Letter</button>
           )}
         </div>
       </section>
