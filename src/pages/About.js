@@ -1,45 +1,37 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Skills from './Skills';
-import { Octokit } from "@octokit/rest";
-
-const octokit = new Octokit({ auth: process.env.REACT_APP_GIT_API });
-const REPO_OWNER = process.env.REACT_APP_GIT_REPO_OWNER;
-const REPO_NAME = process.env.REACT_APP_GIT_REPO_NAME;
 
 const About = () => {
-  const [pdfUrls, setPdfUrls] = useState({});
+  const pdfFiles = [
+    { name: 'Aidan_Andrews_Official_Transcript.pdf', label: 'Official-Transcript', lastUpdated: '2024-08-13', group: 'transcript' },
+    { name: 'Aidan_Andrews_Unofficial_Transcript.pdf', label: 'Unofficial-Transcript', lastUpdated: '2024-08-13', group: 'transcript' },
+    { name: 'Aidan_Andrews_Resume.pdf', label: 'Resume', lastUpdated: '2024-01-15', group: 'other' },
+    { name: 'cover-letter.pdf', label: 'Cover Letter', lastUpdated: '2024-01-20', group: 'other' }
+  ];
 
-  useEffect(() => {
-    const generatePdfUrls = async () => {
-      const pdfNames = [
-        'Aidan_Andrews_Official_Transcript.pdf',
-        'Aidan_Andrews_Unofficial_Transcript.pdf',
-        'Aidan_Andrews_Resume.pdf',
-        'cover-letter.pdf'
-      ];
+  const renderPdfGroup = (group) => (
+    <div className="flex flex-col">
+      <h3 className="font-semibold mb-2">{group === 'transcript' ? 'Transcripts' : 'Professional'}</h3>
+      {pdfFiles
+        .filter(pdf => pdf.group === group)
+        .map((pdf) => (
+          <div key={pdf.name} className="mb-2">
+            <a 
+              href={`/assets/pdf/${pdf.name}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary"
+            >
+              {pdf.label}
+            </a>
+            <span className="text-xs text-gray-500">
+              &#160; Last updated: {pdf.lastUpdated}
+            </span>
+          </div>
+        ))}
+    </div>
+  );
 
-      const urls = {};
-      for (const pdfName of pdfNames) {
-        try {
-          const response = await octokit.repos.getContent({
-            owner: REPO_OWNER,
-            repo: REPO_NAME,
-            path: `content/pdf/${pdfName}`,
-          });
-          urls[pdfName] = response.data.download_url;
-        } catch (error) {
-          console.error(`Error fetching URL for ${pdfName}:`, error);
-        }
-      }
-      setPdfUrls(urls);
-    };
-
-    generatePdfUrls();
-  }, []);
-
-  const openPdfInNewTab = (url) => {
-    window.open(url, '_blank', 'noopener,noreferrer');
-  };
 
 
   return (
@@ -57,19 +49,9 @@ const About = () => {
 
       <section className="mb-12">
         <h2 className="text-2xl font-bold mb-4">Documents</h2>
-        <div className="mt-2 space-x-5">
-          {pdfUrls['Aidan_Andrews_Official_Transcript.pdf'] && (
-            <button onClick={() => openPdfInNewTab(pdfUrls['Aidan_Andrews_Official_Transcript.pdf'])} className="text-primary">Official-Transcript</button>
-          )}
-          {pdfUrls['Aidan_Andrews_Unofficial_Transcript.pdf'] && (
-            <button onClick={() => openPdfInNewTab(pdfUrls['Aidan_Andrews_Unofficial_Transcript.pdf'])} className="text-primary">Unofficial-Transcript</button>
-          )}
-          {pdfUrls['Aidan_Andrews_Resume.pdf'] && (
-            <button onClick={() => openPdfInNewTab(pdfUrls['Aidan_Andrews_Resume.pdf'])} className="text-primary">Resume</button>
-          )}
-          {pdfUrls['cover-letter.pdf'] && (
-            <button onClick={() => openPdfInNewTab(pdfUrls['cover-letter.pdf'])} className="text-primary">Cover Letter</button>
-          )}
+        <div className="flex justify-between">
+          {renderPdfGroup('transcript')}
+          {renderPdfGroup('other')}
         </div>
       </section>
 
