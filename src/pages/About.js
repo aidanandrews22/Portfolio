@@ -32,8 +32,6 @@ const About = () => {
     </div>
   );
 
-
-
   return (
     <div className="max-w-3xl mx-auto">
       <section className="mb-12">
@@ -63,7 +61,7 @@ const About = () => {
           <p className="text-sm text-text-secondary">May 2024 - Aug 2024</p>
           <p className="mt-2">
             I developed advanced Natural Language Processing (NLP) systems, focusing on optimizing Retrieval-Augmented Generation (RAG) and enhancing intent classification. I designed and implemented a novel "wavular" RAG approach and a hybrid embedding-based classification system, demonstrating proficiency in large-scale information retrieval, machine learning, and deep learning methodologies. The work involved extensive use of Python, PyTorch, and TensorFlow, along with CUDA programming for GPU acceleration. I applied advanced NLP techniques including vector space models, similarity metrics (cosine similarity, Euclidean distance), and various text representation methods. The project required sophisticated data preprocessing and management for large-scale NLP datasets, showcasing my ability to develop innovative solutions for complex NLP challenges in resource-constrained environments.
-            <br></br>Research Paper: <a href="https://aidanandrews.info/blog/ml130824" target="_blank">Optimizing Natural Language Processing Systems: Advanced RAG and Intent Classification</a>
+            <br></br><strong>Research Paper:</strong> <a href="https://aidanandrews.info/blog/ml130824" target="_blank">Optimizing Natural Language Processing Systems: Advanced RAG and Intent Classification</a>
           </p>
         </div>
         <div className="mb-6">
