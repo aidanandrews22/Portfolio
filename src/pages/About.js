@@ -1,7 +1,14 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Skills from './Skills';
+import { Octokit } from "@octokit/rest";
+
+const octokit = new Octokit({ auth: process.env.REACT_APP_GIT_API });
+const REPO_OWNER = process.env.REACT_APP_GIT_REPO_OWNER;
+const REPO_NAME = process.env.REACT_APP_GIT_REPO_NAME;
 
 const About = () => {
+  const [pdfUrls, setPdfUrls] = useState({});
+
   const pdfFiles = [
     { name: 'Aidan_Andrews_Official_Transcript.pdf', label: 'Official-Transcript', lastUpdated: '2024-08-13', group: 'transcript' },
     { name: 'Aidan_Andrews_Unofficial_Transcript.pdf', label: 'Unofficial-Transcript', lastUpdated: '2024-08-13', group: 'transcript' },
@@ -9,26 +16,50 @@ const About = () => {
     { name: 'cover-letter.pdf', label: 'Cover Letter', lastUpdated: '2024-01-20', group: 'other' }
   ];
 
+  useEffect(() => {
+    const fetchPdfUrls = async () => {
+      const urls = {};
+      for (const pdf of pdfFiles) {
+        try {
+          const response = await octokit.repos.getContent({
+            owner: REPO_OWNER,
+            repo: REPO_NAME,
+            path: `content/pdf/${pdf.name}`,
+          });
+          urls[pdf.name] = response.data.download_url;
+        } catch (error) {
+          console.error(`Error fetching URL for ${pdf.name}:`, error);
+        }
+      }
+      setPdfUrls(urls);
+    };
+
+    fetchPdfUrls();
+  }, []);
+
   const renderPdfGroup = (group) => (
     <div className="flex flex-col">
       <h3 className="font-semibold mb-2">{group === 'transcript' ? 'Transcripts' : 'Professional'}</h3>
-      {pdfFiles
-        .filter(pdf => pdf.group === group)
-        .map((pdf) => (
-          <div key={pdf.name} className="mb-2">
-            <a 
-              href={`/assets/pdf/${pdf.name}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-primary"
-            >
-              {pdf.label}
-            </a>
-            <span className="text-xs text-gray-500">
-              &#160; Last updated: {pdf.lastUpdated}
-            </span>
-          </div>
-        ))}
+      {Object.keys(pdfUrls)
+        .filter(pdfName => pdfFiles.find(pdf => pdf.name === pdfName && pdf.group === group))
+        .map(pdfName => {
+          const pdf = pdfFiles.find(p => p.name === pdfName);
+          return (
+            <div key={pdf.name} className="mb-2">
+              <a
+                href={pdfUrls[pdf.name]}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary"
+              >
+                {pdf.label}
+              </a>
+              <span className="text-xs text-gray-500">
+                &#160; Last updated: {pdf.lastUpdated}
+              </span>
+            </div>
+          );
+        })}
     </div>
   );
 
