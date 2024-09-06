@@ -15,7 +15,7 @@ const About = () => {
       {pdfFiles
         .filter(pdf => pdf.group === group)
         .map(pdf => {
-          const staticUrl = `https://aidanandrews22.github.io/content/docs/${pdf.name}`;
+          const staticUrl = `https://aidanandrews22.github.io/content/pdf/${pdf.name}`;
           return (
             <div key={pdf.name} className="mb-2">
               <a
