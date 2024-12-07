@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Skills from './Skills';
+import { Link } from 'react-router-dom';
 
 const About = () => {
   const pdfFiles = [
@@ -8,6 +9,35 @@ const About = () => {
     { name: 'Aidan_Andrews_Resume.pdf', label: 'Resume', lastUpdated: '2024-10-07', group: 'other' },
     { name: 'cover-letter.pdf', label: 'Cover Letter', lastUpdated: '2024-10-08', group: 'other' }
   ];
+
+  const currentProject = {
+    id: "current-project",
+    title: "ClassWize: AI Powered Class Planner",
+    description: "The app allows students to create course maps, track graduation readiness, and meet nuanced academic requirements using a rule-enforcing scheduler. Users can see their status on every single degree requirement to determine graduation readiness. Personalized course recommendations via an LLM, reorganizes plans to resolve unmet requirements, and prevents invalid scheduling (e.g., prerequisite violations, time conflicts, restrictions). The app integrates institutional course data, displays insights like average GPA, and supports exporting schedules (google sheets) to share with advisors.",
+    tags: ["React", "Machine Learning", "Algorithms & Data Structures"],
+    demoLink: "https://main.d3jmvbxto8loyp.amplifyapp.com/"
+  };
+
+  const CompactProjectCard = ({ title, description, tags, demoLink }) => (
+    <div className="bg-white shadow rounded-lg p-4 mx-auto">
+      <h3 className="text-lg font-semibold">
+        <Link to={`/projects/class`} className="text-primary">{title}</Link>
+      </h3>
+      <p className="text-sm text-text-secondary my-2">{description}</p>
+      <div className="flex flex-wrap gap-2 mb-2">
+        {tags && tags.map((tag, index) => (
+          <span key={index} className="bg-secondary text-text-secondary px-2 py-1 rounded-full text-sm">{tag}</span>
+        ))}
+      </div>
+      <div className="text-sm">
+        {demoLink && (
+          <>
+            <a href={demoLink} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">View Demo Site</a>
+          </>
+        )}
+      </div>
+    </div> 
+  );
 
   const renderPdfGroup = (group) => (
     <div className="flex flex-col">
@@ -46,6 +76,8 @@ const About = () => {
           are where I try to apply my knowledge. I spend all of my time learning, researching, playing chess, and 
           exercising (mainly playing hockey and tennis).
         </p>
+        <h2 className="text-2xl font-bold mb-4">Current Project</h2>
+        <CompactProjectCard {...currentProject} />
       </section>
 
       <section className="mb-12">
@@ -58,6 +90,15 @@ const About = () => {
 
       <section className="mb-12">
         <h2 className="text-2xl font-bold mb-4">Work Experience</h2>
+        <div className="mb-6">
+          <h3 className="text-xl font-semibold">AIFARMS National Al Institute & Center for Digital Agriculture</h3>
+          <h4 className="text-lg">AI/ML Research Intern</h4>
+          <p className="text-sm text-text-secondary">Nov 2024 - Present</p>
+          <p className="mt-2">
+            Developing a plethora of tools (eg. pest detection, crop optimization, local climate implications, etc.) for LLM use in production scale chatbots to create a more agentic workflow. Agents are used to increase efficiency of current agricultural practices at scale.
+            <br></br>Working under Professor <a href="https://vikram.cs.illinois.edu/" target="_blank" rel="noopener noreferrer" className="text-primary">Vikram S. Adve</a>.
+          </p>
+        </div>
         <div className="mb-6">
           <h3 className="text-xl font-semibold">Startup (signed an NDA)</h3>
           <h4 className="text-lg">Machine Learning Researcher/Engineer</h4>
@@ -106,8 +147,7 @@ const About = () => {
           <h3 className="text-xl font-semibold">University of Illinois Urbana-Champaign</h3>
           <p className="text-sm text-text-secondary">2023 - 2026</p>
           <p className="mt-2">
-            Studying B.S. in Physics from the Grainger College of Engineering. Planning on adding a double major
-            in Math+CS from the college of Liberal Arts and Sciences.
+            Studying B.S. in Physics from the Grainger College of Engineering. 3-year graduation.
           </p>
         </div>
       </section>
