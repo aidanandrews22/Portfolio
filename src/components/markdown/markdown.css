@@ -3,8 +3,9 @@
 }
 
 .preview.markdown-body {
-  @apply min-h-[300px] overflow-auto;
+  @apply min-h-[300px] overflow-auto bg-white;
 }
+
 
 .preview.markdown-body pre {
   @apply bg-gray-100 rounded-md;
