@@ -1,22 +1,12 @@
 import { Octokit } from "@octokit/rest";
-import { getDatabase, ref, get } from "firebase/database";
-import { database } from '../firebase';
 
 const octokit = new Octokit({ auth: process.env.REACT_APP_GIT_API });
-const db = getDatabase();
 
 const REPO_OWNER = process.env.REACT_APP_GIT_REPO_OWNER;
 const REPO_NAME = process.env.REACT_APP_GIT_REPO_NAME;
 
 export const fetchAllData = async () => {
-  let firebaseData = {};
   let githubData = {};
-
-  try {
-    firebaseData = await fetchFirebaseData();
-  } catch (error) {
-    console.error('Error fetching Firebase data:', error);
-  }
 
   try {
     githubData = await fetchGitHubData();
@@ -25,23 +15,7 @@ export const fetchAllData = async () => {
   }
 
   return {
-    ...firebaseData,
     ...githubData
-  };
-};
-
-const fetchFirebaseData = async () => {
-  const publicNotesRef = ref(database, 'notes/public');
-  const publicSnapshot = await get(publicNotesRef);
-  const publicNotes = publicSnapshot.val() || {};
-
-  const notesArray = Object.entries(publicNotes).map(([id, note]) => ({
-    id,
-    ...note
-  }));
-
-  return { 
-    notes: notesArray
   };
 };
 
@@ -75,24 +49,11 @@ const fetchGitHubData = async () => {
 };
 
 export const fetchContent = async (contentType, contentId) => {
-  if (contentType === 'note') {
-    return fetchFirebaseNote(contentId);
-  } else if (contentType === 'post') {
+  if (contentType === 'post') {
     return fetchGitHubPost(contentId);
   } else {
     return fetchGitHubContent(`content/${contentType}s/${contentId}.md`, false);
   }
-};
-
-const fetchFirebaseNote = async (noteId) => {
-  const publicNoteRef = ref(database, `notes/public/${noteId}`);
-  const publicSnapshot = await get(publicNoteRef);
-  
-  if (publicSnapshot.exists()) {
-    return publicSnapshot.val();
-  }
-  
-  throw new Error('Note not found');
 };
 
 const fetchGitHubPost = async (postId) => {

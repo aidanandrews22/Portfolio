@@ -10,18 +10,28 @@ const About = () => {
     { name: 'cover-letter.pdf', label: 'Cover Letter', lastUpdated: '2024-10-08', group: 'other' }
   ];
 
-  const currentProject = {
-    id: "current-project",
-    title: "IlliniPlan: AI Powered Class Planner",
-    description: "The app allows students to create course maps, track graduation readiness, and meet nuanced academic requirements using a rule-enforcing scheduler. Users can see their status on every single degree requirement to determine graduation readiness. Personalized course recommendations via an LLM, reorganizes plans to resolve unmet requirements, and prevents invalid scheduling (e.g., prerequisite violations, time conflicts, restrictions). The app integrates institutional course data, displays insights like average GPA, and supports exporting schedules (google sheets) to share with advisors.",
-    tags: ["React", "Machine Learning", "Algorithms & Data Structures"],
-    demoLink: "https://main.d3jmvbxto8loyp.amplifyapp.com/"
-  };
+  const currentProjects = [
+    {
+      id: "illini-plan",
+      title: "IlliniPlan: AI Powered Class Planner",
+      description: "Built an app for course mapping, graduation tracking, and rule-enforcing scheduling, integrating institutional data, personalized LLM-driven recommendations, and exportable schedules.",
+      tags: ["React", "Machine Learning", "Algorithms & Data Structures"],
+      demoLink: "https://main.d3jmvbxto8loyp.amplifyapp.com/"
+    },
+    {
+      id: "illini-spots",
+      title: "IlliniSpots: The Instagram of study spots at UIUC",
+      description: "Shows all buildings on campus with room availability. Users can favorite buildings and comment.",
+      demoLink: "https://example.com/",
+      githubLink: "https://github.com/aidanandrews22/IlliniSpots",
+      tags: ["Swift, React Native", "Postgres, Firebase", "Search"]
+    }
+  ];
 
-  const CompactProjectCard = ({ title, description, tags, demoLink }) => (
+  const CompactProjectCard = ({ id, title, description, tags, demoLink }) => (
     <div className="bg-white shadow rounded-lg p-4 mx-auto">
       <h3 className="text-lg font-semibold">
-        <Link to={`/projects/class`} className="text-primary">{title}</Link>
+        <Link to={`/projects/${id}`} className="text-primary">{title}</Link>
       </h3>
       <p className="text-sm text-text-secondary my-2">{description}</p>
       <div className="flex flex-wrap gap-2 mb-2">
@@ -76,8 +86,12 @@ const About = () => {
           are where I try to apply my knowledge. I spend all of my time learning, researching, playing chess, and 
           exercising (mainly playing hockey and tennis).
         </p>
-        <h2 className="text-2xl font-bold mb-4">Current Project</h2>
-        <CompactProjectCard {...currentProject} />
+        <h2 className="text-2xl font-bold mb-4">Current Projects</h2>
+        <div className="space-y-4">
+          {currentProjects.map((project, index) => (
+            <CompactProjectCard key={project.id} {...project} />
+          ))}
+        </div>
       </section>
 
       <section className="mb-12">
