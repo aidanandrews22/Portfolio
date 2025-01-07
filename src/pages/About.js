@@ -12,7 +12,7 @@ const About = () => {
 
   const currentProject = {
     id: "current-project",
-    title: "ClassWize: AI Powered Class Planner",
+    title: "IlliniPlan: AI Powered Class Planner",
     description: "The app allows students to create course maps, track graduation readiness, and meet nuanced academic requirements using a rule-enforcing scheduler. Users can see their status on every single degree requirement to determine graduation readiness. Personalized course recommendations via an LLM, reorganizes plans to resolve unmet requirements, and prevents invalid scheduling (e.g., prerequisite violations, time conflicts, restrictions). The app integrates institutional course data, displays insights like average GPA, and supports exporting schedules (google sheets) to share with advisors.",
     tags: ["React", "Machine Learning", "Algorithms & Data Structures"],
     demoLink: "https://main.d3jmvbxto8loyp.amplifyapp.com/"
