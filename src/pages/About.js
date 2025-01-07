@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom';
 const About = () => {
   const pdfFiles = [
     { name: 'Aidan_Andrews_Official_Transcript.pdf', label: 'Official-Transcript', lastUpdated: '2024-12-25', group: 'transcript' },
-    { name: 'Aidan_Andrews_Unofficial_Transcript.pdf', label: 'Unofficial-Transcript', lastUpdated: '2024-12-25', group: 'transcript' },
-    { name: 'Aidan_Andrews_Resume.pdf', label: 'Resume', lastUpdated: '2024-10-07', group: 'other' },
+    { name: 'Aidan_Andrews_Unofficial_Transcript.pdf', label: 'Unofficial-Transcript', lastUpdated: '2025-01-06', group: 'transcript' },
+    { name: 'Aidan_Andrews_Resume.pdf', label: 'Resume', lastUpdated: '2025-01-06', group: 'other' },
     { name: 'cover-letter.pdf', label: 'Cover Letter', lastUpdated: '2024-10-08', group: 'other' }
   ];
 
