@@ -12,6 +12,16 @@ const INDICATORS_KEY = 'projectIndicators';
 
 type IndicatorType = 'clever' | 'launch' | 'inspired';
 
+interface NumberDisplayProps {
+  value: number;
+}
+
+const NumberDisplay: React.FC<NumberDisplayProps> = ({ value }) => {
+  const formattedValue = value >= 1000 ? '1,000+' : value.toString();
+  
+  return <span>{formattedValue}</span>;
+};
+
 type AnimatedIndicatorProps = {
   icon: React.ElementType;
   label: string;
@@ -187,9 +197,7 @@ const AnimatedIndicator: React.FC<AnimatedIndicatorProps> = ({
       
         {/* Counter - now horizontally aligned */}
         <div className={`ml-${compact ? '2' : '3'}`}>
-          <span className={`font-medium ${compact ? 'text-xs' : 'text-sm'}`} style={{ color }}>
-            {count}
-          </span>
+          <NumberDisplay value={count ?? 0} />
         </div>
       </div>
       
