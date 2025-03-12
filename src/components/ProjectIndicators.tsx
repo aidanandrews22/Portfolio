@@ -3,6 +3,7 @@ import { Brain, Rocket, Lightbulb } from 'lucide-react';
 import '../styles/animations.css';
 import { generateClient } from 'aws-amplify/data';
 import type { Schema } from '../../amplify/data/resource';
+import NumberDisplay from './NumberDisplay';
 
 // Generate a type-safe client for our Amplify backend
 const client = generateClient<Schema>();
@@ -11,16 +12,6 @@ const client = generateClient<Schema>();
 const INDICATORS_KEY = 'projectIndicators';
 
 type IndicatorType = 'clever' | 'launch' | 'inspired';
-
-interface NumberDisplayProps {
-  value: number;
-}
-
-const NumberDisplay: React.FC<NumberDisplayProps> = ({ value }) => {
-  const formattedValue = value >= 1000 ? '1,000+' : value.toString();
-  
-  return <span>{formattedValue}</span>;
-};
 
 type AnimatedIndicatorProps = {
   icon: React.ElementType;

@@ -1,22 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { generateClient } from 'aws-amplify/data';
 import type { Schema } from '../../amplify/data/resource';
+import NumberDisplay from './NumberDisplay';
 
 // Generate a type-safe client for our Amplify backend
 const client = generateClient<Schema>();
 
 // Local storage key for clapped posts
 const CLAPPED_POSTS_KEY = 'clappedPosts';
-
-interface NumberDisplayProps {
-  value: number;
-}
-
-const NumberDisplay: React.FC<NumberDisplayProps> = ({ value }) => {
-  const formattedValue = value >= 1000 ? '1,000+' : value.toString();
-  
-  return <span>{formattedValue}</span>;
-};
 
 interface ClapButtonProps {
   postId: string;
