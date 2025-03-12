@@ -8,6 +8,16 @@ const client = generateClient<Schema>();
 // Local storage key for clapped posts
 const CLAPPED_POSTS_KEY = 'clappedPosts';
 
+interface NumberDisplayProps {
+  value: number;
+}
+
+const NumberDisplay: React.FC<NumberDisplayProps> = ({ value }) => {
+  const formattedValue = value >= 1000 ? '1,000+' : value.toString();
+  
+  return <span>{formattedValue}</span>;
+};
+
 interface ClapButtonProps {
   postId: string;
   className?: string;
@@ -190,7 +200,7 @@ const ClapButton: React.FC<ClapButtonProps> = ({
                 onMouseEnter={() => setShowTooltip(true)}
                 onMouseLeave={() => setShowTooltip(false)}
               >
-                {clapCount}
+                <NumberDisplay value={clapCount ?? 0} />
                 {showTooltip && (
                   <span className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded whitespace-nowrap">
                     Total claps
