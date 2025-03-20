@@ -19,7 +19,7 @@ const pdfFiles: PdfFile[] = [
 ];
 
 // Just store the IDs of current projects
-const currentProjectIds = ["voxed", "illini-plan", "illini-spots", "research-agent"];
+const currentProjectIds = ["voxed", "illini-plan", "manim-video-agent", "illini-spots"];
 
 const AboutSection = () => (
   <section className="relative">
