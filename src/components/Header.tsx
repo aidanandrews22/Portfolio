@@ -1,44 +1,4 @@
-import { useState, useEffect } from 'react';
-
 export default function Header() {
-    const [theme, setTheme] = useState<'light' | 'dark' | 'system'>('system');
-    
-    useEffect(() => {
-        // Check if user has a stored preference
-        const storedTheme = localStorage.getItem('color-theme') as 'light' | 'dark' | 'system' | null;
-        if (storedTheme) {
-            setTheme(storedTheme);
-        }
-        
-        // Apply the theme
-        applyTheme(storedTheme || 'system');
-    }, []);
-    
-    const applyTheme = (newTheme: 'light' | 'dark' | 'system') => {
-        if (newTheme === 'system') {
-            // Remove any forced classes and follow system preference
-            document.documentElement.classList.remove('force-light', 'force-dark');
-            localStorage.removeItem('color-theme');
-        } else {
-            // Apply specific theme
-            document.documentElement.classList.remove('force-light', 'force-dark');
-            document.documentElement.classList.add(`force-${newTheme}`);
-            localStorage.setItem('color-theme', newTheme);
-        }
-    };
-    
-    const toggleTheme = () => {
-        let newTheme: 'light' | 'dark' | 'system';
-        
-        // Cycle through themes: system -> light -> dark -> system
-        if (theme === 'system') newTheme = 'light';
-        else if (theme === 'light') newTheme = 'dark';
-        else newTheme = 'system';
-        
-        setTheme(newTheme);
-        applyTheme(newTheme);
-    };
-
     return (
         <div>
             {/* Header */}
@@ -72,39 +32,15 @@ export default function Header() {
 
                         {/* Social Links - centered on mobile, right-aligned on desktop */}
                         <div className="flex items-center justify-center md:justify-end gap-4 pt-1">
-                            {/* Theme toggle button */}
-                            <button
-                                onClick={toggleTheme}
-                                className="text-[color-mix(in_oklch,currentColor_80%,var(--color-primary))] hover:text-[var(--color-primary)] transition-colors relative group cursor-pointer"
-                                title={`Current theme: ${theme}. Click to toggle.`}
-                                aria-label="Toggle color theme"
-                            >
-                                {theme === 'light' ? (
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                                    </svg>
-                                ) : theme === 'dark' ? (
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                                    </svg>
-                                ) : (
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                                    </svg>
-                                )}
-                                <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-[var(--color-primary)] group-hover:w-full transition-all duration-300"></span>
-                            </button>
-                            
                             <a 
-                                href="mailto:aidansa2@illinois.edu" 
+                                href="https://x.com/aidansandrews"
+                                target="_blank"
+                                rel="noopener noreferrer"
                                 className="text-[color-mix(in_oklch,currentColor_80%,var(--color-primary))] hover:text-[var(--color-primary)] transition-colors relative group"
-                                title="Email me"
+                                title="X (formerly Twitter)"
                             >
-                                <span className="sr-only">Email</span>
-                                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-                                    <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-                                </svg>
+                                <span className="sr-only">X (formerly Twitter)</span>
+                                <svg role="img" className='w-5 h-5' viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>X</title><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg>
                                 <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-[var(--color-primary)] group-hover:w-full transition-all duration-300"></span>
                             </a>
                             
