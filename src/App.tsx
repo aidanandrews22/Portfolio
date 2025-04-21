@@ -116,6 +116,7 @@ export default function App() {
             </div>
           }>
             <Routes>
+              <Route path="*" element={<Navigate to="/about" replace />} />
               <Route path="/" element={<Navigate to="/about" replace />} />
               <Route path="/about" element={<About />} />
               <Route path="/projects" element={<Projects />} />
