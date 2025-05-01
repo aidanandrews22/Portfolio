@@ -500,7 +500,7 @@ const TechnicalExpertiseSection = () => (
           {/* JavaScript/TypeScript */}
           <div className="space-y-2">
             <div className="flex justify-between items-center">
-              <span className="font-medium">JavaScript/TypeScript</span>
+              <span className="font-medium">C++</span>
               <span className="text-xs">90%</span>
             </div>
             <div className="h-2 rounded-full bg-[color-mix(in_oklch,var(--color-primary)_10%,transparent)]">
@@ -511,7 +511,7 @@ const TechnicalExpertiseSection = () => (
           {/* C++ */}
           <div className="space-y-2">
             <div className="flex justify-between items-center">
-              <span className="font-medium">C/C++</span>
+              <span className="font-medium">TypeScript</span>
               <span className="text-xs">85%</span>
             </div>
             <div className="h-2 rounded-full bg-[color-mix(in_oklch,var(--color-primary)_10%,transparent)]">
@@ -522,22 +522,22 @@ const TechnicalExpertiseSection = () => (
           {/* Java */}
           <div className="space-y-2">
             <div className="flex justify-between items-center">
-              <span className="font-medium">Java</span>
-              <span className="text-xs">80%</span>
+              <span className="font-medium">Rust</span>
+              <span className="text-xs">60%</span>
             </div>
             <div className="h-2 rounded-full bg-[color-mix(in_oklch,var(--color-primary)_10%,transparent)]">
-              <div className="h-full rounded-full bg-[var(--color-primary)]" style={{ width: '80%' }}></div>
+              <div className="h-full rounded-full bg-[var(--color-primary)]" style={{ width: '60%' }}></div>
             </div>
           </div>
           
           {/* SQL */}
     <div className="space-y-2">
             <div className="flex justify-between items-center">
-              <span className="font-medium">SQL</span>
-              <span className="text-xs">85%</span>
+              <span className="font-medium">Java</span>
+              <span className="text-xs">50%</span>
             </div>
             <div className="h-2 rounded-full bg-[color-mix(in_oklch,var(--color-primary)_10%,transparent)]">
-              <div className="h-full rounded-full bg-[var(--color-primary)]" style={{ width: '85%' }}></div>
+              <div className="h-full rounded-full bg-[var(--color-primary)]" style={{ width: '50%' }}></div>
             </div>
           </div>
         </div>
