@@ -167,7 +167,7 @@ export default function Socials() {
 
           <div className="p-4">
             <a
-              href="https://twitter.com/aidanandrews"
+              href="https://x.com/aidansandrews"
               target="_blank"
               rel="noopener noreferrer"
               className="w-full px-4 py-2 text-center text-sm rounded-full bg-gradient-to-r from-blue-400 to-sky-500 text-white hover:opacity-90 transition-opacity inline-flex items-center justify-center gap-2"
