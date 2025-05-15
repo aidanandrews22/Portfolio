@@ -14,6 +14,23 @@ export default function AboutSection() {
 
     return (
     <section className="relative">
+      {/* Documents quick links */}
+      <div className="mt-8 mb-8 pb-6 border-b border-[color-mix(in_oklch,var(--color-primary)_10%,transparent)]">
+        <h3 className="text-lg font-semibold mb-4">Important Documents</h3>
+        <div className="flex flex-wrap gap-3">
+          {pdfFiles.map(pdf => (
+            <a
+              key={pdf.name}
+              href={`https://aidanandrews22.github.io/content/pdf/${pdf.name}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+              className="px-4 py-2 text-sm rounded-lg border border-[color-mix(in_oklch,var(--color-primary)_10%,transparent)] hover:bg-[color-mix(in_oklch,var(--color-primary)_5%,transparent)] transition-colors"
+                >
+                  {pdf.label}
+                </a>
+          ))}
+        </div>
+      </div>
       {/* Hero section with background */}
       <div className="relative mb-12 rounded-2xl overflow-hidden">
         <div className="">
@@ -38,23 +55,6 @@ export default function AboutSection() {
         </div>
       </div>
   
-      {/* Documents quick links */}
-      <div className="mt-8 mb-8 pb-6 border-b border-[color-mix(in_oklch,var(--color-primary)_10%,transparent)]">
-        <h3 className="text-lg font-semibold mb-4">Important Documents</h3>
-        <div className="flex flex-wrap gap-3">
-          {pdfFiles.map(pdf => (
-            <a
-              key={pdf.name}
-              href={`https://aidanandrews22.github.io/content/pdf/${pdf.name}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-              className="px-4 py-2 text-sm rounded-lg border border-[color-mix(in_oklch,var(--color-primary)_10%,transparent)] hover:bg-[color-mix(in_oklch,var(--color-primary)_5%,transparent)] transition-colors"
-                >
-                  {pdf.label}
-                </a>
-          ))}
-        </div>
-      </div>
       
       {/* Personal introduction */}
       <div className="space-y-6">
