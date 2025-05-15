@@ -1,10 +1,10 @@
-import emailjs from '@emailjs/browser';
+import emailjs from "@emailjs/browser";
 
 // Note: You'll need to sign up for EmailJS and get your own service ID, template ID, and public key
 // Visit https://www.emailjs.com/ to create an account
-const SERVICE_ID = 'service_1fzmpoj'; 
-const TEMPLATE_ID = 'template_zznl7en'; 
-const PUBLIC_KEY = 'reg5OKtUoEIjd_ss4'; 
+const SERVICE_ID = "service_1fzmpoj";
+const TEMPLATE_ID = "template_zznl7en";
+const PUBLIC_KEY = "reg5OKtUoEIjd_ss4";
 
 interface ErrorReportData {
   email: string;
@@ -18,7 +18,7 @@ interface ErrorReportData {
 
 /**
  * Sends an error report email using EmailJS
- * 
+ *
  * @param data Error report data
  * @returns Promise that resolves when the email is sent
  */
@@ -35,10 +35,10 @@ export const sendErrorReport = async (data: ErrorReportData): Promise<void> => {
         user_agent: data.userAgent,
         url: data.url,
       },
-      PUBLIC_KEY
+      PUBLIC_KEY,
     );
   } catch (error) {
-    console.error('Failed to send error report:', error);
+    console.error("Failed to send error report:", error);
     throw error;
   }
-}; 
+};

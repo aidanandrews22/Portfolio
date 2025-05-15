@@ -1,4 +1,4 @@
-import { type ClientSchema, a, defineData } from '@aws-amplify/backend';
+import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
 
 /*== STEP 1 ===============================================================
 The section below creates a Todo database table with a "content" field. Try
@@ -12,7 +12,7 @@ const schema = a.schema({
       content: a.string(),
     })
     .authorization((allow) => [allow.guest()]),
-  
+
   BlogPostLike: a
     .model({
       // Use id as the primary key (this will be the postId)
@@ -23,11 +23,11 @@ const schema = a.schema({
     })
     .authorization((allow) => [
       // Allow anyone to read the like count
-      allow.guest().to(['read']),
+      allow.guest().to(["read"]),
       // Allow API key operations for all operations
-      allow.publicApiKey().to(['create', 'read', 'update', 'delete']),
+      allow.publicApiKey().to(["create", "read", "update", "delete"]),
     ]),
-    
+
   ProjectIndicator: a
     .model({
       // Use id as the primary key (this will be the projectId + indicatorType)
@@ -40,9 +40,9 @@ const schema = a.schema({
     })
     .authorization((allow) => [
       // Allow anyone to read the indicator count
-      allow.guest().to(['read']),
+      allow.guest().to(["read"]),
       // Allow API key operations for all operations
-      allow.publicApiKey().to(['create', 'read', 'update', 'delete']),
+      allow.publicApiKey().to(["create", "read", "update", "delete"]),
     ]),
 });
 
@@ -52,10 +52,10 @@ export const data = defineData({
   schema,
   authorizationModes: {
     // Configure API key as the default authorization mode
-    defaultAuthorizationMode: 'apiKey',
+    defaultAuthorizationMode: "apiKey",
     apiKeyAuthorizationMode: {
-      expiresInDays: 365 // Long-lived API key for likes
-    }
+      expiresInDays: 365, // Long-lived API key for likes
+    },
   },
 });
 

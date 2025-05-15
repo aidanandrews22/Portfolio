@@ -1,5 +1,5 @@
-import { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useRef, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface FilterDropdownProps {
   options: string[];
@@ -8,19 +8,27 @@ interface FilterDropdownProps {
   label: string;
 }
 
-export default function FilterDropdown({ options, selectedOption, onSelect, label }: FilterDropdownProps) {
+export default function FilterDropdown({
+  options,
+  selectedOption,
+  onSelect,
+  label,
+}: FilterDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setIsOpen(false);
       }
     }
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   return (
@@ -32,14 +40,19 @@ export default function FilterDropdown({ options, selectedOption, onSelect, labe
                  flex items-center justify-between min-w-[120px] sm:min-w-[160px] bg-background text-sm sm:text-base cursor-pointer"
       >
         <span className="mr-2 truncate">{label}:</span>
-        <span className="font-medium truncate">{selectedOption || 'All'}</span>
+        <span className="font-medium truncate">{selectedOption || "All"}</span>
         <svg
-          className={`w-4 h-4 ml-2 transition-transform shrink-0 ${isOpen ? 'rotate-180' : ''}`}
+          className={`w-4 h-4 ml-2 transition-transform shrink-0 ${isOpen ? "rotate-180" : ""}`}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
         >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M19 9l-7 7-7-7"
+          />
         </svg>
       </button>
 
@@ -56,11 +69,11 @@ export default function FilterDropdown({ options, selectedOption, onSelect, labe
               <li>
                 <button
                   onClick={() => {
-                    onSelect('');
+                    onSelect("");
                     setIsOpen(false);
                   }}
                   className={`w-full px-4 py-2 text-left hover:bg-[color-mix(in_oklch,var(--color-primary)_10%,transparent)] text-sm sm:text-base
-                           ${!selectedOption ? 'bg-[color-mix(in_oklch,var(--color-primary)_5%,transparent)] cursor-pointer' : ''}`}
+                           ${!selectedOption ? "bg-[color-mix(in_oklch,var(--color-primary)_5%,transparent)] cursor-pointer" : ""}`}
                 >
                   All
                 </button>
@@ -73,7 +86,7 @@ export default function FilterDropdown({ options, selectedOption, onSelect, labe
                       setIsOpen(false);
                     }}
                     className={`cursor-pointer w-full px-4 py-2 text-left hover:bg-[color-mix(in_oklch,var(--color-primary)_10%,transparent)] text-sm sm:text-base
-                             ${selectedOption === option ? 'bg-[color-mix(in_oklch,var(--color-primary)_5%,transparent)] cursor-pointer' : ''}`}
+                             ${selectedOption === option ? "bg-[color-mix(in_oklch,var(--color-primary)_5%,transparent)] cursor-pointer" : ""}`}
                   >
                     {option}
                   </button>
@@ -85,4 +98,4 @@ export default function FilterDropdown({ options, selectedOption, onSelect, labe
       </AnimatePresence>
     </div>
   );
-} 
+}
