@@ -60,6 +60,7 @@ export default function TLDR() {
           {" "}
           founder of aaxiom.org
         </a>
+        , and play competitive chess
       </p>
     </div>
   );
