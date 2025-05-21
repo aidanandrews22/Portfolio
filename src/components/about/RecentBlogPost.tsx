@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import BlogPostCard, { BlogPost as BlogPostType } from "../BlogPostCard";
+import PublicationCard from "../PublicationCard";
 
 export default function RecentBlogSection() {
   const [recentPost, setRecentPost] = useState<BlogPostType | null>(null);
+  const [recentPublication, setRecentPublication] =
+    useState<BlogPostType | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchRecentPost = async () => {
+    const fetchPosts = async () => {
       try {
         const response = await fetch(
           "https://raw.githubusercontent.com/aidanandrews22/aidanandrews22.github.io/main/content/posts.json",
@@ -16,21 +19,60 @@ export default function RecentBlogSection() {
         if (!response.ok) throw new Error("Failed to fetch blog posts");
         const posts = await response.json();
 
-        // Sort posts by date and get the most recent one
+        // Sort posts by date
+        const sortedPosts = posts.sort((a: BlogPostType, b: BlogPostType) => {
+          try {
+            return new Date(b.date).getTime() - new Date(a.date).getTime();
+          } catch (err) {
+            console.error("Error sorting post dates:", err);
+            return 0; // Keep original order if date comparison fails
+          }
+        });
+
+        // Separate blogs and publications
         try {
-          const sortedPosts = posts.sort((a: BlogPostType, b: BlogPostType) => {
-            try {
-              return new Date(b.date).getTime() - new Date(a.date).getTime();
-            } catch (err) {
-              console.error("Error sorting post dates:", err);
-              return 0; // Keep original order if date comparison fails
+          // Find most recent blog post (without Pub tag)
+          const blogPosts = sortedPosts.filter((post: BlogPostType) => {
+            if (Array.isArray(post.tags)) {
+              return !post.tags.includes("Pub");
+            } else if (typeof post.tags === "string") {
+              try {
+                // Try to parse if it's a JSON string
+                const parsedTags = JSON.parse(post.tags);
+                return !(
+                  Array.isArray(parsedTags) && parsedTags.includes("Pub")
+                );
+              } catch {
+                // If not parseable, check if the string is not "Pub"
+                return post.tags !== "Pub";
+              }
             }
+            return true; // Include posts without tags
           });
 
-          if (sortedPosts && sortedPosts.length > 0) {
-            setRecentPost(sortedPosts[0]);
-          } else {
-            throw new Error("No blog posts found");
+          // Find most recent publication (with Pub tag)
+          const publications = sortedPosts.filter((post: BlogPostType) => {
+            if (Array.isArray(post.tags)) {
+              return post.tags.includes("Pub");
+            } else if (typeof post.tags === "string") {
+              try {
+                // Try to parse if it's a JSON string
+                const parsedTags = JSON.parse(post.tags);
+                return Array.isArray(parsedTags) && parsedTags.includes("Pub");
+              } catch {
+                // If not parseable, check if the string is "Pub"
+                return post.tags === "Pub";
+              }
+            }
+            return false;
+          });
+
+          if (blogPosts && blogPosts.length > 0) {
+            setRecentPost(blogPosts[0]);
+          }
+
+          if (publications && publications.length > 0) {
+            setRecentPublication(publications[0]);
           }
         } catch (err) {
           console.error("Error processing posts data:", err);
@@ -39,23 +81,21 @@ export default function RecentBlogSection() {
 
         setLoading(false);
       } catch (error) {
-        console.error("Error fetching recent blog post:", error);
+        console.error("Error fetching posts:", error);
         setError(
-          error instanceof Error
-            ? error.message
-            : "Failed to fetch recent blog post",
+          error instanceof Error ? error.message : "Failed to fetch posts",
         );
         setLoading(false);
       }
     };
 
-    fetchRecentPost();
+    fetchPosts();
   }, []);
 
   if (loading)
     return (
       <section className="space-y-6">
-        <h2 className="text-3xl font-bold">Recent Blog Post</h2>
+        <h2 className="text-3xl font-bold">Recent Content</h2>
         <div className="flex justify-center items-center h-40">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[var(--color-primary)]"></div>
         </div>
@@ -65,7 +105,7 @@ export default function RecentBlogSection() {
   if (error)
     return (
       <section className="space-y-6">
-        <h2 className="text-3xl font-bold">Recent Blog Post</h2>
+        <h2 className="text-3xl font-bold">Recent Content</h2>
         <div className="p-6 rounded-xl border border-red-300 bg-red-50 text-red-700 dark:border-red-800 dark:bg-red-900/20 dark:text-red-400">
           <p>{error}</p>
           <p className="mt-2 text-sm">
@@ -75,32 +115,35 @@ export default function RecentBlogSection() {
       </section>
     );
 
-  if (!recentPost) return null;
+  if (!recentPost && !recentPublication) return null;
 
   return (
-    <section className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h2 className="text-3xl font-bold">Recent Blog Post</h2>
-        <Link
-          to="/blog"
-          className="px-4 py-2 rounded-full bg-[color-mix(in_oklch,var(--color-primary)_10%,transparent)] hover:bg-[color-mix(in_oklch,var(--color-primary)_15%,transparent)] text-sm transition-colors"
-        >
-          View all →
-        </Link>
-      </div>
+    <div className="space-y-12">
+      {/* Recent Blog Post Section */}
+      {recentPost && (
+        <section className="space-y-6">
+          <div className="flex justify-between items-center">
+            <h2 className="text-3xl font-bold">Recent Blog Post</h2>
+            <Link
+              to="/blog"
+              className="px-4 py-2 rounded-full bg-[color-mix(in_oklch,var(--color-primary)_10%,transparent)] hover:bg-[color-mix(in_oklch,var(--color-primary)_15%,transparent)] text-sm transition-colors"
+            >
+              View all →
+            </Link>
+          </div>
 
-      <div className="prose prose-adaptive prose-lg max-w-none mb-6">
-        <p className="leading-relaxed">
-          Writing and research allow me to explore ideas in depth and share my
-          discoveries with others. My blog is where I document my learning
-          journey, share technical insights, and occasionally dive into
-          philosophical questions about technology and its impact. Below is my
-          most recent post – a window into what's currently capturing my
-          attention.
-        </p>
-      </div>
+          <div className="prose prose-adaptive prose-lg max-w-none mb-6">
+            <p className="leading-relaxed">
+              Writing and research allow me to explore ideas in depth and share
+              my discoveries with others. My blog is where I document my
+              learning journey, share technical insights, and occasionally dive
+              into philosophical questions about technology and its impact.
+            </p>
+          </div>
 
-      <BlogPostCard post={recentPost} compact={true} />
+          <BlogPostCard post={recentPost} compact={true} />
+        </section>
+      )}
 
       <div className="text-center pt-2">
         <p className="text-sm opacity-80 italic">
@@ -109,6 +152,31 @@ export default function RecentBlogSection() {
           to share knowledge that's both insightful and accessible.
         </p>
       </div>
-    </section>
+      {/* Recent Publication Section */}
+      {recentPublication && (
+        <section className="space-y-6">
+          <div className="flex justify-between items-center">
+            <h2 className="text-3xl font-bold">Recent Paper</h2>
+            <Link
+              to="/publications"
+              className="px-4 py-2 rounded-full bg-[color-mix(in_oklch,var(--color-primary)_10%,transparent)] hover:bg-[color-mix(in_oklch,var(--color-primary)_15%,transparent)] text-sm transition-colors"
+            >
+              View all →
+            </Link>
+          </div>
+
+          <div className="prose prose-adaptive prose-lg max-w-none mb-6">
+            <p className="leading-relaxed">
+              My research work includes academic papers, technical reports, and
+              other scholarly publications. These represent my contributions to
+              the scientific community and areas where I've focused my research
+              efforts.
+            </p>
+          </div>
+
+          <PublicationCard post={recentPublication} compact={true} />
+        </section>
+      )}
+    </div>
   );
 }

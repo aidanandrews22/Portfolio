@@ -1,9 +1,10 @@
 import { motion } from "framer-motion";
 import { useState, useEffect, useMemo } from "react";
 import FilterDropdown from "../components/FilterDropdown";
-import BlogPostCard, { BlogPost } from "../components/BlogPostCard";
+import PublicationCard from "../components/PublicationCard";
+import { BlogPost } from "../components/BlogPostCard";
 
-export default function Blog() {
+export default function Publications() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -17,50 +18,52 @@ export default function Blog() {
       .then((res) => res.json())
       .then((data) => {
         try {
-          // Filter out posts with "Pub" tag
-          const blogPosts = data.filter((post: BlogPost) => {
+          // Filter for publications (posts with "Pub" tag)
+          const publicationPosts = data.filter((post: BlogPost) => {
             try {
               if (Array.isArray(post.tags)) {
-                return !post.tags.includes("Pub");
+                return post.tags.includes("Pub");
               } else if (typeof post.tags === "string") {
                 try {
                   // Try to parse if it's a JSON string
                   const parsedTags = JSON.parse(post.tags);
-                  return !(
+                  return (
                     Array.isArray(parsedTags) && parsedTags.includes("Pub")
                   );
                 } catch {
-                  // If not parseable, check if the string is not "Pub"
-                  return post.tags !== "Pub";
+                  // If not parseable, check if the string is "Pub"
+                  return post.tags === "Pub";
                 }
               }
-              return true; // Include posts without tags
+              return false;
             } catch (err) {
               console.error("Error processing post tags:", post.id, err);
-              return true; // Include posts if tag processing fails
+              return false;
             }
           });
 
-          // Sort posts by date, newest first
-          const sortedPosts = blogPosts.sort((a: BlogPost, b: BlogPost) => {
-            try {
-              return new Date(b.date).getTime() - new Date(a.date).getTime();
-            } catch (err) {
-              console.error("Error sorting post dates:", err);
-              return 0; // Keep original order if date comparison fails
-            }
-          });
+          // Sort publications by date, newest first
+          const sortedPosts = publicationPosts.sort(
+            (a: BlogPost, b: BlogPost) => {
+              try {
+                return new Date(b.date).getTime() - new Date(a.date).getTime();
+              } catch (err) {
+                console.error("Error sorting publication dates:", err);
+                return 0; // Keep original order if date comparison fails
+              }
+            },
+          );
           setPosts(sortedPosts);
         } catch (err) {
-          console.error("Error processing posts data:", err);
+          console.error("Error processing publications data:", err);
           setPosts([]); // Set empty array to avoid undefined errors
         } finally {
           setLoading(false);
         }
       })
       .catch((error) => {
-        console.error("Error fetching blog posts:", error);
-        setError("Failed to load blog posts. Please try again later.");
+        console.error("Error fetching publications:", error);
+        setError("Failed to load publications. Please try again later.");
         setLoading(false);
       });
   }, []);
@@ -72,13 +75,14 @@ export default function Blog() {
         try {
           if (post.tags && Array.isArray(post.tags) && post.tags.length > 0) {
             post.tags.forEach((tag) => {
-              if (tag && typeof tag === "string") {
+              // Exclude the "Pub" tag from the filter options
+              if (tag && typeof tag === "string" && tag !== "Pub") {
                 tags.add(tag);
               }
             });
           }
         } catch (err) {
-          console.error("Error processing tags for post:", post.id, err);
+          console.error("Error processing tags for publication:", post.id, err);
         }
       });
       return Array.from(tags).sort();
@@ -106,7 +110,7 @@ export default function Blog() {
   const filteredPosts = useMemo(() => {
     try {
       return posts.filter((post) => {
-        // Filter by tag if selected
+        // Filter by tag if selected (excluding the Pub tag)
         const matchesTag =
           !selectedTag ||
           (post.tags &&
@@ -121,7 +125,7 @@ export default function Blog() {
         return matchesTag && matchesType;
       });
     } catch (err) {
-      console.error("Error filtering posts:", err);
+      console.error("Error filtering publications:", err);
       return posts; // Return all posts if filtering fails
     }
   }, [posts, selectedTag, selectedType]);
@@ -129,7 +133,7 @@ export default function Blog() {
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-[50vh]">
-        Loading posts...
+        Loading publications...
       </div>
     );
   }
@@ -150,7 +154,7 @@ export default function Blog() {
       className="max-w-3xl mx-auto space-y-8"
     >
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
-        <h1 className="text-4xl font-bold">Blog</h1>
+        <h1 className="text-4xl font-bold">Publications</h1>
         <div className="flex flex-wrap gap-3">
           {availableTags.length > 0 && (
             <FilterDropdown
@@ -174,7 +178,8 @@ export default function Blog() {
       {filteredPosts.length === 0 ? (
         <div className="text-center py-10">
           <p>
-            No posts found{selectedTag ? ` with tag "${selectedTag}"` : ""}
+            No publications found
+            {selectedTag ? ` with tag "${selectedTag}"` : ""}
             {selectedType ? ` of type "${selectedType}"` : ""}.
           </p>
           {(selectedTag || selectedType) && (
@@ -192,7 +197,7 @@ export default function Blog() {
       ) : (
         <div className="grid gap-6">
           {filteredPosts.map((post, index) => (
-            <BlogPostCard key={post.id || index} post={post} index={index} />
+            <PublicationCard key={post.id || index} post={post} index={index} />
           ))}
         </div>
       )}
