@@ -14,6 +14,7 @@ import CurrentlyBuildingSection from "../components/about/CurrentlyBuilding";
 import RecentBlogSection from "../components/about/RecentBlogPost";
 import Socials from "../components/about/Socials";
 
+import GitHubChart from "../components/Git";
 const currentProjectIds = [
   "voxed",
   "illini-plan",
@@ -67,6 +68,7 @@ export default function About() {
       className="max-w-3xl mx-auto space-y-16 pb-12"
     >
       <TLDR />
+      <GitHubChart username="aidanandrews22" />
       <AboutSection />
       <CurrentlyBuildingSection />
       <WorkExperienceSection />
