@@ -1,11 +1,13 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useSearchParams } from "react-router-dom";
 
 interface FilterDropdownProps {
   options: string[];
   selectedOption: string;
   onSelect: (option: string) => void;
   label: string;
+  paramName?: string;
 }
 
 export default function FilterDropdown({
@@ -13,9 +15,25 @@ export default function FilterDropdown({
   selectedOption,
   onSelect,
   label,
+  paramName,
 }: FilterDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const handleSelect = (option: string) => {
+    onSelect(option);
+    if (paramName) {
+      const newSearchParams = new URLSearchParams(searchParams);
+      if (option) {
+        newSearchParams.set(paramName, option);
+      } else {
+        newSearchParams.delete(paramName);
+      }
+      setSearchParams(newSearchParams);
+    }
+    setIsOpen(false);
+  };
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -68,10 +86,7 @@ export default function FilterDropdown({
             <ul className="py-1 max-h-[60vh] overflow-y-auto">
               <li>
                 <button
-                  onClick={() => {
-                    onSelect("");
-                    setIsOpen(false);
-                  }}
+                  onClick={() => handleSelect("")}
                   className={`w-full px-4 py-2 text-left hover:bg-[color-mix(in_oklch,var(--color-primary)_10%,transparent)] text-sm sm:text-base
                            ${!selectedOption ? "bg-[color-mix(in_oklch,var(--color-primary)_5%,transparent)] cursor-pointer" : ""}`}
                 >
@@ -81,10 +96,7 @@ export default function FilterDropdown({
               {options.map((option) => (
                 <li key={option}>
                   <button
-                    onClick={() => {
-                      onSelect(option);
-                      setIsOpen(false);
-                    }}
+                    onClick={() => handleSelect(option)}
                     className={`cursor-pointer w-full px-4 py-2 text-left hover:bg-[color-mix(in_oklch,var(--color-primary)_10%,transparent)] text-sm sm:text-base
                              ${selectedOption === option ? "bg-[color-mix(in_oklch,var(--color-primary)_5%,transparent)] cursor-pointer" : ""}`}
                   >

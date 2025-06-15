@@ -10,57 +10,75 @@ export default function TLDR() {
     <div className="p-6 max-w-xl mx-auto">
       <h2 className="text-3xl font-bold mb-4">TL;DR</h2>
       <p>
-        Studying
+        <b>Currently I am...</b> <br /> studying
+        {" "}
         <a
           onClick={() => scrollToSection("education")}
           className="text-[var(--color-primary)] hover:underline cursor-pointer"
         >
-          {" "}
           physics at UIUC
         </a>
-        , research
+        , researching
+        {" "}
         <a
           onClick={() => scrollToSection("berkeley")}
           className="text-[var(--color-primary)] hover:underline cursor-pointer"
         >
-          {" "}
           AI/ML at UC Berkeley
         </a>
-        ,
+        , a 2x AI Engineer at
+        {" "}
         <a
           onClick={() => scrollToSection("aifarms")}
           className="text-[var(--color-primary)] hover:underline cursor-pointer"
         >
-          {" "}
-          AI/ML Engineer at AIFARMS and NCSA
+          AIFARMS/NCSA
         </a>
-        , building
+        {" "}and
+        {" "}
         <a
-          onClick={() => scrollToSection("voxed")}
+          onClick={() => scrollToSection("brighttech")}
           className="text-[var(--color-primary)] hover:underline cursor-pointer"
         >
-          {" "}
-          voxed.ai
+          Brighttech AI
         </a>
-        ,
+        , building
+        {" "}
+        <a
+          onClick={() => scrollToSection("aganswers")}
+          className="text-[var(--color-primary)] hover:underline cursor-pointer"
+        >
+          AgAnswers.ai
+        </a>
+        , and
+        {" "}
+        <a
+          href="/reading-list?filter=Berkeley+Research"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-[var(--color-primary)] hover:underline"
+        >
+          reading
+        </a>
+        <br /><b>Not so currently, I am...</b><br />
+        {" "}
         <a
           href="https://www.illinihockey.com/roster/aidan-andrews-m0o81et2"
           target="_blank"
           rel="noopener noreferrer"
           className="text-[var(--color-primary)] hover:underline"
         >
-          {" "}
-          play hockey for UIUC d1
+          playing hockey for UIUC d1
         </a>
         ,
+        {" "}
         <a
           onClick={() => scrollToSection("aaxiom")}
           className="text-[var(--color-primary)] hover:underline cursor-pointer"
         >
-          {" "}
-          founder of aaxiom.org
+         the founder of aaxiom.org
         </a>
-        , and play competitive chess
+        , and playing competitive chess (although I do currently play a lot of blitz)
       </p>
     </div>
   );

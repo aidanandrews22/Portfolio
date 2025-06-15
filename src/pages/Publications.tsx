@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { useState, useEffect, useMemo } from "react";
+import { useSearchParams } from "react-router-dom";
 import FilterDropdown from "../components/FilterDropdown";
 import PublicationCard from "../components/PublicationCard";
 import { BlogPost } from "../components/BlogPostCard";
@@ -10,6 +11,15 @@ export default function Publications() {
   const [error, setError] = useState<string | null>(null);
   const [selectedTag, setSelectedTag] = useState("");
   const [selectedType, setSelectedType] = useState("");
+  const [searchParams] = useSearchParams();
+
+  // Initialize filters from URL parameters
+  useEffect(() => {
+    const tagFromUrl = searchParams.get("tag") || "";
+    const typeFromUrl = searchParams.get("type") || "";
+    setSelectedTag(tagFromUrl);
+    setSelectedType(typeFromUrl);
+  }, [searchParams]);
 
   useEffect(() => {
     fetch(
@@ -162,6 +172,7 @@ export default function Publications() {
               selectedOption={selectedTag}
               onSelect={setSelectedTag}
               label="Tag"
+              paramName="tag"
             />
           )}
           {availableTypes.length > 0 && (
@@ -170,6 +181,7 @@ export default function Publications() {
               selectedOption={selectedType}
               onSelect={setSelectedType}
               label="Type"
+              paramName="type"
             />
           )}
         </div>

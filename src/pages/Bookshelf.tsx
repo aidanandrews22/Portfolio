@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import FilterDropdown from "../components/FilterDropdown";
 
 interface Book {
@@ -405,6 +406,13 @@ const books: Book[] = [
 
 export default function Bookshelf() {
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [searchParams] = useSearchParams();
+
+  // Initialize category from URL parameters
+  useEffect(() => {
+    const categoryFromUrl = searchParams.get("category") || "";
+    setSelectedCategory(categoryFromUrl);
+  }, [searchParams]);
 
   // Get unique categories
   const categories = useMemo(() => {
@@ -435,6 +443,7 @@ export default function Bookshelf() {
             selectedOption={selectedCategory}
             onSelect={setSelectedCategory}
             label="Category"
+            paramName="category"
           />
         </div>
         <p className="text-lg">

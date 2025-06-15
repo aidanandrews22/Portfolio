@@ -18,7 +18,7 @@ export default function WorkExperienceSection() {
                   className="w-full h-full object-contain rounded-full"
                 />
               </div>
-              <p className="text-sm mt-2 opacity-75">May 2025 - Present</p>
+              <p className="text-sm mt-2 opacity-75">March 2025 - Present</p>
             </div>
 
             <div className="md:w-3/4">
@@ -27,7 +27,34 @@ export default function WorkExperienceSection() {
                 AI/ML Research Intern
               </p>
 
-              <p className="mt-3 text-sm/relaxed">Incoming summer 2025.</p>
+              <p className="mt-3 text-sm/relaxed">
+                Currently researching the use of a GPT-2-style causal transformer
+                to learn a control policy for an inverted pendulum via sequence
+                modeling. The model is trained on full pendulum trajectories,
+                learning to output the correct control action at each step given
+                the history of states and actions. We employ methods such as
+                in-context learning,{" "}
+                <a
+                  href="https://arxiv.org/pdf/2410.23916v1"
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="text-[color-mix(in_oklch,var(--color-primary)_90%,currentColor)] hover:underline">
+                    DAgger
+                </a>, and model-based control to improve the model's performance.
+                <br />
+                Lab: Ranade Research Lab (Prof. Gireeja Ranade)
+                <br />
+                Sitting Lab:{" "}
+                <a
+                  href="https://citris-uc.org/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[color-mix(in_oklch,var(--color-primary)_90%,currentColor)] hover:underline"
+                >
+                  CITRIS and the Banatao Institute
+                </a>{" "}
+                (Prof. Claire Tomlin)                
+              </p>
 
               <div className="mt-4 flex flex-wrap gap-2">
                 <a
@@ -37,6 +64,114 @@ export default function WorkExperienceSection() {
                   className="inline-flex items-center text-xs px-3 py-1 rounded-full bg-[color-mix(in_oklch,var(--color-primary)_10%,transparent)] hover:bg-[color-mix(in_oklch,var(--color-primary)_15%,transparent)] transition-colors"
                 >
                   <span>Prof. Gireeja Ranade</span>
+                </a>
+                <a
+                  href="https://www2.eecs.berkeley.edu/Faculty/Homepages/tomlin.html"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center text-xs px-3 py-1 rounded-full bg-[color-mix(in_oklch,var(--color-primary)_10%,transparent)] hover:bg-[color-mix(in_oklch,var(--color-primary)_15%,transparent)] transition-colors"
+                >
+                  <span>Prof. Claire Tomlin</span>
+                </a>
+                <a 
+                  href="/reading-list?filter=Berkeley+Research"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center text-xs px-3 py-1 rounded-full bg-[color-mix(in_oklch,var(--color-primary)_10%,transparent)] hover:bg-[color-mix(in_oklch,var(--color-primary)_15%,transparent)] transition-colors"
+                >
+                  <span>Reading List →</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        {/* BRIGHTTECH */}
+        <div
+          id="brighttech"
+          className="p-6 rounded-xl border border-transparent hover:border hover:border-[color-mix(in_oklch,var(--color-primary)_30%,transparent)] hover:shadow-lg"
+        >
+          <div className="flex flex-col md:flex-row md:items-start gap-4">
+            <div className="md:w-1/4">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[color-mix(in_oklch,var(--color-primary)_15%,transparent)]">
+                <img
+                  src="/assets/About/bright.jpeg"
+                  alt="Brighttech Logo"
+                  className="w-full h-full object-contain rounded-full"
+                />
+              </div>
+              <p className="text-sm mt-2 opacity-75">May 2025 - Present</p>
+            </div>
+
+            <div className="md:w-3/4">
+              <h3 className="text-xl font-semibold">Brighttech AI</h3>
+              <p className="text-base font-medium text-[color-mix(in_oklch,var(--color-primary)_90%,currentColor)]">
+                AI Engineer
+              </p>
+
+              <p className="mt-3 text-sm/relaxed">
+                Building enterprise-grade AI systems (primarily agentic) for
+                internal workflows at industry-leading organizations.
+                <br />
+                Examples:
+                <br />
+                - Research agent systems for pharma drug discovery workflows
+                <br />
+                - Customer acquisition agents leveraging proprietary data and
+                tools for Fortune 500 companies
+                <br />
+                - Agent-powered sales platforms for personalized outreach
+                optimization
+              </p>
+
+              <div className="mt-4 flex flex-wrap gap-2">
+                <a
+                  href="https://brighttech.ai/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center text-xs px-3 py-1 rounded-full bg-[color-mix(in_oklch,var(--color-primary)_10%,transparent)] hover:bg-[color-mix(in_oklch,var(--color-primary)_15%,transparent)] transition-colors"
+                >
+                  <span>View Site →</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        {/* AGANSWERS */}
+        <div
+          id="aganswers"
+          className="p-6 rounded-xl border border-transparent hover:border hover:border-[color-mix(in_oklch,var(--color-primary)_30%,transparent)] hover:shadow-lg"
+        >
+          <div className="flex flex-col md:flex-row md:items-start gap-4">
+            <div className="md:w-1/4">
+              <div className="inline-flex items-center justify-center w-16 h-16">
+                <img
+                  src="/assets/About/aganswers.jpg"
+                  alt="AgAnswers Logo"
+                  className="w-full h-full object-contain"
+                />
+              </div>
+              <p className="text-sm mt-2 opacity-75">May 2025 - Present</p>
+            </div>
+
+            <div className="md:w-3/4">
+              <h3 className="text-xl font-semibold">AgAnswers.ai</h3>
+              <p className="text-base font-medium text-[color-mix(in_oklch,var(--color-primary)_90%,currentColor)]">
+                Founding Engineer
+              </p>
+
+              <p className="mt-3 text-sm/relaxed">
+                AgAnswers.ai is a startup that provides AI-powered solutions for
+                the agriculture industry. More later.
+              </p>
+
+              <div className="mt-4 flex flex-wrap gap-2">
+                <a
+                  href="https://aganswers.ai/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center text-xs px-3 py-1 rounded-full bg-[color-mix(in_oklch,var(--color-primary)_10%,transparent)] hover:bg-[color-mix(in_oklch,var(--color-primary)_15%,transparent)] transition-colors"
+                >
+                  <span>View Site →</span>
                 </a>
               </div>
             </div>

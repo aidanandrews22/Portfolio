@@ -11,7 +11,7 @@ export default function CurrentlyBuildingSection() {
               <span className="relative inline-flex rounded-full h-3 w-3 bg-[var(--color-primary)]"></span>
             </span>
           </span>
-          Currently Building
+          Recent Activity
         </h2>
       </div>
 
@@ -32,7 +32,7 @@ export default function CurrentlyBuildingSection() {
 
         {/* Content */}
         <div className="md:w-1/2">
-          <h3 className="text-2xl font-bold mb-2">Voxed.ai</h3>
+          <h3 className="text-2xl font-bold mb-2">Voxed.ai (acquired in May 2025)</h3>
           <div className="flex flex-wrap gap-2 mb-4">
             <span className="px-3 py-1 rounded-full text-xs bg-[color-mix(in_oklch,var(--color-primary)_20%,transparent)] animate-pulse">
               aaxiom venture
