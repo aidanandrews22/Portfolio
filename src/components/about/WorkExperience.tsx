@@ -29,8 +29,8 @@ export default function WorkExperienceSection() {
 
               <p className="mt-3 text-sm/relaxed">
                 Currently researching the use of a GPT-2-style causal transformer
-                to learn a control policy for an inverted pendulum via sequence
-                modeling. The model is trained on full pendulum trajectories,
+                to learn control policies for various systems via sequence
+                modeling. The model is trained on full system trajectories,
                 learning to output the correct control action at each step given
                 the history of states and actions. We employ methods such as
                 in-context learning,{" "}
