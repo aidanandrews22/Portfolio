@@ -10,7 +10,7 @@ import ProjectsSection from "../components/about/ProjectSec";
 import WorkExperienceSection from "../components/about/WorkExperience";
 import EducationSection from "../components/about/Education";
 import TechnicalExpertiseSection from "../components/about/TechnicalExpertise";
-import CurrentlyBuildingSection from "../components/about/CurrentlyBuilding";
+import RecentActivity from "../components/about/RecentActivity";
 import RecentBlogSection from "../components/about/RecentBlogPost";
 import Socials from "../components/about/Socials";
 
@@ -68,9 +68,9 @@ export default function About() {
       className="max-w-3xl mx-auto space-y-16 pb-12"
     >
       <TLDR />
+      <RecentActivity />
       <GitHubChart username="aidanandrews22" />
       <AboutSection />
-      <CurrentlyBuildingSection />
       <WorkExperienceSection />
       <EducationSection />
       <ProjectsSection
