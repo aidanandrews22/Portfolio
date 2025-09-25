@@ -13,6 +13,7 @@ import TechnicalExpertiseSection from "../components/about/TechnicalExpertise";
 import RecentActivity from "../components/about/RecentActivity";
 import RecentBlogSection from "../components/about/RecentBlogPost";
 import Socials from "../components/about/Socials";
+import ImportantDocuments from "../components/about/ImportantDocuments";
 
 import GitHubChart from "../components/Git";
 const currentProjectIds = [
@@ -68,6 +69,7 @@ export default function About() {
       className="max-w-3xl mx-auto space-y-16 pb-12"
     >
       <TLDR />
+      <ImportantDocuments />
       <RecentActivity />
       <GitHubChart username="aidanandrews22" />
       <AboutSection />

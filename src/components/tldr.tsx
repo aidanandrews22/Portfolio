@@ -26,21 +26,13 @@ export default function TLDR() {
         >
           AI/ML at UC Berkeley
         </a>
-        , a 2x AI Engineer at
+        , an AI Engineer at
         {" "}
         <a
           onClick={() => scrollToSection("aifarms")}
           className="text-[var(--color-primary)] hover:underline cursor-pointer"
         >
-          AIFARMS/NCSA
-        </a>
-        {" "}and
-        {" "}
-        <a
-          onClick={() => scrollToSection("brighttech")}
-          className="text-[var(--color-primary)] hover:underline cursor-pointer"
-        >
-          Brighttech AI
+          NCSA
         </a>
         , building
         {" "}
@@ -49,6 +41,13 @@ export default function TLDR() {
           className="text-[var(--color-primary)] hover:underline cursor-pointer"
         >
           AgAnswers.ai
+        </a>
+        ,
+        {" "}
+        <a
+          className="text-adaptive"
+        >
+          researching robotics at UIUC
         </a>
         , and
         {" "}
