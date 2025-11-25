@@ -27,6 +27,7 @@ export default function App() {
 
   useEffect(() => {
     // Check if user has a stored preference
+    theme;
     const storedTheme = localStorage.getItem("color-theme") as
       | "light"
       | "dark"
@@ -51,18 +52,6 @@ export default function App() {
       document.documentElement.classList.add(`force-${newTheme}`);
       localStorage.setItem("color-theme", newTheme);
     }
-  };
-
-  const toggleTheme = () => {
-    let newTheme: "light" | "dark" | "system";
-
-    // Cycle through themes: system -> light -> dark -> system
-    if (theme === "system") newTheme = "light";
-    else if (theme === "light") newTheme = "dark";
-    else newTheme = "system";
-
-    setTheme(newTheme);
-    applyTheme(newTheme);
   };
 
   // Apply color scheme adaptive class to html element
