@@ -9,19 +9,25 @@ export default function ImportantDocuments() {
         {
             name: "Aidan_Andrews_Official_Transcript.pdf",
             label: "Official-Transcript",
-            lastUpdated: "2024-12-25",
+            lastUpdated: "2025-10",
             group: "transcript",
         },
         {
             name: "Aidan_Andrews_Unofficial_Transcript.pdf",
             label: "Unofficial-Transcript",
-            lastUpdated: "2025-01-06",
+            lastUpdated: "2025-10",
             group: "transcript",
         },
         {
             name: "Aidan_Andrews_Resume.pdf",
             label: "Resume",
-            lastUpdated: "2025-01-06",
+            lastUpdated: "2025-10",
+            group: "other",
+        },
+        {
+            name: "Aidan_Andrews_Research_Resume.pdf",
+            label: "Research Resume",
+            lastUpdated: "2025-12",
             group: "other",
         },
         // {

@@ -1,5 +1,3 @@
-import Zoom from 'react-medium-image-zoom';
-
 export default function RecentActivity() {
   return (
     <section className="space-y-6 mb-12 pb-8 border-b border-[color-mix(in_oklch,var(--color-primary)_10%,transparent)]">
@@ -16,7 +14,7 @@ export default function RecentActivity() {
       </div>
 
       {/* Research Section */}
-      <div className="flex flex-col items-center gap-8 mb-12 pb-8 border-b border-[color-mix(in_oklch,var(--color-primary)_10%,transparent)]">
+      <div className="flex flex-col items-center gap-8 mb-12">
         {/* Video */}
         <div className="w-full max-w-2xl">
           <div className="aspect-video w-full rounded-lg overflow-hidden">
@@ -99,10 +97,15 @@ export default function RecentActivity() {
           </div>
         </div>
       </div>
+    </section>
+  );
+}
 
-      <div className="flex flex-col md:flex-row items-center gap-8">
+// import Zoom from 'react-medium-image-zoom';
+
+{/* <div className="flex flex-col md:flex-row items-center gap-8"> */}
         {/* Image */}
-        <div className="md:w-1/2 flex justify-center">
+        {/* <div className="md:w-1/2 flex justify-center">
           <div className="w-full max-w-md">
             <Zoom>
               <img
@@ -113,10 +116,10 @@ export default function RecentActivity() {
               />
             </Zoom>
           </div>
-        </div>
+        </div> */}
 
         {/* Content */}
-        <div className="md:w-1/2">
+        {/* <div className="md:w-1/2">
           <h3 className="text-2xl font-bold mb-2">Voxed.ai (acquired in May 2025)</h3>
           <div className="flex flex-wrap gap-2 mb-4">
             <span className="px-3 py-1 rounded-full text-xs bg-[color-mix(in_oklch,var(--color-primary)_20%,transparent)] animate-pulse">
@@ -156,7 +159,4 @@ export default function RecentActivity() {
             </svg>
           </a>
         </div>
-      </div>
-    </section>
-  );
-}
+      </div> */}

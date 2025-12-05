@@ -99,6 +99,7 @@ export default function About() {
     >
       <TLDR />
       <ImportantDocuments />
+      <RecentActivity />
       <ResearchSection
         research={featuredResearch}
         loading={researchLoading}
@@ -107,7 +108,6 @@ export default function About() {
       <AboutSection />
       <WorkExperienceSection />
       <EducationSection />
-      <RecentActivity />
       <GitHubChart username="aidanandrews22" />
       <ProjectsSection
         projects={currentProjects}
