@@ -39,10 +39,12 @@ const VideoCarousel: React.FC<VideoCarouselProps> = ({ title, videos }) => {
                   autoPlay
                   muted
                   playsInline
+                  preload="metadata"
                   className="h-full w-auto object-contain"
                   style={{ height: VIDEO_CAROUSEL_HEIGHT }}
-                  src={item.videoUrl}
-                />
+                >
+                  <source src={item.videoUrl} type="video/mp4" />
+                </video>
               </div>
               <p className="mt-2 text-xs text-[color-mix(in_oklch,currentColor_60%,transparent)] text-center">
                 {item.label}
