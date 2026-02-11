@@ -7,6 +7,8 @@ const Tag: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   </span>
 );
 
+const VIDEO_CAROUSEL_HEIGHT = 240; // px - constant height, aspect ratio preserved via object-contain
+
 interface VideoCarouselProps {
   title: string;
   videos: { label: string; videoUrl: string }[];
@@ -26,17 +28,19 @@ const VideoCarousel: React.FC<VideoCarouselProps> = ({ title, videos }) => {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.4, delay: index * 0.05 }}
-              className="flex-shrink-0 w-80 snap-start"
+              className="flex-shrink-0 snap-start"
             >
-              <div className="bg-surface rounded-lg overflow-hidden border border-adaptive shadow-md hover:shadow-xl transition-shadow">
+              <div
+                className="bg-surface rounded-lg overflow-hidden border border-adaptive shadow-md hover:shadow-xl transition-shadow inline-flex items-center justify-center"
+                style={{ height: VIDEO_CAROUSEL_HEIGHT, width: 'fit-content' }}
+              >
                 <video
                   loop
                   autoPlay
                   muted
                   playsInline
-                  // Remove aspect-video, inherit aspect ratio from video file
-                  className="w-full object-cover block"
-                  style={{ aspectRatio: 'auto' }}
+                  className="h-full w-auto object-contain"
+                  style={{ height: VIDEO_CAROUSEL_HEIGHT }}
                   src={item.videoUrl}
                 />
               </div>
@@ -55,23 +59,23 @@ export default function G1Research() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-  const baseUrl = "https://raw.githubusercontent.com/aidanandrews22/aidanandrews22.github.io/bac3e9217d7c8f968814961b15bf5273ac28b56d/content/images/research/g1/";
+  const videoPath = "/research/g1";
   const teleopVideos = [
-    { label: "Episode 0", videoUrl: `${baseUrl}/teleop-episode_000000.mp4` },
-    { label: "Episode 4", videoUrl: `${baseUrl}/teleop-episode_000004.mp4` },
-    { label: "Episode 8", videoUrl: `${baseUrl}/teleop-episode_000008.mp4` },
-    { label: "Episode 10", videoUrl: `${baseUrl}/teleop-episode_000010.mp4` },
+    { label: "Episode 0", videoUrl: `${videoPath}/teleop-episode_000000.mp4` },
+    { label: "Episode 4", videoUrl: `${videoPath}/teleop-episode_000004.mp4` },
+    { label: "Episode 8", videoUrl: `${videoPath}/teleop-episode_000008.mp4` },
+    { label: "Episode 10", videoUrl: `${videoPath}/teleop-episode_000010.mp4` },
   ];
 
   const inferenceVideos = [
-    { label: "Rollout 1", videoUrl: `${baseUrl}/inference_video_20251213_002906_main.mp4` },
-    { label: "Rollout 2", videoUrl: `${baseUrl}/inference_video_20251213_003200_main.mp4` },
-    { label: "Rollout 3", videoUrl: `${baseUrl}/inference_video_20251213_030702_main.mp4` },
+    { label: "Rollout 1", videoUrl: `${videoPath}/inference_video_20251213_002906_main.mp4` },
+    { label: "Rollout 2", videoUrl: `${videoPath}/inference_video_20251213_003200_main.mp4` },
+    { label: "Rollout 3", videoUrl: `${videoPath}/inference_video_20251213_030702_main.mp4` },
   ];
 
   const finetuningVideos = [
-    { label: "Front Camera", videoUrl: `${baseUrl}/large_ft_front_camera.mp4` },
-    { label: "Robot Camera", videoUrl: `${baseUrl}/large_ft_robot_camera.mp4` },
+    { label: "Front Camera", videoUrl: `${videoPath}/large_ft_front_camera.mp4` },
+    { label: "Robot Camera", videoUrl: `${videoPath}/large_ft_robot_camera.mp4` },
   ];
 
   return (
@@ -107,7 +111,7 @@ export default function G1Research() {
               muted
               playsInline
               className="w-full h-full object-cover"
-              src="https://raw.githubusercontent.com/aidanandrews22/aidanandrews22.github.io/4967363d7ff70c8d4e64c549589e5c3dc6ca4dd5/content/images/research/g1.mp4"
+              src="/research/g1/g1.mp4"
             />
           </div>
           <p className="text-center text-xs text-[color-mix(in_oklch,currentColor_50%,transparent)] mb-16">
