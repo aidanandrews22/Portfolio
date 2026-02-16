@@ -18,15 +18,15 @@ export default function ImportantDocuments() {
             lastUpdated: "2025-10",
             group: "transcript",
         },
-        {
-            name: "Aidan_Andrews_Resume.pdf",
-            label: "Resume",
-            lastUpdated: "2025-10",
-            group: "other",
-        },
+        // {
+        //     name: "Aidan_Andrews_Resume.pdf",
+        //     label: "Resume",
+        //     lastUpdated: "2025-10",
+        //     group: "other",
+        // },
         {
             name: "Aidan_Andrews_Research_Resume.pdf",
-            label: "Research Resume",
+            label: "Resume",
             lastUpdated: "2025-12",
             group: "other",
         },
