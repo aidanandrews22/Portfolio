@@ -49,12 +49,13 @@ export default function NavigationBar() {
     <div className="top-0">
       <nav
         aria-label="Primary"
-        className="border-b border-[color-mix(in_oklch,var(--color-primary)_5%,transparent)] bg-background/80 backdrop-blur-sm relative z-50"
+        className="relative z-50 bg-transparent py-3 sm:py-4"
       >
-        <div className="container mx-auto px-4 max-w-7xl">
-          <div className="flex justify-center items-center py-2 sm:py-3 min-h-14">
-            <NavigationMenu className="max-w-full">
-              <NavigationMenuList className="max-w-full justify-start sm:justify-center overflow-x-auto overflow-y-visible nav-x-scroll touch-pan-x gap-1 sm:gap-2 pb-1">
+        <div className="container mx-auto max-w-7xl px-4">
+          <div className="flex justify-center">
+            <div className="inline-flex max-w-full rounded-full border border-adaptive bg-background/80 p-1 shadow-[0_1px_3px_oklch(0_0_0/0.06)] backdrop-blur-xl supports-[backdrop-filter]:bg-background/65">
+              <NavigationMenu className="max-w-full">
+                <NavigationMenuList className="max-w-full items-center justify-start gap-0.5 overflow-x-auto overflow-y-visible nav-x-scroll touch-pan-x px-0.5 sm:justify-center sm:gap-1">
                 <NavigationMenuItem>
                   <NavigationMenuLink
                     active={location.pathname === "/about"}
@@ -71,7 +72,7 @@ export default function NavigationBar() {
                         className={cn(
                           props.className,
                           "no-underline",
-                          location.pathname === "/about" && "font-semibold",
+                          location.pathname === "/about" && "font-semibold text-[var(--color-text)]",
                         )}
                       />
                     )}
@@ -96,7 +97,7 @@ export default function NavigationBar() {
                           props.className,
                           "no-underline",
                           location.pathname.startsWith("/research") &&
-                            "font-semibold",
+                            "font-semibold text-[var(--color-text)]",
                         )}
                       />
                     )}
@@ -121,7 +122,7 @@ export default function NavigationBar() {
                           props.className,
                           "no-underline",
                           location.pathname.startsWith("/projects") &&
-                            "font-semibold",
+                            "font-semibold text-[var(--color-text)]",
                         )}
                       />
                     )}
@@ -132,15 +133,17 @@ export default function NavigationBar() {
 
                 <NavigationMenuItem>
                   <NavigationMenuTrigger
-                    className={cn(isWritingActive && "font-semibold")}
+                    className={cn(
+                      isWritingActive && "font-semibold text-[var(--color-text)]",
+                    )}
                   >
                     {displayText}
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
                     <ul className="m-0 flex list-none flex-col gap-0.5 p-1">
                       {writingSubLinks.length === 0 ? (
-                        <li className="px-3 py-2 text-sm text-[color-mix(in_oklch,var(--color-text)_70%,transparent)]">
-                          You’re on this section — pick another from the site
+                        <li className="px-3 py-2 text-sm text-[color-mix(in_oklch,var(--color-text)_58%,transparent)]">
+                          You're on this section — pick another from the site
                           menu.
                         </li>
                       ) : (
@@ -175,6 +178,7 @@ export default function NavigationBar() {
                 <NavigationMenuPopup />
               </NavigationMenuPositioner>
             </NavigationMenu>
+            </div>
           </div>
         </div>
       </nav>

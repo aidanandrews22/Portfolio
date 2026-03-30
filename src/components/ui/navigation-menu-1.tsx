@@ -56,15 +56,13 @@ function NavigationMenuItem({
 
 const navigationMenuTriggerStyle = cva(
   [
-    "group inline-flex h-9 min-h-11 w-max shrink-0 items-center justify-center rounded-md px-3 py-2 text-sm font-medium",
-    "text-[var(--color-text)] outline-none transition-[color,background-color,box-shadow] duration-200",
-    "hover:bg-[color-mix(in_oklch,var(--color-primary)_10%,var(--color-surface))] hover:text-[var(--color-primary)]",
-    "focus:bg-[color-mix(in_oklch,var(--color-primary)_8%,var(--color-surface))] focus:text-[var(--color-primary)]",
-    "focus-visible:ring-[3px] focus-visible:ring-[color-mix(in_oklch,var(--color-primary)_35%,transparent)] focus-visible:outline-1 focus-visible:outline-offset-0",
+    "group inline-flex min-h-11 w-max shrink-0 items-center justify-center rounded-full px-4 py-2 text-sm font-medium",
+    "text-[var(--color-text)] outline-none transition-[color,background-color] duration-200",
+    "hover:bg-clap",
+    "focus-visible:ring-2 focus-visible:ring-[color-mix(in_oklch,var(--color-text)_12%,transparent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-background)] focus-visible:outline-none",
     "disabled:pointer-events-none disabled:opacity-50",
-    "data-[popup-open]:bg-[color-mix(in_oklch,var(--color-primary)_12%,var(--color-surface))] data-[popup-open]:text-[var(--color-primary)]",
-    "data-[popup-open]:hover:bg-[color-mix(in_oklch,var(--color-primary)_14%,var(--color-surface))]",
-    "data-[popup-open]:focus:bg-[color-mix(in_oklch,var(--color-primary)_14%,var(--color-surface))]",
+    "data-[popup-open]:bg-clap",
+    "data-[active]:bg-[color-mix(in_oklch,var(--color-text)_8%,var(--color-surface))]",
   ].join(" "),
 );
 
@@ -81,7 +79,7 @@ function NavigationMenuTrigger({
     >
       {children}{" "}
       <ChevronDownIcon
-        className="relative top-px ms-1 size-3 transition-transform duration-300 motion-reduce:transition-none group-data-[popup-open]:rotate-180"
+        className="relative top-px ms-1 size-3 text-[color-mix(in_oklch,var(--color-text)_40%,transparent)] transition-transform duration-300 motion-reduce:transition-none group-data-[popup-open]:rotate-180"
         aria-hidden="true"
       />
     </NavigationMenuPrimitive.Trigger>
@@ -159,7 +157,7 @@ function NavigationMenuPopup({
   return (
     <NavigationMenuPrimitive.Popup
       className={cn(
-        "data-[ending-style]:easing-[ease] relative h-[var(--popup-height)] origin-[var(--transform-origin)] rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] shadow-lg outline-none transition-[opacity,transform,width,height,scale,translate] duration-[var(--duration)] ease-[var(--easing)] data-[ending-style]:scale-90 data-[ending-style]:opacity-0 data-[ending-style]:duration-150 data-[starting-style]:scale-90 data-[starting-style]:opacity-0 w-[var(--popup-width)] motion-reduce:transition-none motion-reduce:data-[starting-style]:scale-100 motion-reduce:data-[starting-style]:opacity-100 motion-reduce:data-[ending-style]:scale-100 motion-reduce:data-[ending-style]:opacity-100",
+        "data-[ending-style]:easing-[ease] relative h-[var(--popup-height)] origin-[var(--transform-origin)] rounded-2xl border border-adaptive bg-background/95 backdrop-blur-xl shadow-[0_8px_32px_-8px_oklch(0_0_0/0.14)] outline-none transition-[opacity,transform,width,height,scale,translate] duration-[var(--duration)] ease-[var(--easing)] data-[ending-style]:scale-[0.98] data-[ending-style]:opacity-0 data-[ending-style]:duration-150 data-[starting-style]:scale-[0.98] data-[starting-style]:opacity-0 w-[var(--popup-width)] motion-reduce:transition-none motion-reduce:data-[starting-style]:scale-100 motion-reduce:data-[starting-style]:opacity-100 motion-reduce:data-[ending-style]:scale-100 motion-reduce:data-[ending-style]:opacity-100",
         className,
       )}
       {...props}
@@ -190,14 +188,11 @@ function NavigationMenuLink({
     <NavigationMenuPrimitive.Link
       data-slot="navigation-menu-link"
       className={cn(
-        "flex flex-col gap-1 rounded-sm p-2 text-sm text-[var(--color-text)] outline-none transition-[color,background-color] duration-200",
-        "hover:bg-[color-mix(in_oklch,var(--color-primary)_10%,var(--color-surface))] hover:text-[var(--color-primary)]",
-        "focus:bg-[color-mix(in_oklch,var(--color-primary)_10%,var(--color-surface))] focus:text-[var(--color-primary)]",
-        "focus-visible:ring-[3px] focus-visible:ring-[color-mix(in_oklch,var(--color-primary)_35%,transparent)] focus-visible:outline-1",
-        "data-[active]:bg-[color-mix(in_oklch,var(--color-primary)_12%,var(--color-surface))] data-[active]:text-[var(--color-primary)]",
-        "data-[active]:hover:bg-[color-mix(in_oklch,var(--color-primary)_14%,var(--color-surface))]",
-        "data-[active]:focus:bg-[color-mix(in_oklch,var(--color-primary)_14%,var(--color-surface))]",
-        "[&_svg:not([class*='text-'])]:text-[color-mix(in_oklch,var(--color-text)_55%,transparent)] [&_svg:not([class*='size-'])]:size-4",
+        "flex flex-col gap-1 rounded-xl p-2 text-sm text-[var(--color-text)] outline-none transition-[color,background-color] duration-200",
+        "hover:bg-clap focus:bg-clap",
+        "focus-visible:ring-2 focus-visible:ring-[color-mix(in_oklch,var(--color-text)_10%,transparent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-background)] focus-visible:outline-none",
+        "data-[active]:bg-[color-mix(in_oklch,var(--color-text)_9%,var(--color-surface))]",
+        "[&_svg:not([class*='text-'])]:text-[color-mix(in_oklch,var(--color-text)_50%,transparent)] [&_svg:not([class*='size-'])]:size-4",
         className,
       )}
       {...props}
