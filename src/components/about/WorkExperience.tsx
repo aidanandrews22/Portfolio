@@ -4,87 +4,6 @@ export default function WorkExperienceSection() {
       <h2 className="text-3xl font-bold">Work Experience</h2>
 
       <div className="grid grid-cols-1 gap-8">
-        {/* Berkeley */}
-        <div
-          id="berkeley"
-          className="p-6 rounded-xl border border-transparent hover:border hover:border-[color-mix(in_oklch,var(--color-primary)_30%,transparent)] hover:shadow-lg"
-        >
-          <div className="flex flex-col md:flex-row md:items-start gap-4">
-            <div className="md:w-1/4">
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[color-mix(in_oklch,var(--color-primary)_15%,transparent)]">
-                <img
-                  src="/assets/About/berkeley.jpg"
-                  alt="Berkeley Logo"
-                  className="w-full h-full object-contain rounded-full"
-                />
-              </div>
-              <p className="text-sm mt-2 opacity-75">March 2025 - Present</p>
-            </div>
-
-            <div className="md:w-3/4">
-              <h3 className="text-xl font-semibold">Berkeley AI Research</h3>
-              <p className="text-base font-medium text-[color-mix(in_oklch,var(--color-primary)_90%,currentColor)]">
-                AI/ML Research Intern
-              </p>
-
-              <p className="mt-3 text-sm/relaxed">
-                Currently researching the use of a GPT-2-style causal transformer
-                to learn control policies for various systems via sequence
-                modeling. The model is trained on full system trajectories,
-                learning to output the correct control action at each step given
-                the history of states and actions. We employ methods such as
-                in-context learning,{" "}
-                <a
-                  href="https://arxiv.org/pdf/2410.23916v1"
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="text-[color-mix(in_oklch,var(--color-primary)_90%,currentColor)] hover:underline">
-                    DAgger
-                </a>, and model-based control to improve the model's performance.
-                <br />
-                Lab: Ranade Research Lab (Prof. Gireeja Ranade)
-                <br />
-                Sitting Lab:{" "}
-                <a
-                  href="https://citris-uc.org/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[color-mix(in_oklch,var(--color-primary)_90%,currentColor)] hover:underline"
-                >
-                  CITRIS and the Banatao Institute
-                </a>{" "}
-                (Prof. Claire Tomlin)                
-              </p>
-
-              <div className="mt-4 flex flex-wrap gap-2">
-                <a
-                  href="https://people.eecs.berkeley.edu/~gireeja/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center text-xs px-3 py-1 rounded-full bg-[color-mix(in_oklch,var(--color-primary)_10%,transparent)] hover:bg-[color-mix(in_oklch,var(--color-primary)_15%,transparent)] transition-colors"
-                >
-                  <span>Prof. Gireeja Ranade</span>
-                </a>
-                <a
-                  href="https://www2.eecs.berkeley.edu/Faculty/Homepages/tomlin.html"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center text-xs px-3 py-1 rounded-full bg-[color-mix(in_oklch,var(--color-primary)_10%,transparent)] hover:bg-[color-mix(in_oklch,var(--color-primary)_15%,transparent)] transition-colors"
-                >
-                  <span>Prof. Claire Tomlin</span>
-                </a>
-                <a 
-                  href="/reading-list?filter=Berkeley+Research"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center text-xs px-3 py-1 rounded-full bg-[color-mix(in_oklch,var(--color-primary)_10%,transparent)] hover:bg-[color-mix(in_oklch,var(--color-primary)_15%,transparent)] transition-colors"
-                >
-                  <span>Reading List →</span>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
         {/* AGANSWERS */}
         <div
           id="aganswers"
@@ -94,9 +13,9 @@ export default function WorkExperienceSection() {
             <div className="md:w-1/4">
               <div className="inline-flex items-center justify-center w-16 h-16">
                 <img
-                  src="/assets/About/aganswers.jpg"
+                  src="/assets/About/aganswers.png"
                   alt="AgAnswers Logo"
-                  className="w-full h-full object-contain"
+                  className="w-full h-full object-contain rounded-2xl"
                 />
               </div>
               <p className="text-sm mt-2 opacity-75">May 2025 - Present</p>
@@ -188,6 +107,87 @@ export default function WorkExperienceSection() {
                   className="inline-flex items-center text-xs px-3 py-1 rounded-full bg-[color-mix(in_oklch,var(--color-primary)_10%,transparent)] hover:bg-[color-mix(in_oklch,var(--color-primary)_15%,transparent)] transition-colors"
                 >
                   <span>View Code →</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        {/* Berkeley */}
+        <div
+          id="berkeley"
+          className="p-6 rounded-xl border border-transparent hover:border hover:border-[color-mix(in_oklch,var(--color-primary)_30%,transparent)] hover:shadow-lg"
+        >
+          <div className="flex flex-col md:flex-row md:items-start gap-4">
+            <div className="md:w-1/4">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[color-mix(in_oklch,var(--color-primary)_15%,transparent)]">
+                <img
+                  src="/assets/About/berkeley.jpg"
+                  alt="Berkeley Logo"
+                  className="w-full h-full object-contain rounded-full"
+                />
+              </div>
+              <p className="text-sm mt-2 opacity-75">Feb 2025 - Feb 2026</p>
+            </div>
+
+            <div className="md:w-3/4">
+              <h3 className="text-xl font-semibold">Berkeley AI Research</h3>
+              <p className="text-base font-medium text-[color-mix(in_oklch,var(--color-primary)_90%,currentColor)]">
+                AI/ML Research Intern
+              </p>
+
+              <p className="mt-3 text-sm/relaxed">
+                Currently researching the use of a GPT-2-style causal transformer
+                to learn control policies for various systems via sequence
+                modeling. The model is trained on full system trajectories,
+                learning to output the correct control action at each step given
+                the history of states and actions. We employ methods such as
+                in-context learning,{" "}
+                <a
+                  href="https://arxiv.org/pdf/2410.23916v1"
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="text-[color-mix(in_oklch,var(--color-primary)_90%,currentColor)] hover:underline">
+                    DAgger
+                </a>, and model-based control to improve the model's performance.
+                <br />
+                Lab: Ranade Research Lab (Prof. Gireeja Ranade)
+                <br />
+                Sitting Lab:{" "}
+                <a
+                  href="https://citris-uc.org/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[color-mix(in_oklch,var(--color-primary)_90%,currentColor)] hover:underline"
+                >
+                  CITRIS and the Banatao Institute
+                </a>{" "}
+                (Prof. Claire Tomlin)                
+              </p>
+
+              <div className="mt-4 flex flex-wrap gap-2">
+                <a
+                  href="https://people.eecs.berkeley.edu/~gireeja/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center text-xs px-3 py-1 rounded-full bg-[color-mix(in_oklch,var(--color-primary)_10%,transparent)] hover:bg-[color-mix(in_oklch,var(--color-primary)_15%,transparent)] transition-colors"
+                >
+                  <span>Prof. Gireeja Ranade</span>
+                </a>
+                <a
+                  href="https://www2.eecs.berkeley.edu/Faculty/Homepages/tomlin.html"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center text-xs px-3 py-1 rounded-full bg-[color-mix(in_oklch,var(--color-primary)_10%,transparent)] hover:bg-[color-mix(in_oklch,var(--color-primary)_15%,transparent)] transition-colors"
+                >
+                  <span>Prof. Claire Tomlin</span>
+                </a>
+                <a 
+                  href="/reading-list?filter=Berkeley+Research"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center text-xs px-3 py-1 rounded-full bg-[color-mix(in_oklch,var(--color-primary)_10%,transparent)] hover:bg-[color-mix(in_oklch,var(--color-primary)_15%,transparent)] transition-colors"
+                >
+                  <span>Reading List →</span>
                 </a>
               </div>
             </div>

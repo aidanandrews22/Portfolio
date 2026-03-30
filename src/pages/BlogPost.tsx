@@ -37,7 +37,7 @@ export default function BlogPost() {
         if (!postMeta) throw new Error("Post metadata not found");
 
         // Ensure tags is an array
-        let processedPostMeta = { ...postMeta };
+        const processedPostMeta = { ...postMeta };
 
         // Handle case where tags might be a string or missing
         if (typeof processedPostMeta.tags === "string") {

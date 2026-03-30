@@ -1,4 +1,9 @@
-import { type ComponentPropsWithoutRef, useState, useEffect } from "react";
+import {
+  type ComponentPropsWithoutRef,
+  type ReactNode,
+  useState,
+  useEffect,
+} from "react";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
@@ -75,12 +80,16 @@ function CodeBlock({
 
   return (
     <div className="relative group">
+      <span className="sr-only" aria-live="polite">
+        {copied ? "Copied to clipboard" : ""}
+      </span>
       <button
         type="button"
         onClick={handleCopy}
-        className="absolute right-2 top-2 bg-[color-mix(in_oklch,var(--color-primary)_20%,transparent)] px-2 py-1 rounded text-sm hover:opacity-80 transition-opacity"
+        aria-label={copied ? "Copied" : "Copy code to clipboard"}
+        className="absolute right-2 top-2 z-[1] min-h-9 px-2.5 py-1.5 rounded-md text-sm bg-[color-mix(in_oklch,var(--color-primary)_20%,transparent)] hover:opacity-90 transition-opacity duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-surface)]"
       >
-        {copied ? "Copied!" : "Copy"}
+        {copied ? "Copied" : "Copy"}
       </button>
       <SyntaxHighlighter
         style={isDarkMode ? oneDark : oneLight}
@@ -187,7 +196,7 @@ export default function MarkdownRenderer({
               />
             );
           },
-          pre: ({ node, children, ...rest }) => (
+          pre: ({ children, ...rest }) => (
             <pre {...rest} className="bg-background !p-0 !m-0 overflow-hidden">
               {children}
             </pre>
@@ -215,39 +224,46 @@ export default function MarkdownRenderer({
             }
 
             // Regular image
-            return <img {...props} className="rounded-lg" />;
+            return (
+              <img
+                {...props}
+                loading="lazy"
+                decoding="async"
+                className="rounded-lg max-w-full h-auto"
+              />
+            );
           },
           // Add custom component for summary tags
           summary: (props) => <summary {...props} className="cursor-pointer" />,
           // Add custom component for details tags
-          details: ({ node, children, ...rest }) => {
-            // Find the summary element
+          details: ({ children, ...rest }) => {
             const childrenArray = Array.isArray(children)
               ? children
               : [children];
-            const summaryIndex = childrenArray.findIndex(
-              (child: any) => child?.props?.node?.tagName === "summary",
-            );
+            const summaryIndex = childrenArray.findIndex((child) => {
+              if (
+                typeof child === "object" &&
+                child !== null &&
+                "props" in child
+              ) {
+                const p = (child as { props?: { node?: { tagName?: string } } })
+                  .props;
+                return p?.node?.tagName === "summary";
+              }
+              return false;
+            });
 
-            // Separate summary from content
             const summary =
               summaryIndex !== -1 ? childrenArray[summaryIndex] : null;
 
-            // Extract the actual text content
-            // We need to recursively extract text from the content
-            const extractTextContent = (node: any): string => {
-              if (typeof node === "string") return node;
-              if (!node) return "";
-
-              // If it's a React element with children
-              if (node.props && node.props.children) {
-                if (Array.isArray(node.props.children)) {
-                  return node.props.children.map(extractTextContent).join("");
-                } else {
-                  return extractTextContent(node.props.children);
-                }
+            const extractTextContent = (n: ReactNode): string => {
+              if (typeof n === "string") return n;
+              if (n == null || typeof n === "boolean") return "";
+              if (Array.isArray(n)) return n.map(extractTextContent).join("");
+              if (typeof n === "object" && "props" in n) {
+                const el = n as { props?: { children?: ReactNode } };
+                return extractTextContent(el.props?.children ?? "");
               }
-
               return "";
             };
 

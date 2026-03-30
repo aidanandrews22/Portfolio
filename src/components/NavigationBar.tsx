@@ -1,158 +1,180 @@
-import { NavLink } from "react-router-dom";
-import { useState, useRef, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
+
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuPopup,
+  NavigationMenuPositioner,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
+} from "@/components/ui/navigation-menu-1";
+import { cn } from "@/lib/utils";
+
+const WRITING_ROUTES = [
+  { to: "/papers", label: "Papers" },
+  { to: "/reading-list", label: "Reading List" },
+  { to: "/bookshelf", label: "Bookshelf" },
+  { to: "/blog", label: "Blog" },
+] as const;
 
 export default function NavigationBar() {
-  const [isOpen, setIsOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
 
-  // Determine if we're on the bookshelf, papers, or reading list page
   const isBookshelf = location.pathname === "/bookshelf";
   const isPublications = location.pathname === "/papers";
   const isReadingList = location.pathname === "/reading-list";
   const isBlog = location.pathname === "/blog";
 
-  // Set the display text based on current route
   let displayText = "Papers";
-  if (isBookshelf) {
-    displayText = "Bookshelf";
-  } else if (isPublications) {
-    displayText = "Papers";
-  } else if (isReadingList) {
-    displayText = "Reading List";
-  } else if (isBlog) {
-    displayText = "Blog";
-  }
+  if (isBookshelf) displayText = "Bookshelf";
+  else if (isPublications) displayText = "Papers";
+  else if (isReadingList) displayText = "Reading List";
+  else if (isBlog) displayText = "Blog";
 
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setIsOpen(false);
-      }
-    }
+  const writingSubLinks = WRITING_ROUTES.filter((r) => {
+    if (r.to === "/papers" && isPublications) return false;
+    if (r.to === "/reading-list" && isReadingList) return false;
+    if (r.to === "/bookshelf" && isBookshelf) return false;
+    if (r.to === "/blog" && isBlog) return false;
+    return true;
+  });
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  const isWritingActive =
+    isPublications || isReadingList || isBookshelf || isBlog;
 
   return (
     <div className="top-0">
-      {/* Navigation Bar */}
-      <nav className="border-b border-[color-mix(in_oklch,var(--color-primary)_5%,transparent)] bg-background/80 backdrop-blur-sm relative z-50">
-        <div className="container mx-auto px-4">
-          <div className="flex justify-between items-center py-3">
-            <div className="flex gap-6 mx-auto">
-              <NavLink
-                to="/about"
-                className={({ isActive }) =>
-                  `transition-all ${isActive ? "font-bold border-b-2 border-current" : "hover:text-[var(--color-primary)]"}`
-                }
-              >
-                About
-              </NavLink>
-              <NavLink
-                to="/research"
-                className={({ isActive }) =>
-                  `transition-all ${isActive ? "font-bold border-b-2 border-current" : "hover:text-[var(--color-primary)]"}`
-                }
-              >
-                Research
-              </NavLink>
-              <NavLink
-                to="/projects"
-                className={({ isActive }) =>
-                  `transition-all ${isActive ? "font-bold border-b-2 border-current" : "hover:text-[var(--color-primary)]"}`
-                }
-              >
-                Projects
-              </NavLink>
-              <div
-                className="relative inline-flex items-center z-[60]"
-                ref={dropdownRef}
-              >
-                <NavLink
-                  to={isBookshelf ? "/bookshelf" : isReadingList ? "/reading-list" : "/papers"}
-                  className={({ isActive }) =>
-                    `transition-all ${isActive ? "font-bold border-b-2 border-current" : "hover:text-[var(--color-primary)]"}`
-                  }
-                >
-                  {displayText}
-                </NavLink>
-                <button
-                  onClick={() => setIsOpen(!isOpen)}
-                  className="ml-1 text-current hover:text-[var(--color-primary)] focus:outline-none cursor-pointer"
-                  aria-label="Toggle papers menu"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className={`transition-transform ${isOpen ? "rotate-180" : ""}`}
+      <nav
+        aria-label="Primary"
+        className="border-b border-[color-mix(in_oklch,var(--color-primary)_5%,transparent)] bg-background/80 backdrop-blur-sm relative z-50"
+      >
+        <div className="container mx-auto px-4 max-w-7xl">
+          <div className="flex justify-center items-center py-2 sm:py-3 min-h-14">
+            <NavigationMenu className="max-w-full">
+              <NavigationMenuList className="max-w-full justify-start sm:justify-center overflow-x-auto overflow-y-visible nav-x-scroll touch-pan-x gap-1 sm:gap-2 pb-1">
+                <NavigationMenuItem>
+                  <NavigationMenuLink
+                    active={location.pathname === "/about"}
+                    closeOnClick
+                    className={cn(
+                      "!flex-row items-center gap-0 min-h-11",
+                      navigationMenuTriggerStyle(),
+                    )}
+                    render={(props) => (
+                      <NavLink
+                        {...props}
+                        to="/about"
+                        end
+                        className={cn(
+                          props.className,
+                          "no-underline",
+                          location.pathname === "/about" && "font-semibold",
+                        )}
+                      />
+                    )}
                   >
-                    <path d="m6 9 6 6 6-6" />
-                  </svg>
-                </button>
+                    About
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
 
-                <div
-                  className={`
-                    absolute left-1/2 -translate-x-1/2 top-full mt-1 z-[100]
-                    duration-200 ease-in-out origin-top transform border-t-0
-                    rounded-lg border border-[color-mix(in_oklch,var(--color-primary)_20%,transparent)] 
-                    hover:border-[color-mix(in_oklch,var(--color-primary)_40%,transparent)] transition-colors
-                    ${isOpen ? "opacity-100 scale-y-100" : "opacity-0 scale-y-0 pointer-events-none"}
-                  `}
-                >
-                  <div className="bg-background backdrop-blur-sm border-l border-r border-b border-[color-mix(in_oklch,var(--color-primary)_5%,transparent)] rounded-b-md min-w-fit whitespace-nowrap mt-2">
-                    {!isPublications && (
-                      <NavLink
-                        to="/papers"
-                        onClick={() => setIsOpen(false)}
-                        className="block px-6 py-2 transition-all hover:text-[var(--color-primary)]"
-                      >
-                        Papers
-                      </NavLink>
+                <NavigationMenuItem>
+                  <NavigationMenuLink
+                    active={location.pathname.startsWith("/research")}
+                    closeOnClick
+                    className={cn(
+                      "!flex-row items-center gap-0 min-h-11",
+                      navigationMenuTriggerStyle(),
                     )}
-                    {!isReadingList && (
+                    render={(props) => (
                       <NavLink
-                        to="/reading-list"
-                        onClick={() => setIsOpen(false)}
-                        className="block px-6 py-2 transition-all hover:text-[var(--color-primary)]"
-                      >
-                        Reading List
-                      </NavLink>
+                        {...props}
+                        to="/research"
+                        className={cn(
+                          props.className,
+                          "no-underline",
+                          location.pathname.startsWith("/research") &&
+                            "font-semibold",
+                        )}
+                      />
                     )}
-                    {!isBookshelf && (
+                  >
+                    Research
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+
+                <NavigationMenuItem>
+                  <NavigationMenuLink
+                    active={location.pathname.startsWith("/projects")}
+                    closeOnClick
+                    className={cn(
+                      "!flex-row items-center gap-0 min-h-11",
+                      navigationMenuTriggerStyle(),
+                    )}
+                    render={(props) => (
                       <NavLink
-                        to="/bookshelf"
-                        onClick={() => setIsOpen(false)}
-                        className="block px-6 py-2 transition-all hover:text-[var(--color-primary)]"
-                      >
-                        Bookshelf
-                      </NavLink>
+                        {...props}
+                        to="/projects"
+                        className={cn(
+                          props.className,
+                          "no-underline",
+                          location.pathname.startsWith("/projects") &&
+                            "font-semibold",
+                        )}
+                      />
                     )}
-                    {!isBlog && (
-                      <NavLink
-                      to="/blog"
-                      onClick={() => setIsOpen(false)}
-                      className="block px-6 py-2 transition-all hover:text-[var(--color-primary)]"
-                      >
-                        Blog
-                      </NavLink>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
+                  >
+                    Projects
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger
+                    className={cn(isWritingActive && "font-semibold")}
+                  >
+                    {displayText}
+                  </NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <ul className="m-0 flex list-none flex-col gap-0.5 p-1">
+                      {writingSubLinks.length === 0 ? (
+                        <li className="px-3 py-2 text-sm text-[color-mix(in_oklch,var(--color-text)_70%,transparent)]">
+                          You’re on this section — pick another from the site
+                          menu.
+                        </li>
+                      ) : (
+                        writingSubLinks.map(({ to, label }) => (
+                          <li key={to}>
+                            <NavigationMenuLink
+                              active={location.pathname === to}
+                              closeOnClick
+                              className="!min-h-11 !w-full !flex-row !items-center !gap-2 !py-2.5 !px-3"
+                              render={(props) => (
+                                <NavLink
+                                  {...props}
+                                  to={to}
+                                  className={cn(
+                                    props.className,
+                                    "no-underline",
+                                  )}
+                                />
+                              )}
+                            >
+                              {label}
+                            </NavigationMenuLink>
+                          </li>
+                        ))
+                      )}
+                    </ul>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+              </NavigationMenuList>
+
+              <NavigationMenuPositioner>
+                <NavigationMenuPopup />
+              </NavigationMenuPositioner>
+            </NavigationMenu>
           </div>
         </div>
       </nav>

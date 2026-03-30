@@ -1,3 +1,13 @@
+@media (prefers-reduced-motion: reduce) {
+  .animate-pulse-expand,
+  .animate-fly-up,
+  .animate-rotate,
+  .animate-ping,
+  .animate-fade-up {
+    animation: none !important;
+  }
+}
+
 @keyframes pulse-expand {
   0%,
   100% {

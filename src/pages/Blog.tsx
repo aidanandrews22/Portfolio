@@ -1,9 +1,10 @@
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { useState, useEffect, useMemo } from "react";
 import FilterDropdown from "../components/FilterDropdown";
 import BlogPostCard, { BlogPost } from "../components/BlogPostCard";
 
 export default function Blog() {
+  const reduceMotion = useReducedMotion();
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -128,8 +129,12 @@ export default function Blog() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-[50vh]">
-        Loading posts...
+      <div
+        role="status"
+        aria-live="polite"
+        className="flex justify-center items-center min-h-[50vh] opacity-80"
+      >
+        Loading posts…
       </div>
     );
   }
@@ -144,13 +149,13 @@ export default function Blog() {
 
   return (
     <motion.div
-      initial={{ opacity: 0 }}
+      initial={reduceMotion ? { opacity: 1 } : { opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      className="max-w-3xl mx-auto space-y-8"
+      transition={{ duration: reduceMotion ? 0 : 0.5 }}
+      className="max-w-3xl mx-auto space-y-8 w-full min-w-0"
     >
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
-        <h1 className="text-4xl font-bold">Blog</h1>
+        <h1 className="text-3xl sm:text-4xl font-bold text-balance">Blog</h1>
         <div className="flex flex-wrap gap-3">
           {availableTags.length > 0 && (
             <FilterDropdown
@@ -179,11 +184,12 @@ export default function Blog() {
           </p>
           {(selectedTag || selectedType) && (
             <button
+              type="button"
               onClick={() => {
                 setSelectedTag("");
                 setSelectedType("");
               }}
-              className="mt-4 px-4 py-2 text-sm rounded-lg bg-[color-mix(in_oklch,var(--color-primary)_10%,transparent)] hover:bg-[color-mix(in_oklch,var(--color-primary)_20%,transparent)]"
+              className="mt-4 min-h-11 px-4 py-2 text-sm rounded-lg bg-[color-mix(in_oklch,var(--color-primary)_10%,transparent)] hover:bg-[color-mix(in_oklch,var(--color-primary)_20%,transparent)] transition-colors duration-200"
             >
               Clear filters
             </button>

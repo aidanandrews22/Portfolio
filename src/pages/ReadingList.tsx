@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { useState, useEffect, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import FilterDropdown from "../components/FilterDropdown";
@@ -12,6 +12,7 @@ interface ReadingListItem {
 }
 
 export default function ReadingList() {
+  const reduceMotion = useReducedMotion();
   const [papers, setPapers] = useState<ReadingListItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -99,8 +100,12 @@ export default function ReadingList() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-[50vh]">
-        Loading reading list...
+      <div
+        role="status"
+        aria-live="polite"
+        className="flex justify-center items-center min-h-[50vh] opacity-80"
+      >
+        Loading reading list…
       </div>
     );
   }
@@ -115,13 +120,15 @@ export default function ReadingList() {
 
   return (
     <motion.div
-      initial={{ opacity: 0 }}
+      initial={reduceMotion ? { opacity: 1 } : { opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      className="max-w-3xl mx-auto space-y-8"
+      transition={{ duration: reduceMotion ? 0 : 0.5 }}
+      className="max-w-3xl mx-auto space-y-8 w-full min-w-0"
     >
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
-        <h1 className="text-4xl font-bold">Reading List</h1>
+        <h1 className="text-3xl sm:text-4xl font-bold text-balance">
+          Reading List
+        </h1>
         <div className="flex flex-wrap gap-3">
           {availableTags.length > 0 && (
             <FilterDropdown
@@ -143,8 +150,9 @@ export default function ReadingList() {
           </p>
           {selectedTag && (
             <button
+              type="button"
               onClick={() => setSelectedTag("")}
-              className="mt-4 px-4 py-2 text-sm rounded-lg bg-[color-mix(in_oklch,var(--color-primary)_10%,transparent)] hover:bg-[color-mix(in_oklch,var(--color-primary)_20%,transparent)]"
+              className="mt-4 min-h-11 px-4 py-2 text-sm rounded-lg bg-[color-mix(in_oklch,var(--color-primary)_10%,transparent)] hover:bg-[color-mix(in_oklch,var(--color-primary)_20%,transparent)] transition-colors duration-200"
             >
               Clear filters
             </button>
@@ -155,10 +163,15 @@ export default function ReadingList() {
           {filteredPapers.map((paper, index) => (
             <motion.div
               key={paper.id}
-              initial={{ opacity: 0, y: 20 }}
+              initial={
+                reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
+              }
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-              className="p-6 rounded-lg border border-transparent hover:border-[color-mix(in_oklch,var(--color-primary)_30%,transparent)] transition-all duration-200 hover:shadow-sm"
+              transition={{
+                duration: reduceMotion ? 0 : 0.35,
+                delay: reduceMotion ? 0 : index * 0.06,
+              }}
+              className="p-6 rounded-lg border border-transparent hover:border-[color-mix(in_oklch,var(--color-primary)_30%,transparent)] transition-[border-color,box-shadow] duration-200 hover:shadow-sm"
             >
               <div className="flex flex-col gap-3">
                 <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">

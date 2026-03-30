@@ -1,83 +1,63 @@
-export default function TLDR() {
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth", block: "center" });
-    }
-  };
+import { Link } from "react-router-dom";
 
+function scrollToSection(id: string) {
+  const element = document.getElementById(id);
+  if (!element) return;
+  const prefersReduced =
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  element.scrollIntoView({
+    behavior: prefersReduced ? "auto" : "smooth",
+    block: "center",
+  });
+}
+
+const jumpClass =
+  "text-[var(--color-primary)] hover:underline cursor-pointer text-left bg-transparent border-0 p-0 font-inherit rounded-sm " +
+  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-background)]";
+
+export default function TLDR() {
   return (
-    <div className="p-6 max-w-xl mx-auto">
-      <h2 className="text-3xl font-bold mb-4">TL;DR</h2>
-      <p>
-        <b>Currently I am...</b> <br /> studying
-        {" "}
-        <a
-          onClick={() => scrollToSection("education")}
-          className="text-[var(--color-primary)] hover:underline cursor-pointer"
-        >
+    <div className="p-6 max-w-xl mx-auto min-w-0">
+      <h2 className="text-2xl sm:text-3xl font-bold mb-4 text-pretty">
+        TL;DR
+      </h2>
+      <p className="text-sm sm:text-base leading-relaxed text-pretty">
+        <b>Currently I am…</b> <br /> studying{" "}
+        <button type="button" className={jumpClass} onClick={() => scrollToSection("education")}>
           physics at UIUC
-        </a>
-        , researching
-        {" "}
-        <a
-          onClick={() => scrollToSection("berkeley")}
-          className="text-[var(--color-primary)] hover:underline cursor-pointer"
-        >
-          AI/ML at UC Berkeley
-        </a>
-        , an AI Engineer at
-        {" "}
-        <a
-          onClick={() => scrollToSection("aifarms")}
-          className="text-[var(--color-primary)] hover:underline cursor-pointer"
-        >
+        </button>
+        , an AI Engineer at{" "}
+        <button type="button" className={jumpClass} onClick={() => scrollToSection("aifarms")}>
           NCSA
-        </a>
-        , building
-        {" "}
-        <a
-          onClick={() => scrollToSection("aganswers")}
-          className="text-[var(--color-primary)] hover:underline cursor-pointer"
-        >
+        </button>
+        , building{" "}
+        <button type="button" className={jumpClass} onClick={() => scrollToSection("aganswers")}>
           AgAnswers.ai
-        </a>
-        ,
-        {" "}
-        <a
-          className="text-adaptive"
-        >
-          researching robotics at UIUC
-        </a>
-        , and
-        {" "}
-        <a
-          href="/reading-list?filter=Berkeley+Research"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-[var(--color-primary)] hover:underline"
+        </button>
+        , <span className="text-[color-mix(in_oklch,var(--color-text)_90%,transparent)]">researching robotics at UIUC</span>, playing competitive chess, and{" "}
+        <Link
+          to="/reading-list?filter=Berkeley+Research"
+          className="text-[var(--color-primary)] hover:underline rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-background)]"
         >
           reading
-        </a>
-        <br /><b>Not so currently, I am...</b><br />
-        {" "}
-        <a
-          // href="https://www.illinihockey.com/roster/aidan-andrews-m0o81et2"
-          // target="_blank"
-          // rel="noopener noreferrer"
-          // className="text-[var(-µ-color-primary)] hover:underline"
-        >
-          playing hockey for UIUC d1
-        </a>
-        ,
-        {" "}
-        <a
-          onClick={() => scrollToSection("aaxiom")}
-          className="text-[var(--color-primary)] hover:underline cursor-pointer"
-        >
-         the founder of aaxiom.org
-        </a>
-        , and playing competitive chess (although I do currently play a lot of blitz)
+        </Link>
+        <br />
+        <b>Previously, I was…</b>
+        <br />
+        researching{" "}
+        <button type="button" className={jumpClass} onClick={() => scrollToSection("berkeley")}>
+          AI for robotics at UC Berkeley
+        </button>
+        ,{" "}
+        <span className="text-[color-mix(in_oklch,var(--color-text)_85%,transparent)]">
+          playing hockey for UIUC D1
+        </span>
+        ,{" "}
+        <button type="button" className={jumpClass} onClick={() => scrollToSection("aaxiom")}>
+          the founder of aaxiom.org
+        </button>
+        ,  running the nyc marathon (Nov 2025)
       </p>
     </div>
   );

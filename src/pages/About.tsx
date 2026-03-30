@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { useState, useEffect } from "react";
 import "react-medium-image-zoom/dist/styles.css";
 
@@ -28,6 +28,7 @@ const currentProjectIds = [
 const featuredResearchIds = ["g1", "so-101", "tfc"];
 
 export default function About() {
+  const reduceMotion = useReducedMotion();
   const [currentProjects, setCurrentProjects] = useState<ProjectType[]>([]);
   const [featuredResearch, setFeaturedResearch] = useState<Research[]>([]);
   const [loading, setLoading] = useState(true);
@@ -36,9 +37,6 @@ export default function About() {
   const [researchError, setResearchError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Add a class to the document to ensure dark mode is respected
-    document.documentElement.classList.add("color-scheme-adaptive");
-
     const fetchProjects = async () => {
       try {
         const response = await fetch(
@@ -83,18 +81,15 @@ export default function About() {
 
     fetchProjects();
     fetchResearch();
-
-    // Cleanup function
-    return () => {
-      document.documentElement.classList.remove("color-scheme-adaptive");
-    };
   }, []);
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={
+        reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
+      }
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: reduceMotion ? 0 : 0.5 }}
       className="max-w-3xl mx-auto space-y-16 pb-12 w-full"
     >
       <TLDR />

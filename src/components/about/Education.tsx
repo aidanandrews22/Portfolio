@@ -5,7 +5,7 @@ export default function EducationSection() {
 
       <div
         id="education"
-        className="p-6 rounded-xl border border-transparent hover:border hover:border-[color-mix(in_oklch,var(--color-primary)_30%,transparent)] transition-all hover:shadow-lg"
+        className="p-6 rounded-xl border border-transparent hover:border hover:border-[color-mix(in_oklch,var(--color-primary)_30%,transparent)] transition-[border-color,box-shadow] duration-200 hover:shadow-lg"
       >
         <div className="flex flex-col md:flex-row gap-6">
           {/* Left side - Logo/Icon */}

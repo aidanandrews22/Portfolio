@@ -79,15 +79,12 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
       return (
         <div className="min-h-screen flex items-center justify-center bg-background text-foreground p-4">
           <div className="w-full max-w-md p-6 rounded-lg border border-[color-mix(in_oklch,var(--color-primary)_10%,transparent)] bg-background shadow-lg">
-            <h2 className="text-2xl font-bold mb-4 text-[var(--color-primary)]">
-              Unexpected Error... Try refreshing the page.
+            <h2 className="text-2xl font-bold mb-4 text-[var(--color-primary)] text-balance">
+              Something went wrong. Try refreshing the page.
             </h2>
-            <p className="mb-6">
-              Sorry about this, i guess my code is not as good as i thought.
-              <br />
-              <span className="text-red-500">
-                PLEASE SUBMIT THIS SO I CAN FIX IT!!!
-              </span>
+            <p className="mb-6 text-pretty">
+              If this keeps happening, send a quick report below so it can be
+              fixed.
             </p>
 
             {this.state.isSubmitted ? (
@@ -97,8 +94,9 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
                   We'll look into this issue as soon as possible.
                 </p>
                 <button
+                  type="button"
                   onClick={() => (window.location.href = "/")}
-                  className="mt-4 px-4 py-2 bg-[var(--color-primary)] text-white rounded-md hover:bg-[color-mix(in_oklch,var(--color-primary)_80%,black)] transition-colors"
+                  className="mt-4 min-h-11 px-4 py-2 bg-[var(--color-primary)] text-white rounded-md hover:bg-[color-mix(in_oklch,var(--color-primary)_80%,black)] transition-colors duration-200"
                 >
                   Return to Home
                 </button>
@@ -116,10 +114,12 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
                     type="email"
                     id="email"
                     name="email"
+                    autoComplete="email"
+                    spellCheck={false}
                     value={this.state.email}
                     onChange={this.handleChange}
                     className="w-full p-2 rounded-md border border-[color-mix(in_oklch,var(--color-primary)_20%,transparent)] bg-background"
-                    placeholder="your.email@example.com"
+                    placeholder="you@example.com…"
                   />
                 </div>
 
@@ -128,8 +128,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
                     htmlFor="message"
                     className="block text-sm font-medium mb-1"
                   >
-                    Please tell me everything so i can fix this error. What were
-                    you doing when the error occurred?
+                    What were you doing when this happened?
                   </label>
                   <textarea
                     id="message"
@@ -138,16 +137,16 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
                     onChange={this.handleChange}
                     rows={4}
                     className="w-full p-2 rounded-md border border-[color-mix(in_oklch,var(--color-primary)_20%,transparent)] bg-background"
-                    placeholder="I was trying to..."
+                    placeholder="I was trying to…"
                   />
                 </div>
 
                 <button
                   type="submit"
                   disabled={this.state.isSubmitting}
-                  className="w-full py-2 px-4 bg-[var(--color-primary)] text-white rounded-md hover:bg-[color-mix(in_oklch,var(--color-primary)_80%,black)] transition-colors disabled:opacity-50"
+                  className="w-full min-h-11 py-2 px-4 bg-[var(--color-primary)] text-white rounded-md hover:bg-[color-mix(in_oklch,var(--color-primary)_80%,black)] transition-colors duration-200 disabled:opacity-50"
                 >
-                  {this.state.isSubmitting ? "Submitting..." : "Submit Report"}
+                  {this.state.isSubmitting ? "Submitting…" : "Submit Report"}
                 </button>
 
                 <div className="text-xs opacity-75 mt-4">

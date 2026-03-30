@@ -1,5 +1,8 @@
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { Link } from "react-router-dom";
+
+const cardTransition =
+  "transition-[border-color,box-shadow] duration-200 motion-reduce:transition-none";
 
 export interface Research {
   id: string;
@@ -21,6 +24,8 @@ interface ResearchCardProps {
 const RESEARCH_PAGES = ["g1"];
 
 const ResearchCard = ({ research, index = 0 }: ResearchCardProps) => {
+  const reduceMotion = useReducedMotion();
+
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.stopPropagation();
   };
@@ -47,14 +52,19 @@ const ResearchCard = ({ research, index = 0 }: ResearchCardProps) => {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={
+        reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
+      }
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
+      transition={{
+        duration: reduceMotion ? 0 : 0.5,
+        delay: reduceMotion ? 0 : index * 0.1,
+      }}
       className="group"
     >
       <div
-        className="p-6 rounded-xl border border-transparent hover:border hover:border-[color-mix(in_oklch,var(--color-primary)_30%,transparent)]
-                  hover:shadow-lg transition-all relative overflow-hidden"
+        className={`p-6 rounded-xl border border-transparent hover:border hover:border-[color-mix(in_oklch,var(--color-primary)_30%,transparent)]
+                  hover:shadow-lg ${cardTransition} relative overflow-hidden`}
       >
         <div className="flex flex-col md:flex-row gap-6">
           {/* Graphic on the left */}
@@ -84,9 +94,7 @@ const ResearchCard = ({ research, index = 0 }: ResearchCardProps) => {
             {RESEARCH_PAGES.includes(research.id) ? (
               <Link
                 to={`/research/${research.id}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-2xl font-bold text-primary hover:underline transition-colors mb-3 block"
+                className="text-2xl font-bold text-[var(--color-primary)] hover:underline transition-colors duration-200 mb-3 block rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-background)]"
               >
                 {research.title}
               </Link>

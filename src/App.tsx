@@ -5,7 +5,24 @@ import {
   Navigate,
   useLocation,
 } from "react-router-dom";
-import { Suspense, lazy, useEffect, useState } from "react";
+import { Suspense, lazy, useEffect } from "react";
+
+function applyStoredTheme() {
+  const storedTheme = localStorage.getItem("color-theme") as
+    | "light"
+    | "dark"
+    | "system"
+    | null;
+  const next = storedTheme || "system";
+  if (next === "system") {
+    document.documentElement.classList.remove("force-light", "force-dark");
+    localStorage.removeItem("color-theme");
+  } else {
+    document.documentElement.classList.remove("force-light", "force-dark");
+    document.documentElement.classList.add(`force-${next}`);
+    localStorage.setItem("color-theme", next);
+  }
+}
 
 // Lazy load pages for better performance
 const About = lazy(() => import("./pages/About"));
@@ -28,19 +45,36 @@ function AppContent() {
 
   return (
     <>
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-[200] focus:px-4 focus:py-2 focus:rounded-md focus:bg-background focus:border focus:border-[color-mix(in_oklch,var(--color-primary)_30%,transparent)]"
+      >
+        Skip to main content
+      </a>
       {!isResearchPage && <Header />}
       <NavigationBar />
 
-      <main className="container mx-auto px-4 md:px-6 lg:px-10 py-8 max-w-7xl">
+      <main
+        id="main-content"
+        className="container mx-auto px-4 md:px-6 lg:px-10 py-8 max-w-7xl"
+        tabIndex={-1}
+      >
         <Suspense
           fallback={
-            <div className="flex justify-center items-center h-40">
-              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[var(--color-primary)]"></div>
+            <div
+              role="status"
+              aria-live="polite"
+              className="flex flex-col justify-center items-center gap-3 h-40"
+            >
+              <span className="text-sm opacity-70">Loading…</span>
+              <div
+                className="rounded-full h-10 w-10 border-2 border-[color-mix(in_oklch,var(--color-primary)_35%,transparent)] border-t-[var(--color-primary)] motion-safe:animate-spin motion-reduce:animate-none"
+                aria-hidden
+              />
             </div>
           }
         >
           <Routes>
-            <Route path="*" element={<Navigate to="/about" replace />} />
             <Route path="/" element={<Navigate to="/about" replace />} />
             <Route path="/about" element={<About />} />
             <Route path="/research" element={<Research />} />
@@ -52,6 +86,7 @@ function AppContent() {
             <Route path="/reading-list" element={<ReadingList />} />
             <Route path="/blog/:id" element={<BlogPost />} />
             <Route path="/bookshelf" element={<Bookshelf />} />
+            <Route path="*" element={<Navigate to="/about" replace />} />
           </Routes>
         </Suspense>
       </main>
@@ -60,38 +95,10 @@ function AppContent() {
 }
 
 export default function App() {
-  const [theme, setTheme] = useState<"light" | "dark" | "system">("system");
-
   useEffect(() => {
-    // Check if user has a stored preference
-    theme;
-    const storedTheme = localStorage.getItem("color-theme") as
-      | "light"
-      | "dark"
-      | "system"
-      | null;
-    if (storedTheme) {
-      setTheme(storedTheme);
-    }
-
-    // Apply the theme
-    applyTheme(storedTheme || "system");
+    applyStoredTheme();
   }, []);
 
-  const applyTheme = (newTheme: "light" | "dark" | "system") => {
-    if (newTheme === "system") {
-      // Remove any forced classes and follow system preference
-      document.documentElement.classList.remove("force-light", "force-dark");
-      localStorage.removeItem("color-theme");
-    } else {
-      // Apply specific theme
-      document.documentElement.classList.remove("force-light", "force-dark");
-      document.documentElement.classList.add(`force-${newTheme}`);
-      localStorage.setItem("color-theme", newTheme);
-    }
-  };
-
-  // Apply color scheme adaptive class to html element
   useEffect(() => {
     // Add class to enable adaptive theming
     document.documentElement.classList.add("color-scheme-adaptive");

@@ -67,7 +67,7 @@ export default function Socials() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Instagram Profile Card */}
-        <div className="rounded-xl hover:border-[color-mix(in_oklch,var(--color-primary)_30%,transparent)] transition-all hover:shadow-lg">
+        <div className="rounded-xl hover:border-[color-mix(in_oklch,var(--color-primary)_30%,transparent)] transition-[border-color,box-shadow] duration-200 hover:shadow-lg">
           <div className="p-6 flex flex-col items-center">
             <div className="flex justify-between items-center w-full mb-4">
               <h3 className="text-xl font-semibold flex items-center gap-2">
@@ -144,7 +144,7 @@ export default function Socials() {
         </div>
 
         {/* Twitter Card */}
-        <div className="rounded-xl hover:border-[color-mix(in_oklch,var(--color-primary)_30%,transparent)] transition-all hover:shadow-lg overflow-hidden">
+        <div className="rounded-xl hover:border-[color-mix(in_oklch,var(--color-primary)_30%,transparent)] transition-[border-color,box-shadow] duration-200 hover:shadow-lg overflow-hidden">
           <div className="p-4">
             <div className="flex justify-between items-center">
               <h3 className="text-xl font-semibold flex items-center gap-2">

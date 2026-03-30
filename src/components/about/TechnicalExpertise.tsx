@@ -5,7 +5,7 @@ export default function TechnicalExpertiseSection() {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {/* Left column - Primary skills */}
-        <div className="col-span-2 p-6 rounded-xl border border-transparent hover:border hover:border-[color-mix(in_oklch,var(--color-primary)_30%,transparent)] transition-all">
+        <div className="col-span-2 p-6 rounded-xl border border-transparent hover:border hover:border-[color-mix(in_oklch,var(--color-primary)_30%,transparent)] transition-[border-color,box-shadow] duration-200">
           <h3 className="text-xl font-semibold mb-4">Core Skills</h3>
 
           <div className="space-y-6">

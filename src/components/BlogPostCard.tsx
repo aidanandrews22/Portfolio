@@ -1,5 +1,8 @@
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { Link } from "react-router-dom";
+
+const cardTransition =
+  "transition-[border-color,box-shadow] duration-200 motion-reduce:transition-none";
 
 export interface BlogPost {
   id: string;
@@ -23,19 +26,7 @@ export default function BlogPostCard({
   index = 0,
   compact = false,
 }: BlogPostCardProps) {
-  const handlePostClick = (post: BlogPost) => {
-    if (post.type === "pdf") {
-      // For PDF posts, open the content URL in a new tab
-      window.open(
-        `https://aidanandrews22.github.io/${post.content}`,
-        "_blank",
-        "noopener noreferrer",
-      );
-      return false; // Prevent default navigation
-    }
-    // For markdown posts, continue with normal navigation
-    return true;
-  };
+  const reduceMotion = useReducedMotion();
 
   const formattedDate = (() => {
     try {
@@ -68,18 +59,27 @@ export default function BlogPostCard({
 
   const tags = getTags();
 
+  const pdfHref = `https://aidanandrews22.github.io/${post.content}`;
+
   // Render PDF post card
   if (post.type === "pdf") {
     return (
-      <div
-        onClick={() => handlePostClick(post)}
-        className="block group cursor-pointer"
+      <a
+        href={pdfHref}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="block group cursor-pointer rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-background)]"
       >
         <motion.article
-          initial={{ opacity: 0, y: 20 }}
+          initial={
+            reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
+          }
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: index * 0.1 }}
-          className="p-6 rounded-lg border border-transparent hover:border hover:border-[color-mix(in_oklch,var(--color-primary)_30%,transparent)] hover:shadow-lg transition-all"
+          transition={{
+            duration: reduceMotion ? 0 : 0.4,
+            delay: reduceMotion ? 0 : index * 0.1,
+          }}
+          className={`p-6 rounded-lg border border-transparent hover:border hover:border-[color-mix(in_oklch,var(--color-primary)_30%,transparent)] hover:shadow-lg ${cardTransition}`}
         >
           <div className="flex flex-col space-y-4 h-full">
             <div className="flex flex-col sm:flex-row justify-between items-start gap-2">
@@ -114,7 +114,7 @@ export default function BlogPostCard({
 
             <p className="text-sm/relaxed">
               {compact
-                ? `${post.summary?.substring(0, 100)}${post.summary?.length > 100 ? "..." : ""}`
+                ? `${post.summary?.substring(0, 100)}${post.summary && post.summary.length > 100 ? "…" : ""}`
                 : post.summary || "No description available"}
             </p>
 
@@ -152,18 +152,26 @@ export default function BlogPostCard({
             </div>
           </div>
         </motion.article>
-      </div>
+      </a>
     );
   }
 
   // Render markdown post card
   return (
-    <Link to={`/blog/${post.id}`} className="block group">
+    <Link
+      to={`/blog/${post.id}`}
+      className="block group rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-background)]"
+    >
       <motion.article
-        initial={{ opacity: 0, y: 20 }}
+        initial={
+          reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
+        }
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: index * 0.1 }}
-        className="p-6 rounded-lg border border-transparent hover:border hover:border-[color-mix(in_oklch,var(--color-primary)_30%,transparent)] hover:shadow-lg transition-all"
+        transition={{
+          duration: reduceMotion ? 0 : 0.4,
+          delay: reduceMotion ? 0 : index * 0.1,
+        }}
+        className={`p-6 rounded-lg border border-transparent hover:border hover:border-[color-mix(in_oklch,var(--color-primary)_30%,transparent)] hover:shadow-lg ${cardTransition}`}
       >
         <div className="flex flex-col space-y-4 h-full">
           <div className="flex flex-col sm:flex-row justify-between items-start gap-2">
@@ -186,7 +194,7 @@ export default function BlogPostCard({
 
           <p className="text-sm/relaxed">
             {compact
-              ? `${post.summary?.substring(0, 100)}${post.summary?.length > 100 ? "..." : ""}`
+              ? `${post.summary?.substring(0, 100)}${post.summary && post.summary.length > 100 ? "…" : ""}`
               : post.summary || "No description available"}
           </p>
 

@@ -49,6 +49,23 @@
     color-scheme: light dark;
   }
 
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  :where(a, button, input, textarea, select, summary):focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  button,
+  a[href],
+  [role="button"] {
+    touch-action: manipulation;
+  }
+
   html.color-scheme-adaptive {
     @media (prefers-color-scheme: dark) {
       color-scheme: dark;
@@ -133,6 +150,19 @@
 }
 
 @layer utilities {
+  .nav-x-scroll {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .nav-x-scroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  .prose-adaptive :is(h1, h2, h3, h4) {
+    scroll-margin-top: 5rem;
+  }
+
   .bg-background {
     @media (prefers-color-scheme: dark) {
       background-color: var(--color-background-dark);
