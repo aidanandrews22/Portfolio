@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import ClapButton from "./ClapButton";
 
 export interface BlogPost {
   id: string;
@@ -132,7 +131,7 @@ export default function BlogPostCard({
               )}
             </div>
 
-            <div className="flex justify-between items-center pt-2 mt-auto">
+            <div className="flex justify-end items-center pt-2 mt-auto">
               <span className="inline-flex items-center text-sm text-[var(--color-primary)] opacity-0 group-hover:opacity-100 transition-opacity">
                 Open PDF in new tab
                 <svg
@@ -150,10 +149,6 @@ export default function BlogPostCard({
                   />
                 </svg>
               </span>
-
-              <div onClick={(e) => e.stopPropagation()}>
-                <ClapButton postId={post.id} />
-              </div>
             </div>
           </div>
         </motion.article>
@@ -208,20 +203,10 @@ export default function BlogPostCard({
             )}
           </div>
 
-          <div className="flex justify-between items-center pt-2 mt-auto">
+          <div className="flex justify-end items-center pt-2 mt-auto">
             <span className="inline-block text-sm text-[var(--color-primary)] opacity-0 group-hover:opacity-100 transition-opacity">
               Read more →
             </span>
-
-            <div
-              className="z-10"
-              onClick={(e) => {
-                e.stopPropagation();
-                e.preventDefault();
-              }}
-            >
-              <ClapButton postId={post.id} />
-            </div>
           </div>
         </div>
       </motion.article>

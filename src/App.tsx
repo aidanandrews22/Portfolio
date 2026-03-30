@@ -19,10 +19,6 @@ const ProjectView = lazy(() => import("./pages/ProjectView"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
 const Header = lazy(() => import("./components/Header"));
 const NavigationBar = lazy(() => import("./components/NavigationBar"));
-const ProjectIndicatorTest = lazy(
-  () => import("./components/ProjectIndicatorTest"),
-);
-
 // Lazy load research pages
 const G1Research = lazy(() => import("./components/research/g1"));
 
@@ -56,10 +52,6 @@ function AppContent() {
             <Route path="/reading-list" element={<ReadingList />} />
             <Route path="/blog/:id" element={<BlogPost />} />
             <Route path="/bookshelf" element={<Bookshelf />} />
-            <Route
-              path="/test/indicators"
-              element={<ProjectIndicatorTest />}
-            />
           </Routes>
         </Suspense>
       </main>

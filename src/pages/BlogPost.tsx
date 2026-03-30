@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import MarkdownRenderer from "../components/MarkdownRenderer";
-import ClapButton from "../components/ClapButton";
 
 interface BlogPost {
   id: string;
@@ -150,23 +149,20 @@ export default function BlogPost() {
               </span>
             )}
           </div>
-          <div className="flex items-center justify-between">
-            <time className="text-sm block" dateTime={post.date}>
-              {(() => {
-                try {
-                  return new Date(post.date).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  });
-                } catch (err) {
-                  console.error("Error formatting date:", post.date, err);
-                  return post.date;
-                }
-              })()}
-            </time>
-            <ClapButton postId={post.id} />
-          </div>
+          <time className="text-sm block" dateTime={post.date}>
+            {(() => {
+              try {
+                return new Date(post.date).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                });
+              } catch (err) {
+                console.error("Error formatting date:", post.date, err);
+                return post.date;
+              }
+            })()}
+          </time>
         </div>
 
         {post.tags && (
