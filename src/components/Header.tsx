@@ -89,7 +89,7 @@ export default function Header() {
               {/* Social Links - Left Aligned */}
               <div className="flex items-center flex-wrap gap-3 md:gap-4 pt-2">
                 <a
-                  href="https://x.com/aidansandrews"
+                  href="https://x.com/aidansa"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center min-h-11 min-w-11 rounded-md text-[color-mix(in_oklch,currentColor_80%,var(--color-primary))] hover:text-[var(--color-primary)] transition-colors duration-200 relative group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-background)]"
