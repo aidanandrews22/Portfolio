@@ -35,7 +35,7 @@ export default function TLDR() {
         <button type="button" className={jumpClass} onClick={() => scrollToSection("aganswers")}>
           AgAnswers.ai
         </button>
-        , <span className="text-[color-mix(in_oklch,var(--color-text)_90%,transparent)]">researching robotics at UIUC</span>, playing competitive chess, and{" "}
+        , <span className="text-[color-mix(in_oklch,var(--color-text)_90%,transparent)]">researching vision/AI at UIUC</span>, playing competitive chess, and{" "}
         <Link
           to="/reading-list?filter=Berkeley+Research"
           className="text-[var(--color-primary)] hover:underline rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-background)]"
@@ -57,7 +57,7 @@ export default function TLDR() {
         <button type="button" className={jumpClass} onClick={() => scrollToSection("aaxiom")}>
           the founder of aaxiom.org
         </button>
-        ,  running the nyc marathon (Nov 2025)
+        ,  running the nyc marathon (Nov 2025), researching robotics at UIUC
       </p>
     </div>
   );
