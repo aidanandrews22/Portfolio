@@ -13,6 +13,86 @@ export default function RecentActivity() {
         </h2>
       </div>
 
+      <div className="flex flex-col items-center gap-8 mb-16 pb-16 border-b border-[color-mix(in_oklch,var(--color-primary)_10%,transparent)]">
+        <div className="w-full max-w-2xl">
+          <div className="aspect-[16/10] w-full rounded-lg overflow-hidden bg-[color-mix(in_oklch,var(--color-primary)_8%,transparent)]">
+            <img
+              src="/iia.jpg"
+              alt="Aidan Andrews receiving the Illinois Innovation Award from Grainger Engineering leadership"
+              className="w-full h-full object-cover"
+            />
+          </div>
+        </div>
+
+        <div className="w-full max-w-2xl text-center">
+          <h3 className="text-2xl font-bold mb-2">Illinois Innovation Award</h3>
+          <div className="flex flex-wrap gap-2 mb-4 justify-center">
+            <span className="px-3 py-1 rounded-full text-xs bg-[color-mix(in_oklch,var(--color-primary)_20%,transparent)] animate-pulse">
+              Innovation
+            </span>
+            <span className="px-3 py-1 rounded-full text-xs bg-[color-mix(in_oklch,var(--color-primary)_10%,transparent)]">
+              Entrepreneurship
+            </span>
+            <span className="px-3 py-1 rounded-full text-xs bg-[color-mix(in_oklch,var(--color-primary)_10%,transparent)]">
+              AgTech
+            </span>
+          </div>
+
+          <p className="text-lg mb-4">
+            Recipient of the 2026 Illinois Innovation Award and a $20,000 prize from Grainger
+            Engineering for my work on {" "}
+            <a href="https://aganswers.ai" target="_blank" rel="noopener noreferrer" className="text-[var(--color-primary)] hover:underline">AgAnswers.ai</a>.
+          </p>
+
+          <div className="flex flex-wrap gap-4 justify-center">
+            <a
+              href="https://tec.illinois.edu/news/82729"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-[var(--color-primary)] hover:underline"
+            >
+              Read Article
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                />
+              </svg>
+            </a>
+            <a
+              href="https://tec.illinois.edu/programs/iip"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-[var(--color-primary)] hover:underline"
+            >
+              Innovation Program
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
       {/* Research Section */}
       <div className="flex flex-col items-center gap-8 mb-12">
         {/* Video */}
