@@ -143,9 +143,13 @@
     filter: brightness(0.8) contrast(1.2);
   }
 
-  /* Ensure SVGs adapt to color scheme */
+  /* Ensure SVGs adapt to color scheme (Lucide is stroke-based; a global fill turns icons into blobs) */
   svg {
     fill: currentColor;
+  }
+
+  svg.lucide {
+    fill: none;
   }
 }
 

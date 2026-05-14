@@ -1,3 +1,34 @@
+import type { ReactNode } from "react";
+import {
+  BarChart3,
+  Calculator,
+  ClipboardList,
+  BrainCircuit,
+  FlaskConical,
+  GraduationCap,
+  ShieldCheck,
+  Star,
+  TrendingUp,
+} from "lucide-react";
+
+const pillIconProps = {
+  className: "h-3.5 w-3.5 shrink-0 text-[var(--color-primary)]",
+  strokeWidth: 2,
+  "aria-hidden": true as const,
+};
+
+function AchievementPill({ icon, children }: { icon: ReactNode; children: ReactNode }) {
+  return (
+    <span className="inline-flex items-center gap-1.5 whitespace-nowrap px-2.5 py-1 text-xs rounded-full bg-[color-mix(in_oklch,var(--color-primary)_15%,transparent)]">
+      {icon}
+      {children}
+    </span>
+  );
+}
+
+const rowIconClass = "h-5 w-5 text-[var(--color-primary)] mt-0.5 shrink-0";
+const rowIconStroke = 2;
+
 export default function EducationSection() {
   return (
     <section className="space-y-6">
@@ -30,10 +61,18 @@ export default function EducationSection() {
                 }}
               />
             </div>
-            <div className="mt-4 text-center">
-              <span className="px-2 py-1 text-xs rounded-full bg-[color-mix(in_oklch,var(--color-primary)_15%,transparent)]">
-                3.9 GPA
-              </span>
+            <div className="mt-4 flex flex-wrap gap-2 justify-center max-w-[280px] md:max-w-none">
+              <AchievementPill icon={<BarChart3 {...pillIconProps} />}>3.9 GPA</AchievementPill>
+              <AchievementPill icon={<GraduationCap {...pillIconProps} />}>
+                James Scholar
+              </AchievementPill>
+              <AchievementPill icon={<ClipboardList {...pillIconProps} />}>
+                Dean&apos;s List
+              </AchievementPill>
+              <AchievementPill icon={<TrendingUp {...pillIconProps} />}>
+                Top 5% of Class
+              </AchievementPill>
+              <AchievementPill icon={<Star {...pillIconProps} />}>Honors</AchievementPill>
             </div>
           </div>
 
@@ -47,50 +86,36 @@ export default function EducationSection() {
             </p>
             <div className="mt-6 space-y-4">
               <div className="flex items-start gap-3">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 text-[var(--color-primary)] mt-0.5 flex-shrink-0"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                  />
-                </svg>
+                <ShieldCheck
+                  className={rowIconClass}
+                  strokeWidth={rowIconStroke}
+                  aria-hidden
+                />
                 <div>
-                  <p className="font-medium">Accelerated Program</p>
+                  <p className="font-medium">Graduated in 3 Years</p>
                   <p className="text-sm opacity-75">
-                    On track to graduate in 3 years instead of the traditional
-                    4-year program.
+                    Came in with 0 credits, petitioned exemption from maximum credit hours every semester, traditional 4-year program.
                   </p>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 text-[var(--color-primary)] mt-0.5 flex-shrink-0"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"
-                  />
-                </svg>
-                <div>
-                  <p className="font-medium">Research Focus</p>
-                  <p className="text-sm opacity-75">
-                    Emphasis on machine learning applications in physics and
-                    computational methods.
-                  </p>
+              <div className="space-y-3">
+                <div className="flex items-start gap-3">
+                  <BrainCircuit className={rowIconClass} strokeWidth={rowIconStroke} aria-hidden />
+                  <p className="font-medium pt-0.5">Minor in Computer Science</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <Calculator className={rowIconClass} strokeWidth={rowIconStroke} aria-hidden />
+                  <p className="font-medium pt-0.5">Minor in Mathematics</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <FlaskConical className={rowIconClass} strokeWidth={rowIconStroke} aria-hidden />
+                  <div>
+                    <p className="font-medium">Research Focus</p>
+                    <p className="text-sm opacity-75">
+                      Spent most of my time doing research in AI, machine learning, vision, and robotics.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
