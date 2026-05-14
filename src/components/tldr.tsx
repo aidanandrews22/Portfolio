@@ -23,13 +23,13 @@ export default function TLDR() {
         TL;DR
       </h2>
       <p className="text-sm sm:text-base leading-relaxed text-pretty">
-        <b>Currently I am…</b> <br /> graduating{" "}
-        <button type="button" className={jumpClass} onClick={() => scrollToSection("education")}>
-          BS physics with CS and Math minors at UIUC
-        </button>
-        , building{" "}
+        <b>Currently I am…</b> <br /> building{" "}
         <button type="button" className={jumpClass} onClick={() => scrollToSection("aganswers")}>
           AgAnswers.ai
+        </button>
+        ,{" "}
+        <button type="button" className={jumpClass} onClick={() => scrollToSection("education")}>
+          graduating BS physics with CS and Math minors at UIUC
         </button>
         , an AI Engineer at{" "}
         <button type="button" className={jumpClass} onClick={() => scrollToSection("aifarms")}>
