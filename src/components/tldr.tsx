@@ -27,9 +27,9 @@ export default function TLDR() {
         <button type="button" className={jumpClass} onClick={() => scrollToSection("aganswers")}>
           AgAnswers.ai
         </button>
-        , graduating
+        ,{" "}
         <button type="button" className={jumpClass} onClick={() => scrollToSection("education")}>
-          BS physics (minors in CS & Math) at UIUC
+          graduating BS physics (minors in CS & Math) at UIUC
         </button>
         , an AI Engineer at{" "}
         <button type="button" className={jumpClass} onClick={() => scrollToSection("aifarms")}>
@@ -47,15 +47,18 @@ export default function TLDR() {
         <br />
         researching{" "}
         <button type="button" className={jumpClass} onClick={() => scrollToSection("berkeley")}>
-          AI for robotics at UC Berkeley
+          AI for robotics at UC Berkeley (BAIR)
         </button>
         ,{" "}
         <span className="text-[color-mix(in_oklch,var(--color-text)_85%,transparent)]">
           playing hockey for UIUC D1
         </span>
         ,{" "}
+        <a href="https://voxed.ai" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-[var(--color-primary)] hover:underline">
+          the founder of voxed.ai (exited)
+        </a>,{" "}
         <button type="button" className={jumpClass} onClick={() => scrollToSection("aaxiom")}>
-          the founder of aaxiom.org
+          building at aaxiom.org
         </button>
         ,  running the nyc marathon (Nov 2025), researching robotics at UIUC
       </p>
