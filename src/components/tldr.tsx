@@ -27,13 +27,13 @@ export default function TLDR() {
         <button type="button" className={jumpClass} onClick={() => scrollToSection("education")}>
           BS physics with CS and Math minors at UIUC
         </button>
-        , an AI Engineer at{" "}
-        <button type="button" className={jumpClass} onClick={() => scrollToSection("aifarms")}>
-          NCSA
-        </button>
         , building{" "}
         <button type="button" className={jumpClass} onClick={() => scrollToSection("aganswers")}>
           AgAnswers.ai
+        </button>
+        , an AI Engineer at{" "}
+        <button type="button" className={jumpClass} onClick={() => scrollToSection("aifarms")}>
+          NCSA
         </button>
         , <span className="text-[color-mix(in_oklch,var(--color-text)_90%,transparent)]">researching vision/AI at UIUC</span>, playing competitive chess, and{" "}
         <Link
