@@ -27,9 +27,9 @@ export default function TLDR() {
         <button type="button" className={jumpClass} onClick={() => scrollToSection("aganswers")}>
           AgAnswers.ai
         </button>
-        ,{" "}
+        , graduating
         <button type="button" className={jumpClass} onClick={() => scrollToSection("education")}>
-          graduating BS physics with CS and Math minors at UIUC
+          BS physics (minors in CS & Math) at UIUC
         </button>
         , an AI Engineer at{" "}
         <button type="button" className={jumpClass} onClick={() => scrollToSection("aifarms")}>
