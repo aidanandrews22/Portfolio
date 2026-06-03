@@ -4,14 +4,15 @@ import "react-medium-image-zoom/dist/styles.css";
 
 import { Project as ProjectType } from "../components/ProjectCard";
 import { type Research } from "../components/ResearchCard";
-import { WhatDrivesMe, WhoDrivesMe } from "../components/about/DrivesMe";
+// import { WhatDrivesMe, WhoDrivesMe } from "../components/about/DrivesMe";
+import { WhoDrivesMe } from "../components/about/DrivesMe";
 import TLDR from "../components/tldr";
-import AboutSection from "../components/about/AboutSec";
+// import AboutSection from "../components/about/AboutSec";
 import ProjectsSection from "../components/about/ProjectSec";
 import ResearchSection from "../components/about/ResearchSec";
 import WorkExperienceSection from "../components/about/WorkExperience";
 import EducationSection from "../components/about/Education";
-import TechnicalExpertiseSection from "../components/about/TechnicalExpertise";
+// import TechnicalExpertiseSection from "../components/about/TechnicalExpertise";
 import RecentActivity from "../components/about/RecentActivity";
 import RecentBlogSection from "../components/about/RecentBlogPost";
 import Socials from "../components/about/Socials";
