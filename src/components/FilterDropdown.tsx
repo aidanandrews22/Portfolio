@@ -86,19 +86,17 @@ export default function FilterDropdown({
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={
-              reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: -8 }
-            }
-            animate={{ opacity: 1, y: 0 }}
-            exit={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: -8 }}
+            initial={reduceMotion ? { y: 0 } : { y: -8 }}
+            animate={{ y: 0 }}
+            exit={reduceMotion ? { y: 0 } : { y: -8 }}
             transition={{ duration: reduceMotion ? 0 : 0.15 }}
             id={listId}
             role="listbox"
             aria-label={`${label} options`}
-            className="absolute z-[1] w-full mt-2 bg-background overscroll-contain
-                     border border-[color-mix(in_oklch,var(--color-primary)_20%,transparent)] rounded-lg shadow-lg"
+            className="absolute z-50 w-full mt-2 overscroll-contain
+                     border border-[color-mix(in_oklch,var(--color-primary)_20%,transparent)] rounded-lg shadow-lg bg-surface"
           >
-            <ul className="py-1 max-h-[60vh] overflow-y-auto">
+            <ul className="py-1 max-h-[60vh] overflow-y-auto rounded-lg bg-surface">
               <li role="presentation">
                 <button
                   type="button"

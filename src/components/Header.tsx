@@ -77,13 +77,13 @@ export default function Header() {
               {/* Description and Roles - Left Aligned */}
               <div className="space-y-3 md:space-y-4 w-full">
                 <p className="text-sm md:text-base lg:text-lg leading-relaxed">
-                  I enjoy researching AI/ML and teaching robots how to learn.
+                  I research AI/ML and robotics, and build companies.
                 </p>
-                <div className="flex flex-row flex-wrap gap-2 text-sm md:text-base lg:text-lg">
+                {/* <div className="flex flex-row flex-wrap gap-2 text-sm md:text-base lg:text-lg">
                   <span className="text-orange-400">Student.</span>
                   <span className="text-green-400">Researcher.</span>
                   <span>Builder.</span>
-                </div>
+                </div> */}
               </div>
 
               {/* Social Links - Left Aligned */}

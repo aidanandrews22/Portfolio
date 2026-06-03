@@ -100,7 +100,7 @@ export default function About() {
         loading={researchLoading}
         error={researchError}
       />
-      <AboutSection />
+      {/* <AboutSection /> */}
       <WorkExperienceSection />
       <EducationSection />
       <GitHubChart username="aidanandrews22" />
@@ -111,9 +111,9 @@ export default function About() {
       />
       <RecentBlogSection />
       <Socials />
-      <WhatDrivesMe />
+      {/* <WhatDrivesMe /> */}
       <WhoDrivesMe />
-      <TechnicalExpertiseSection />
+      {/* <TechnicalExpertiseSection /> */}
     </motion.div>
   );
 }

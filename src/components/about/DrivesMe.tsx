@@ -56,19 +56,22 @@ export function WhatDrivesMe() {
 export function WhoDrivesMe() {
   return (
     <section className="space-y-6">
-      <h2 className="text-3xl font-bold">Who Drives Me</h2>
+      {/* <h2 className="text-3xl font-bold">Who Drives Me</h2> */}
+      <hr className="border-t border-[var(--color-border)] w-full my-2" />
+ 
 
       <div className="relative">
         {/* Quote block */}
-        <div className="pl-6 border-l-4 border-[var(--color-primary)] py-1">
+        {/* <div className="pl-6 border-l-4 border-[var(--color-primary)] py-1">
           <p className="text-xl italic font-light">
             "Family is not an important thing. It's everything."
           </p>
-        </div>
+        </div> */}
+        
 
         <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Left column - text */}
-          <div className="space-y-4">
+          {/* <div className="space-y-4">
             <p className="leading-relaxed">
               My family has always been my foundation - their belief in me and
               unwavering support drives me to become the best version of myself.
@@ -81,6 +84,15 @@ export function WhoDrivesMe() {
               mission; I genuinely believe that using my skills to create
               meaningful solutions isn't just fulfilling — it's my
               responsibility.
+            </p>
+          </div> */}
+          <div className="pl-6 py-1">
+            <p className="text-xl italic font-light">
+              "Family is not an important thing. It's everything."
+            </p>
+            <br />
+            <p className="text-xl italic font-light">
+              All glory to God.
             </p>
           </div>
 
