@@ -12,12 +12,12 @@ export default function ImportantDocuments() {
             lastUpdated: "2025-10",
             group: "transcript",
         },
-        {
-            name: "Aidan_Andrews_Unofficial_Transcript.pdf",
-            label: "Unofficial-Transcript",
-            lastUpdated: "2025-10",
-            group: "transcript",
-        },
+        // {
+        //     name: "Aidan_Andrews_Unofficial_Transcript.pdf",
+        //     label: "Unofficial-Transcript",
+        //     lastUpdated: "2025-10",
+        //     group: "transcript",
+        // },
         // {
         //     name: "Aidan_Andrews_Resume.pdf",
         //     label: "Resume",
