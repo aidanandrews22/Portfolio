@@ -12,6 +12,12 @@ export default function ImportantDocuments() {
             lastUpdated: "2025-10",
             group: "transcript",
         },
+        {
+            name: "Aidan_Andrews_eDiploma.pdf",
+            label: "Diploma",
+            lastUpdated: "2026-06",
+            group: "other",
+        },
         // {
         //     name: "Aidan_Andrews_Unofficial_Transcript.pdf",
         //     label: "Unofficial-Transcript",
