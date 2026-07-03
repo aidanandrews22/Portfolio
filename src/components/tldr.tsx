@@ -19,9 +19,9 @@ const jumpClass =
 export default function TLDR() {
   return (
     <div className="p-6 max-w-xl mx-auto min-w-0">
-      <h2 className="text-2xl sm:text-3xl font-bold mb-4 text-pretty">
+      {/* <h2 className="text-2xl sm:text-3xl font-bold mb-4 text-pretty">
         TL;DR
-      </h2>
+      </h2> */}
       <p className="text-sm sm:text-base leading-relaxed text-pretty">
         <b>Currently I am…</b> <br /> building{" "}
         <button type="button" className={jumpClass} onClick={() => scrollToSection("aganswers")}>
@@ -29,12 +29,8 @@ export default function TLDR() {
         </button>
         ,{" "}
         <button type="button" className={jumpClass} onClick={() => scrollToSection("education")}>
-          graduated BS physics (minors in CS & Math) at UIUC
-        </button>
-        , an AI Engineer at{" "}
-        <button type="button" className={jumpClass} onClick={() => scrollToSection("aifarms")}>
-          NCSA
-        </button>
+          graduated
+        </button> BS physics (minors in CS & Math) from UIUC
         , <span className="text-[color-mix(in_oklch,var(--color-text)_90%,transparent)]">researching vision/AI at UIUC</span>, playing competitive chess, and{" "}
         <Link
           to="/reading-list?filter=Berkeley+Research"

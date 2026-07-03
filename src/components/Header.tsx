@@ -70,7 +70,7 @@ export default function Header() {
                   Aidan Andrews
                 </h1>
                 <p className="text-sm md:text-base lg:text-lg opacity-70 break-words">
-                  aidansa2[at]illinois[dot]edu • aidanandrews[at]berkeley[dot]edu
+                  aidansa2[at]illinois[dot]edu • aidan[at]aganswers[dot]ai
                 </p>
               </div>
 

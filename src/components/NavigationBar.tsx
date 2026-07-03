@@ -18,6 +18,7 @@ const WRITING_ROUTES = [
   { to: "/reading-list", label: "Reading List" },
   { to: "/bookshelf", label: "Bookshelf" },
   { to: "/blog", label: "Blog" },
+  { to: "/projects", label: "Projects" },
 ] as const;
 
 export default function NavigationBar() {
@@ -27,23 +28,26 @@ export default function NavigationBar() {
   const isPublications = location.pathname === "/papers";
   const isReadingList = location.pathname === "/reading-list";
   const isBlog = location.pathname === "/blog";
+  const isProjects = location.pathname.startsWith("/projects");
 
   let displayText = "Papers";
   if (isBookshelf) displayText = "Bookshelf";
   else if (isPublications) displayText = "Papers";
   else if (isReadingList) displayText = "Reading List";
   else if (isBlog) displayText = "Blog";
+  else if (isProjects) displayText = "Projects";
 
   const writingSubLinks = WRITING_ROUTES.filter((r) => {
     if (r.to === "/papers" && isPublications) return false;
     if (r.to === "/reading-list" && isReadingList) return false;
     if (r.to === "/bookshelf" && isBookshelf) return false;
     if (r.to === "/blog" && isBlog) return false;
+    if (r.to === "/projects" && isProjects) return false;
     return true;
   });
 
   const isWritingActive =
-    isPublications || isReadingList || isBookshelf || isBlog;
+    isPublications || isReadingList || isBookshelf || isBlog || isProjects;
 
   return (
     <div className="top-0">
@@ -103,31 +107,6 @@ export default function NavigationBar() {
                     )}
                   >
                     Research
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
-
-                <NavigationMenuItem>
-                  <NavigationMenuLink
-                    active={location.pathname.startsWith("/projects")}
-                    closeOnClick
-                    className={cn(
-                      "!flex-row items-center gap-0 min-h-11",
-                      navigationMenuTriggerStyle(),
-                    )}
-                    render={(props) => (
-                      <NavLink
-                        {...props}
-                        to="/projects"
-                        className={cn(
-                          props.className,
-                          "no-underline",
-                          location.pathname.startsWith("/projects") &&
-                            "font-semibold text-[var(--color-text)]",
-                        )}
-                      />
-                    )}
-                  >
-                    Projects
                   </NavigationMenuLink>
                 </NavigationMenuItem>
 
