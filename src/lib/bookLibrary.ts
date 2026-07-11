@@ -131,7 +131,13 @@ export function getBookSections(
     : library.books;
 
   if (selectedCategory) {
-    const books = [...filteredBooks].sort(compareBooks).map(toDisplayBook);
+    const books = [...filteredBooks]
+      .sort(
+        selectedCategory === "scripture"
+          ? (a, b) => a.id - b.id
+          : compareBooks,
+      )
+      .map(toDisplayBook);
 
     return books.length > 0
       ? [

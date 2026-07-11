@@ -125,6 +125,50 @@ describe("book library transformations", () => {
     assert.equal(sections[0]?.books.length, 1);
   });
 
+  it("keeps selected scripture unrated and ordered by id", () => {
+    const scriptureLibrary: BookLibrary = {
+      ...library,
+      books: [
+        {
+          id: 3,
+          title: "Second Scripture",
+          authors: [],
+          category: "scripture",
+          reading_status: "not_specified",
+          status_as_of: null,
+          rating_100: 100,
+          rating_basis: "withheld",
+          notes: null,
+          url: null,
+          image_url: null,
+        },
+        {
+          id: 1,
+          title: "First Scripture",
+          authors: [],
+          category: "scripture",
+          reading_status: "not_specified",
+          status_as_of: null,
+          rating_100: null,
+          rating_basis: "unrated",
+          notes: null,
+          url: null,
+          image_url: null,
+        },
+      ],
+    };
+
+    const sections = getBookSections(scriptureLibrary, "scripture");
+
+    assert.deepEqual(
+      sections[0]?.books.map((book) => [book.title, book.displayRating]),
+      [
+        ["First Scripture", null],
+        ["Second Scripture", null],
+      ],
+    );
+  });
+
   it("filters non-scripture categories without adding an empty scripture section", () => {
     const sections = getBookSections(library, "textbook");
 
