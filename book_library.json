@@ -1,0 +1,932 @@
+{
+  "schema_version": "1.0",
+  "library_as_of": "2026-07-11",
+  "rating_scale": {
+    "minimum": 0,
+    "maximum": 100
+  },
+  "summary": {
+    "active_titles": 69,
+    "removed_titles": 4
+  },
+  "reading_status_definitions": {
+    "read": "Completed at least once.",
+    "currently_reading": "Actively reading as of the stated date.",
+    "currently_rereading": "Previously completed and actively reading again.",
+    "partially_read": "Started but not currently being read.",
+    "unread": "Not yet read.",
+    "reference_only": "Reference work not treated as a cover-to-cover read.",
+    "not_specified": "Reading status was not provided."
+  },
+  "books": [
+    {
+      "title": "Confessions",
+      "authors": [
+        "Saint Augustine"
+      ],
+      "category": "book",
+      "reading_status": "currently_reading",
+      "status_as_of": "2026-07-11",
+      "rating_100": null,
+      "rating_basis": null,
+      "notes": "Henry Chadwick translation.",
+      "id": 1
+    },
+    {
+      "title": "Thinking, Fast and Slow",
+      "authors": [
+        "Daniel Kahneman"
+      ],
+      "category": "book",
+      "reading_status": "currently_rereading",
+      "status_as_of": "2026-07-11",
+      "completed_reads": 1,
+      "rating_100": 90,
+      "rating_basis": "overall",
+      "notes": "Reading for a second time.",
+      "id": 2
+    },
+    {
+      "title": "The New Oxford Annotated Bible with the Apocrypha, NRSV, Fifth Edition",
+      "authors": [],
+      "category": "scripture",
+      "reading_status": "currently_reading",
+      "status_as_of": "2026-07-11",
+      "rating_100": 100,
+      "rating_basis": "overall",
+      "notes": "Expected to remain an ongoing read indefinitely.",
+      "id": 3
+    },
+    {
+      "title": "Pattern Recognition and Machine Learning",
+      "authors": [
+        "Christopher M. Bishop"
+      ],
+      "category": "textbook",
+      "reading_status": "partially_read",
+      "status_as_of": null,
+      "rating_100": 85,
+      "rating_basis": "textbook",
+      "notes": null,
+      "id": 4
+    },
+    {
+      "title": "Influence",
+      "authors": [
+        "Robert B. Cialdini"
+      ],
+      "category": "book",
+      "reading_status": "currently_reading",
+      "status_as_of": "2026-07-11",
+      "completed_reads": 0,
+      "rating_100": 82,
+      "rating_basis": "overall",
+      "notes": "A previous partial attempt is not counted; tracked as a first full read from the beginning.",
+      "id": 5
+    },
+    {
+      "title": "Designing Machine Learning Systems",
+      "authors": [
+        "Chip Huyen"
+      ],
+      "category": "book",
+      "reading_status": "read",
+      "status_as_of": null,
+      "rating_100": 63,
+      "rating_basis": "overall",
+      "notes": null,
+      "id": 6
+    },
+    {
+      "title": "Discourse on Method and Meditations on First Philosophy",
+      "authors": [
+        "René Descartes"
+      ],
+      "category": "book",
+      "reading_status": "unread",
+      "status_as_of": null,
+      "rating_100": null,
+      "rating_basis": null,
+      "notes": null,
+      "id": 7
+    },
+    {
+      "title": "Critique of Pure Reason",
+      "authors": [
+        "Immanuel Kant"
+      ],
+      "category": "book",
+      "reading_status": "unread",
+      "status_as_of": null,
+      "rating_100": null,
+      "rating_basis": null,
+      "notes": null,
+      "id": 8
+    },
+    {
+      "title": "The Self-Assembling Brain",
+      "authors": [
+        "Peter Robin Hiesinger"
+      ],
+      "category": "book",
+      "reading_status": "partially_read",
+      "status_as_of": null,
+      "rating_100": null,
+      "rating_basis": null,
+      "notes": null,
+      "id": 9
+    },
+    {
+      "title": "Deep Learning",
+      "authors": [
+        "Ian Goodfellow",
+        "Yoshua Bengio",
+        "Aaron Courville"
+      ],
+      "category": "textbook",
+      "reading_status": "partially_read",
+      "status_as_of": null,
+      "rating_100": 86,
+      "rating_basis": "textbook",
+      "notes": null,
+      "id": 10
+    },
+    {
+      "title": "The Selfish Gene",
+      "authors": [
+        "Richard Dawkins"
+      ],
+      "category": "book",
+      "reading_status": "unread",
+      "status_as_of": null,
+      "rating_100": null,
+      "rating_basis": null,
+      "notes": null,
+      "id": 11
+    },
+    {
+      "title": "Webster's New World Dictionary, Third College Edition",
+      "authors": [],
+      "category": "reference",
+      "reading_status": "reference_only",
+      "status_as_of": null,
+      "rating_100": null,
+      "rating_basis": "not_applicable",
+      "notes": "Not treated as a book that is read cover to cover.",
+      "id": 12
+    },
+    {
+      "title": "Mathematics for Machine Learning",
+      "authors": [
+        "Marc Peter Deisenroth",
+        "A. Aldo Faisal",
+        "Cheng Soon Ong"
+      ],
+      "category": "textbook",
+      "reading_status": "read",
+      "status_as_of": null,
+      "rating_100": 95,
+      "rating_basis": "overall",
+      "notes": "Converted from a prior 5-star rating.",
+      "id": 13
+    },
+    {
+      "title": "Republic",
+      "authors": [
+        "Plato"
+      ],
+      "category": "book",
+      "reading_status": "currently_reading",
+      "status_as_of": "2026-07-11",
+      "rating_100": null,
+      "rating_basis": null,
+      "notes": "Benjamin Jowett translation.",
+      "id": 14
+    },
+    {
+      "title": "The Art of Doing Science and Engineering: Learning to Learn",
+      "authors": [
+        "Richard W. Hamming"
+      ],
+      "category": "book",
+      "reading_status": "currently_reading",
+      "status_as_of": "2026-07-11",
+      "rating_100": null,
+      "rating_basis": null,
+      "notes": null,
+      "id": 15
+    },
+    {
+      "title": "The Richest Man in Babylon",
+      "authors": [
+        "George S. Clason"
+      ],
+      "category": "book",
+      "reading_status": "currently_reading",
+      "status_as_of": "2026-07-11",
+      "rating_100": null,
+      "rating_basis": null,
+      "notes": null,
+      "id": 16
+    },
+    {
+      "title": "The Cold Start Problem",
+      "authors": [
+        "Andrew Chen"
+      ],
+      "category": "book",
+      "reading_status": "currently_reading",
+      "status_as_of": "2026-07-11",
+      "rating_100": null,
+      "rating_basis": null,
+      "notes": null,
+      "id": 17
+    },
+    {
+      "title": "The Wealth of Nations, Books I–III",
+      "authors": [
+        "Adam Smith"
+      ],
+      "category": "book",
+      "reading_status": "unread",
+      "status_as_of": null,
+      "rating_100": null,
+      "rating_basis": null,
+      "notes": null,
+      "id": 18
+    },
+    {
+      "title": "Python Crash Course",
+      "authors": [
+        "Eric Matthes"
+      ],
+      "category": "textbook",
+      "reading_status": "read",
+      "status_as_of": null,
+      "rating_100": 52,
+      "rating_basis": "overall",
+      "notes": null,
+      "id": 19
+    },
+    {
+      "title": "C++ Primer, Fifth Edition",
+      "authors": [
+        "Stanley B. Lippman",
+        "Josée Lajoie",
+        "Barbara E. Moo"
+      ],
+      "category": "textbook",
+      "reading_status": "read",
+      "status_as_of": null,
+      "rating_100": 78,
+      "rating_basis": "overall",
+      "notes": null,
+      "id": 20
+    },
+    {
+      "title": "Java Precisely, Third Edition",
+      "authors": [
+        "Peter Sestoft"
+      ],
+      "category": "textbook",
+      "reading_status": "read",
+      "status_as_of": null,
+      "rating_100": 58,
+      "rating_basis": "overall",
+      "notes": null,
+      "id": 21
+    },
+    {
+      "title": "Deep Learning for Coders with fastai and PyTorch",
+      "authors": [
+        "Jeremy Howard",
+        "Sylvain Gugger"
+      ],
+      "category": "textbook",
+      "reading_status": "read",
+      "status_as_of": null,
+      "rating_100": 61,
+      "rating_basis": "overall",
+      "notes": null,
+      "id": 22
+    },
+    {
+      "title": "Mathematical Statistics with Applications, Seventh Edition",
+      "authors": [
+        "Dennis D. Wackerly",
+        "William Mendenhall III",
+        "Richard L. Scheaffer"
+      ],
+      "category": "textbook",
+      "reading_status": "read",
+      "status_as_of": null,
+      "rating_100": 72,
+      "rating_basis": "overall",
+      "notes": null,
+      "id": 23
+    },
+    {
+      "title": "Calculus: Early Transcendentals, Eighth Edition",
+      "authors": [
+        "James Stewart"
+      ],
+      "category": "textbook",
+      "reading_status": "read",
+      "status_as_of": null,
+      "rating_100": 87,
+      "rating_basis": "textbook",
+      "notes": "Described as a great textbook.",
+      "id": 24
+    },
+    {
+      "title": "Introduction to Quantum Mechanics, Third Edition",
+      "authors": [
+        "David J. Griffiths",
+        "Darrell F. Schroeter"
+      ],
+      "category": "textbook",
+      "reading_status": "read",
+      "status_as_of": null,
+      "rating_100": 88,
+      "rating_basis": "textbook",
+      "notes": null,
+      "id": 25
+    },
+    {
+      "title": "Introduction to Electrodynamics",
+      "authors": [
+        "David J. Griffiths"
+      ],
+      "category": "textbook",
+      "reading_status": "read",
+      "status_as_of": null,
+      "rating_100": 89,
+      "rating_basis": "textbook",
+      "notes": null,
+      "id": 26
+    },
+    {
+      "title": "Special Relativity: For the Enthusiastic Beginner",
+      "authors": [
+        "David Morin"
+      ],
+      "category": "textbook",
+      "reading_status": "read",
+      "status_as_of": null,
+      "rating_100": 70,
+      "rating_basis": "textbook",
+      "notes": null,
+      "id": 27
+    },
+    {
+      "title": "War and Peace",
+      "authors": [
+        "Leo Tolstoy"
+      ],
+      "category": "book",
+      "reading_status": "unread",
+      "status_as_of": null,
+      "rating_100": null,
+      "rating_basis": null,
+      "notes": null,
+      "id": 28
+    },
+    {
+      "title": "A Brief History of Intelligence",
+      "authors": [
+        "Max Bennett"
+      ],
+      "category": "book",
+      "reading_status": "read",
+      "status_as_of": null,
+      "rating_100": 63,
+      "rating_basis": "overall",
+      "notes": null,
+      "id": 29
+    },
+    {
+      "title": "Consciousness Explained",
+      "authors": [
+        "Daniel C. Dennett"
+      ],
+      "category": "book",
+      "reading_status": "read",
+      "status_as_of": null,
+      "rating_100": 61,
+      "rating_basis": "overall",
+      "notes": null,
+      "id": 30
+    },
+    {
+      "title": "Atomic Habits",
+      "authors": [
+        "James Clear"
+      ],
+      "category": "book",
+      "reading_status": "read",
+      "status_as_of": null,
+      "rating_100": 66,
+      "rating_basis": "overall",
+      "notes": null,
+      "id": 31
+    },
+    {
+      "title": "12 Rules for Life",
+      "authors": [
+        "Jordan B. Peterson"
+      ],
+      "category": "book",
+      "reading_status": "read",
+      "status_as_of": null,
+      "rating_100": 51,
+      "rating_basis": "overall",
+      "notes": null,
+      "id": 32
+    },
+    {
+      "title": "Outliers",
+      "authors": [
+        "Malcolm Gladwell"
+      ],
+      "category": "book",
+      "reading_status": "read",
+      "status_as_of": null,
+      "rating_100": 90,
+      "rating_basis": "overall",
+      "notes": null,
+      "id": 33
+    },
+    {
+      "title": "The Daily Laws",
+      "authors": [
+        "Robert Greene"
+      ],
+      "category": "book",
+      "reading_status": "read",
+      "status_as_of": null,
+      "rating_100": 71,
+      "rating_basis": "overall",
+      "notes": null,
+      "id": 34
+    },
+    {
+      "title": "Never Split the Difference",
+      "authors": [
+        "Chris Voss"
+      ],
+      "category": "book",
+      "reading_status": "read",
+      "status_as_of": null,
+      "rating_100": 70,
+      "rating_basis": "overall",
+      "notes": null,
+      "id": 35
+    },
+    {
+      "title": "Scarcity Brain",
+      "authors": [
+        "Michael Easter"
+      ],
+      "category": "book",
+      "reading_status": "read",
+      "status_as_of": null,
+      "rating_100": 55,
+      "rating_basis": "overall",
+      "notes": null,
+      "id": 36
+    },
+    {
+      "title": "Risk",
+      "authors": [
+        "Stanley McChrystal",
+        "Anna Butrico"
+      ],
+      "category": "book",
+      "reading_status": "read",
+      "status_as_of": null,
+      "rating_100": 54,
+      "rating_basis": "overall",
+      "notes": null,
+      "id": 37
+    },
+    {
+      "title": "The Alchemist",
+      "authors": [
+        "Paulo Coelho"
+      ],
+      "category": "book",
+      "reading_status": "read",
+      "status_as_of": null,
+      "rating_100": 72,
+      "rating_basis": "overall",
+      "notes": null,
+      "id": 38
+    },
+    {
+      "title": "The Catcher in the Rye",
+      "authors": [
+        "J. D. Salinger"
+      ],
+      "category": "book",
+      "reading_status": "read",
+      "status_as_of": null,
+      "rating_100": 76,
+      "rating_basis": "overall",
+      "notes": null,
+      "id": 39
+    },
+    {
+      "title": "No Longer Human",
+      "authors": [
+        "Osamu Dazai"
+      ],
+      "category": "book",
+      "reading_status": "read",
+      "status_as_of": null,
+      "rating_100": 83,
+      "rating_basis": "overall",
+      "notes": null,
+      "id": 40
+    },
+    {
+      "title": "Meditations",
+      "authors": [
+        "Marcus Aurelius"
+      ],
+      "category": "book",
+      "reading_status": "read",
+      "status_as_of": null,
+      "rating_100": 87,
+      "rating_basis": "overall",
+      "notes": null,
+      "id": 41
+    },
+    {
+      "title": "Jesus Calling",
+      "authors": [
+        "Sarah Young"
+      ],
+      "category": "devotional",
+      "reading_status": "read",
+      "status_as_of": null,
+      "rating_100": 90,
+      "rating_basis": "overall",
+      "notes": null,
+      "id": 42
+    },
+    {
+      "title": "Holy Bible, New Living Translation (NLT)",
+      "authors": [],
+      "category": "scripture",
+      "reading_status": "not_specified",
+      "status_as_of": null,
+      "rating_100": null,
+      "rating_basis": "withheld",
+      "notes": "Not rated out of respect.",
+      "id": 43
+    },
+    {
+      "title": "Flowers for Algernon",
+      "authors": [
+        "Daniel Keyes"
+      ],
+      "category": "book",
+      "reading_status": "partially_read",
+      "status_as_of": null,
+      "rating_100": null,
+      "rating_basis": null,
+      "notes": "Explicitly not marked as currently reading.",
+      "id": 44
+    },
+    {
+      "title": "The Power of Habit",
+      "authors": [
+        "Charles Duhigg"
+      ],
+      "category": "book",
+      "reading_status": "read",
+      "status_as_of": null,
+      "rating_100": 89,
+      "rating_basis": "overall",
+      "notes": null,
+      "id": 45
+    },
+    {
+      "title": "Why We Sleep",
+      "authors": [
+        "Matthew Walker"
+      ],
+      "category": "book",
+      "reading_status": "read",
+      "status_as_of": null,
+      "rating_100": 71,
+      "rating_basis": "overall",
+      "notes": null,
+      "id": 46
+    },
+    {
+      "title": "David and Goliath",
+      "authors": [
+        "Malcolm Gladwell"
+      ],
+      "category": "book",
+      "reading_status": "read",
+      "status_as_of": null,
+      "rating_100": 82,
+      "rating_basis": "overall",
+      "notes": null,
+      "id": 47
+    },
+    {
+      "title": "How to Win Friends and Influence People",
+      "authors": [
+        "Dale Carnegie"
+      ],
+      "category": "book",
+      "reading_status": "read",
+      "status_as_of": null,
+      "rating_100": 89,
+      "rating_basis": "overall",
+      "notes": null,
+      "id": 48
+    },
+    {
+      "title": "The 48 Laws of Power",
+      "authors": [
+        "Robert Greene"
+      ],
+      "category": "book",
+      "reading_status": "read",
+      "status_as_of": null,
+      "rating_100": 61,
+      "rating_basis": "overall",
+      "notes": null,
+      "id": 49
+    },
+    {
+      "title": "Einstein: His Life and Universe",
+      "authors": [
+        "Walter Isaacson"
+      ],
+      "category": "book",
+      "reading_status": "unread",
+      "status_as_of": null,
+      "rating_100": null,
+      "rating_basis": null,
+      "notes": null,
+      "id": 50
+    },
+    {
+      "title": "Leonardo da Vinci",
+      "authors": [
+        "Walter Isaacson"
+      ],
+      "category": "book",
+      "reading_status": "unread",
+      "status_as_of": null,
+      "rating_100": null,
+      "rating_basis": null,
+      "notes": null,
+      "id": 51
+    },
+    {
+      "title": "Retire by 30",
+      "authors": [
+        "Frank Niu"
+      ],
+      "category": "book",
+      "reading_status": "unread",
+      "status_as_of": null,
+      "rating_100": null,
+      "rating_basis": null,
+      "notes": null,
+      "id": 52
+    },
+    {
+      "title": "Can't Hurt Me",
+      "authors": [
+        "David Goggins"
+      ],
+      "category": "book",
+      "reading_status": "read",
+      "status_as_of": null,
+      "rating_100": 50,
+      "rating_basis": "overall",
+      "notes": null,
+      "id": 53
+    },
+    {
+      "title": "How to Day Trade for a Living",
+      "authors": [
+        "Andrew Aziz"
+      ],
+      "category": "book",
+      "reading_status": "read",
+      "status_as_of": null,
+      "rating_100": 48,
+      "rating_basis": "overall",
+      "notes": null,
+      "id": 54
+    },
+    {
+      "title": "Tax-Free Wealth, Second Edition",
+      "authors": [
+        "Tom Wheelwright"
+      ],
+      "category": "book",
+      "reading_status": "read",
+      "status_as_of": null,
+      "rating_100": 51,
+      "rating_basis": "overall",
+      "notes": null,
+      "id": 55
+    },
+    {
+      "title": "Man's Search for Meaning",
+      "authors": [
+        "Viktor E. Frankl"
+      ],
+      "category": "book",
+      "reading_status": "read",
+      "status_as_of": null,
+      "rating_100": 64,
+      "rating_basis": "overall",
+      "notes": null,
+      "id": 56
+    },
+    {
+      "title": "The Power of Positive Thinking",
+      "authors": [
+        "Norman Vincent Peale"
+      ],
+      "category": "book",
+      "reading_status": "read",
+      "status_as_of": null,
+      "rating_100": 41,
+      "rating_basis": "overall",
+      "notes": null,
+      "id": 57
+    },
+    {
+      "title": "Talking to Strangers",
+      "authors": [
+        "Malcolm Gladwell"
+      ],
+      "category": "book",
+      "reading_status": "read",
+      "status_as_of": null,
+      "rating_100": 73,
+      "rating_basis": "overall",
+      "notes": null,
+      "id": 58
+    },
+    {
+      "title": "Surely You're Joking, Mr. Feynman!",
+      "authors": [
+        "Richard P. Feynman"
+      ],
+      "category": "book",
+      "reading_status": "unread",
+      "status_as_of": null,
+      "rating_100": null,
+      "rating_basis": null,
+      "notes": null,
+      "id": 59
+    },
+    {
+      "title": "Genius Makers",
+      "authors": [
+        "Cade Metz"
+      ],
+      "category": "book",
+      "reading_status": "currently_reading",
+      "status_as_of": "2026-07-11",
+      "rating_100": null,
+      "rating_basis": null,
+      "notes": null,
+      "id": 60
+    },
+    {
+      "title": "Crime and Punishment",
+      "authors": [
+        "Fyodor Dostoevsky"
+      ],
+      "category": "book",
+      "reading_status": "partially_read",
+      "status_as_of": null,
+      "rating_100": 82,
+      "rating_basis": "overall",
+      "notes": null,
+      "id": 61
+    },
+    {
+      "title": "1984",
+      "authors": [
+        "George Orwell"
+      ],
+      "category": "book",
+      "reading_status": "read",
+      "status_as_of": null,
+      "rating_100": 83,
+      "rating_basis": "overall",
+      "notes": null,
+      "id": 62
+    },
+    {
+      "title": "Tuesdays with Morrie",
+      "authors": [
+        "Mitch Albom"
+      ],
+      "category": "book",
+      "reading_status": "read",
+      "status_as_of": null,
+      "rating_100": 51,
+      "rating_basis": "overall",
+      "notes": null,
+      "id": 63
+    },
+    {
+      "title": "Rich Dad Poor Dad",
+      "authors": [
+        "Robert T. Kiyosaki"
+      ],
+      "category": "book",
+      "reading_status": "read",
+      "status_as_of": null,
+      "rating_100": 47,
+      "rating_basis": "overall",
+      "notes": null,
+      "id": 64
+    },
+    {
+      "title": "Self-Care for Black Men",
+      "authors": [
+        "Jor-El Caraballo"
+      ],
+      "category": "book",
+      "reading_status": "read",
+      "status_as_of": null,
+      "rating_100": 40,
+      "rating_basis": "overall",
+      "notes": null,
+      "id": 65
+    },
+    {
+      "title": "Against Method",
+      "authors": [
+        "Paul Feyerabend"
+      ],
+      "category": "book",
+      "reading_status": "read",
+      "status_as_of": null,
+      "rating_100": 42,
+      "rating_basis": "overall",
+      "notes": null,
+      "id": 66
+    },
+    {
+      "title": "The Mindful Athlete",
+      "authors": [
+        "George Mumford"
+      ],
+      "category": "book",
+      "reading_status": "read",
+      "status_as_of": null,
+      "rating_100": 38,
+      "rating_basis": "overall",
+      "notes": null,
+      "id": 67
+    },
+    {
+      "title": "Leadership and the Quest for Integrity",
+      "authors": [
+        "Joseph L. Badaracco Jr.",
+        "Richard R. Ellsworth"
+      ],
+      "category": "book",
+      "reading_status": "read",
+      "status_as_of": null,
+      "rating_100": 39,
+      "rating_basis": "overall",
+      "notes": null,
+      "id": 68
+    },
+    {
+      "title": "Ethiopian Bible in English",
+      "authors": [],
+      "category": "scripture",
+      "reading_status": "not_specified",
+      "status_as_of": null,
+      "rating_100": null,
+      "rating_basis": "unrated",
+      "notes": null,
+      "id": 69
+    }
+  ],
+  "removed_from_active_inventory": [
+    "Shabbat: A Day to Create Yourself",
+    "Seinfeldia",
+    "Mindful Universe",
+    "The Road to Reality"
+  ]
+}

@@ -186,11 +186,24 @@ export default function Bookshelf() {
                         )}
                         <div className="min-w-0">
                           <h3 className="text-xl font-semibold text-balance">
-                            {book.title}
+                            {book.url ? (
+                              <a
+                                href={book.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="hover:text-[var(--color-primary)] transition-colors"
+                              >
+                                {book.title}
+                              </a>
+                            ) : (
+                              book.title
+                            )}
                           </h3>
-                          <p className="text-sm text-[color-mix(in_oklch,var(--color-primary)_70%,transparent)]">
-                            {book.authors}
-                          </p>
+                          {book.authors !== "Various" && (
+                            <p className="text-sm text-[color-mix(in_oklch,var(--color-primary)_70%,transparent)]">
+                              {book.authors}
+                            </p>
+                          )}
                           <p className="text-xs mt-1">
                             {formatCategory(book.category)}
                           </p>
@@ -201,17 +214,22 @@ export default function Bookshelf() {
                           {book.displayRating}/100
                         </div>
                       )}
+                      {typeof book.displayRating !== "number" && book.category !== "scripture" && (
+                        <div className="text-sm font-medium text-[var(--color-primary)] shrink-0">
+                          not yet rated
+                        </div>
+                      )}
                     </div>
 
-                    {book.description && (
+                    {/* {book.description && (
                       <blockquote className="my-4 text-sm italic">
                         "{book.description}"
                       </blockquote>
-                    )}
+                    )} */}
 
-                    {book.notes && <p className="my-4 text-sm">{book.notes}</p>}
+                    {/* {book.notes && <p className="my-4 text-sm">{book.notes}</p>} */}
 
-                    {(book.statusLabel || book.url) && (
+                    {/* {(book.statusLabel || book.url) && (
                       <div
                         className={`flex items-center mt-4 text-sm gap-4 ${
                           book.statusLabel ? "justify-between" : "justify-end"
@@ -235,7 +253,7 @@ export default function Bookshelf() {
                           </a>
                         )}
                       </div>
-                    )}
+                    )} */}
                   </motion.article>
                 ))}
               </div>
