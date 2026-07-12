@@ -8,7 +8,7 @@ import {
   getBookSections,
   isBookLibrary,
   type BookLibrary,
-  type StatusTone,
+  // type StatusTone,
 } from "../lib/bookLibrary";
 
 function formatCategory(category: string) {
