@@ -19,14 +19,14 @@ function formatCategory(category: string) {
     .join(" ");
 }
 
-const statusToneClasses: Record<StatusTone, string> = {
-  emerald: "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300",
-  sky: "bg-sky-500/10 text-sky-700 dark:text-sky-300",
-  violet: "bg-violet-500/10 text-violet-700 dark:text-violet-300",
-  amber: "bg-amber-500/15 text-amber-800 dark:text-amber-300",
-  slate: "bg-slate-500/10 text-slate-700 dark:text-slate-300",
-  stone: "bg-stone-500/10 text-stone-700 dark:text-stone-300",
-};
+// const statusToneClasses: Record<StatusTone, string> = {
+//   emerald: "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300",
+//   sky: "bg-sky-500/10 text-sky-700 dark:text-sky-300",
+//   violet: "bg-violet-500/10 text-violet-700 dark:text-violet-300",
+//   amber: "bg-amber-500/15 text-amber-800 dark:text-amber-300",
+//   slate: "bg-slate-500/10 text-slate-700 dark:text-slate-300",
+//   stone: "bg-stone-500/10 text-stone-700 dark:text-stone-300",
+// };
 
 export default function Bookshelf() {
   const reduceMotion = useReducedMotion();
