@@ -16,6 +16,14 @@ export interface RawBook {
   image_url?: string | null;
 }
 
+export type StatusTone =
+  | "emerald"
+  | "sky"
+  | "violet"
+  | "amber"
+  | "slate"
+  | "stone";
+
 export interface BookLibrary {
   schema_version: string;
   library_as_of: string;
@@ -45,6 +53,8 @@ export interface DisplayBook {
   url: string | null;
   imageUrl: string | null;
   description: string | null;
+  statusLabel: string | null;
+  statusTone: StatusTone | null;
 }
 
 export interface BookSection {
@@ -85,6 +95,7 @@ function formatCategory(category: string): string {
 function toDisplayBook(book: RawBook): DisplayBook {
   const featured = FEATURED_METADATA[book.title];
   const isScripture = book.category === "scripture";
+  const statusDisplay = getStatusDisplay(book);
 
   return {
     id: book.id,
@@ -100,7 +111,40 @@ function toDisplayBook(book: RawBook): DisplayBook {
     url: book.url ?? null,
     imageUrl: featured?.imageUrl ?? book.image_url ?? null,
     description: featured?.description ?? null,
+    statusLabel: statusDisplay.label,
+    statusTone: statusDisplay.tone,
   };
+}
+
+function getStatusDisplay(book: RawBook): {
+  label: string | null;
+  tone: StatusTone | null;
+} {
+  if (book.reading_status === "not_specified") {
+    return { label: null, tone: null };
+  }
+
+  if (
+    book.reading_status === "currently_rereading" ||
+    (book.completed_reads ?? 0) > 0
+  ) {
+    return { label: "Reading for a second time", tone: "violet" };
+  }
+
+  switch (book.reading_status) {
+    case "currently_reading":
+      return { label: "Currently reading", tone: "sky" };
+    case "read":
+      return { label: "Read", tone: "emerald" };
+    case "partially_read":
+      return { label: "Partially read", tone: "amber" };
+    case "unread":
+      return { label: "Unread", tone: "slate" };
+    case "reference_only":
+      return { label: "Reference only", tone: "stone" };
+    default:
+      return { label: formatCategory(book.reading_status), tone: "stone" };
+  }
 }
 
 function compareBooks(a: RawBook, b: RawBook): number {

@@ -8,11 +8,8 @@ import {
   getBookSections,
   isBookLibrary,
   type BookLibrary,
+  type StatusTone,
 } from "../lib/bookLibrary";
-
-function formatStatus(status: string) {
-  return status.replace(/_/g, " ");
-}
 
 function formatCategory(category: string) {
   return category
@@ -21,6 +18,15 @@ function formatCategory(category: string) {
     .map((word) => `${word.charAt(0).toUpperCase()}${word.slice(1)}`)
     .join(" ");
 }
+
+const statusToneClasses: Record<StatusTone, string> = {
+  emerald: "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300",
+  sky: "bg-sky-500/10 text-sky-700 dark:text-sky-300",
+  violet: "bg-violet-500/10 text-violet-700 dark:text-violet-300",
+  amber: "bg-amber-500/15 text-amber-800 dark:text-amber-300",
+  slate: "bg-slate-500/10 text-slate-700 dark:text-slate-300",
+  stone: "bg-stone-500/10 text-stone-700 dark:text-stone-300",
+};
 
 export default function Bookshelf() {
   const reduceMotion = useReducedMotion();
@@ -205,21 +211,31 @@ export default function Bookshelf() {
 
                     {book.notes && <p className="my-4 text-sm">{book.notes}</p>}
 
-                    <div className="flex justify-between items-center mt-4 text-sm gap-4">
-                      <span className="capitalize">
-                        {formatStatus(book.readingStatus)}
-                      </span>
-                      {book.url && (
-                        <a
-                          href={book.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="hover:text-[var(--color-primary)] transition-colors shrink-0"
-                        >
-                          View Book
-                        </a>
-                      )}
-                    </div>
+                    {(book.statusLabel || book.url) && (
+                      <div
+                        className={`flex items-center mt-4 text-sm gap-4 ${
+                          book.statusLabel ? "justify-between" : "justify-end"
+                        }`}
+                      >
+                        {book.statusLabel && book.statusTone && (
+                          <span
+                            className={`px-2.5 py-1 rounded-full text-xs font-medium ${statusToneClasses[book.statusTone]}`}
+                          >
+                            {book.statusLabel}
+                          </span>
+                        )}
+                        {book.url && (
+                          <a
+                            href={book.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hover:text-[var(--color-primary)] transition-colors shrink-0"
+                          >
+                            View Book
+                          </a>
+                        )}
+                      </div>
+                    )}
                   </motion.article>
                 ))}
               </div>

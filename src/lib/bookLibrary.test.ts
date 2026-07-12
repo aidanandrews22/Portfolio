@@ -261,4 +261,64 @@ describe("book library transformations", () => {
       "textbook",
     ]);
   });
+
+  it("formats status labels and tones for display", () => {
+    const statusLibrary: BookLibrary = {
+      ...library,
+      books: [
+        {
+          id: 1,
+          title: "Second Read",
+          authors: ["Author A"],
+          category: "book",
+          reading_status: "currently_rereading",
+          completed_reads: 1,
+          status_as_of: null,
+          rating_100: 90,
+          rating_basis: "overall",
+          notes: null,
+          url: null,
+          image_url: null,
+        },
+        {
+          id: 2,
+          title: "Current First Read",
+          authors: ["Author B"],
+          category: "book",
+          reading_status: "currently_reading",
+          completed_reads: 0,
+          status_as_of: null,
+          rating_100: 80,
+          rating_basis: "overall",
+          notes: null,
+          url: null,
+          image_url: null,
+        },
+        {
+          id: 3,
+          title: "Unspecified",
+          authors: ["Author C"],
+          category: "book",
+          reading_status: "not_specified",
+          status_as_of: null,
+          rating_100: 70,
+          rating_basis: "overall",
+          notes: null,
+          url: null,
+          image_url: null,
+        },
+      ],
+    };
+
+    const books = getBookSections(statusLibrary)[0]?.books ?? [];
+
+    assert.deepEqual(
+      books.map((book) => [book.title, book.statusLabel, book.statusTone]),
+      [
+        ["Second Read", "Reading for a second time", "violet"],
+        ["Current First Read", "Currently reading", "sky"],
+        ["Unspecified", null, null],
+      ],
+    );
+  });
 });
