@@ -180,7 +180,7 @@ describe("book library transformations", () => {
     );
   });
 
-  it("applies legacy featured metadata to matching titles", () => {
+  it("applies legacy featured covers and descriptions to matching titles", () => {
     const featuredLibrary: BookLibrary = {
       ...library,
       books: [
@@ -197,14 +197,61 @@ describe("book library transformations", () => {
           url: null,
           image_url: null,
         },
+        {
+          id: 11,
+          title: "Mathematics for Machine Learning",
+          authors: ["Marc Peter Deisenroth"],
+          category: "textbook",
+          reading_status: "read",
+          status_as_of: null,
+          rating_100: 95,
+          rating_basis: "overall",
+          notes: null,
+          url: null,
+          image_url: null,
+        },
+        {
+          id: 12,
+          title: "The Power of Habit",
+          authors: ["Charles Duhigg"],
+          category: "book",
+          reading_status: "read",
+          status_as_of: null,
+          rating_100: 89,
+          rating_basis: "overall",
+          notes: null,
+          url: null,
+          image_url: null,
+        },
       ],
     };
 
     const sections = getBookSections(featuredLibrary);
-    const book = sections[0]?.books[0];
+    const booksByTitle = new Map(
+      sections[0]?.books.map((book) => [book.title, book]) ?? [],
+    );
 
-    assert.equal(book?.imageUrl, "/assets/Book/book1.jpg");
-    assert.match(book?.description ?? "", /10,000 hour rule/);
+    assert.equal(booksByTitle.get("Outliers")?.imageUrl, "/assets/Book/book1.jpg");
+    assert.match(
+      booksByTitle.get("Outliers")?.description ?? "",
+      /word-class expertise/,
+    );
+    assert.equal(
+      booksByTitle.get("Mathematics for Machine Learning")?.imageUrl,
+      "/assets/Book/book2.jpg",
+    );
+    assert.match(
+      booksByTitle.get("Mathematics for Machine Learning")?.description ?? "",
+      /fundamental mathematical tools/,
+    );
+    assert.equal(
+      booksByTitle.get("The Power of Habit")?.imageUrl,
+      "/assets/Book/book3.jpg",
+    );
+    assert.match(
+      booksByTitle.get("The Power of Habit")?.description ?? "",
+      /citing it hundreds of times/,
+    );
   });
 
   it("returns sorted category labels", () => {
