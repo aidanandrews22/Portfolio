@@ -180,8 +180,11 @@ export default function Bookshelf() {
                           <img
                             src={book.imageUrl}
                             alt={`Cover of ${book.title}`}
-                            className="w-16 h-20 object-cover rounded shrink-0"
+                            width={48}
+                            height={60}
+                            className="w-[48px] h-[60px] object-cover rounded shrink-0"
                             loading="lazy"
+                            decoding="async"
                           />
                         )}
                         <div className="min-w-0">
