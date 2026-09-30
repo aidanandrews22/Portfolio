@@ -13,7 +13,7 @@ export default function RecentActivity() {
         </h2>
       </div>
 
-      <div className="flex flex-col items-center gap-8 mb-16 pb-16 border-b border-[color-mix(in_oklch,var(--color-primary)_10%,transparent)]">
+      <div id="innovation-award" className="flex flex-col items-center gap-8 mb-16 pb-16 border-b border-[color-mix(in_oklch,var(--color-primary)_10%,transparent)]">
         <div className="w-full max-w-2xl">
           <div className="aspect-[16/10] w-full rounded-lg overflow-hidden bg-[color-mix(in_oklch,var(--color-primary)_8%,transparent)]">
             <img

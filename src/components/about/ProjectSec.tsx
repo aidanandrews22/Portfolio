@@ -13,7 +13,7 @@ export default function ProjectsSection({
   return (
     <section className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-3xl font-bold">Current Projects</h2>
+        <h2 id="projects" className="text-3xl font-bold">Current Projects</h2>
         <Link
           to="/projects"
           className="px-4 py-2 rounded-full bg-[color-mix(in_oklch,var(--color-primary)_10%,transparent)] hover:bg-[color-mix(in_oklch,var(--color-primary)_15%,transparent)] text-sm transition-colors"

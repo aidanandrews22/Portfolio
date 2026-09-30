@@ -146,6 +146,18 @@ export default function Header() {
                 </a>
 
                 <a
+                  href="https://scholar.google.com/citations?user=bhW_N3kAAAAJ"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center min-h-11 min-w-11 rounded-md text-[color-mix(in_oklch,currentColor_80%,var(--color-primary))] hover:text-[var(--color-primary)] transition-colors duration-200 relative group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-background)]"
+                  title="Google Scholar"
+                >
+                  <span className="sr-only">Google Scholar</span>
+                  <img src="/assets/svg/Google_Scholar_logo.svg" alt="" className="w-5 h-5" />
+                  <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-[var(--color-primary)] group-hover:w-full transition-[width] duration-300 motion-reduce:transition-none" />
+                </a>
+
+                <a
                   href="https://www.youtube.com/@aidanandrews/streams"
                   target="_blank"
                   rel="noopener noreferrer"
