@@ -25,13 +25,13 @@ export default function TLDR() {
       </h2>
       <p className="text-sm sm:text-base leading-relaxed text-pretty">
         Co-founder & CTO of{" "}
-        <button type="button" className={jumpClass} onClick={() => scrollToSection("aganswers")}>
+        <a href="https://aganswers.ai" target="_blank" rel="noopener noreferrer" className="text-[var(--color-primary)] hover:underline">
           AgAnswers
-        </button>{" "}
+        </a>{" "}
         (
-        <button type="button" className={jumpClass} onClick={() => scrollToSection("innovation-award")}>
+        <a href="https://tec.illinois.edu/news/82729" target="_blank" rel="noopener noreferrer" className="text-[var(--color-primary)] hover:underline">
           Illinois Innovation Award 2026
-        </button>
+        </a>
         ), researching AI/ML, playing competitive chess and tennis,{" "}
         <Link
           to="/reading-list?filter=Berkeley+Research"
