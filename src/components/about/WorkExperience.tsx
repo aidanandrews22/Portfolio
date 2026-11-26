@@ -325,7 +325,8 @@ export default function WorkExperienceSection() {
                 focusing on optimizing Retrieval-Augmented Generation (RAG) and
                 enhancing intent classification. I designed and implemented a
                 novel "wavular" RAG approach and a hybrid embedding-based
-                classification system.
+                classification system. The company later pivoted and went on to
+                YC.
               </p>
 
               <div className="mt-4">
