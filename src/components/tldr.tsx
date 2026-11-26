@@ -48,79 +48,46 @@ function Internal({ to, children }: { to: string; children: ReactNode }) {
   );
 }
 
-const accomplishments: { year: string; item: ReactNode }[] = [
+const pools: { label: string; text: ReactNode }[] = [
   {
-    year: "2025–now",
-    item: (
+    label: "Now",
+    text: (
       <>
-        Co-founder & CTO,{" "}
-        <External href="https://aganswers.ai">AgAnswers</External>
-      </>
-    ),
-  },
-  { year: "2026–now", item: <>Solo AI and robotics research</> },
-  {
-    year: "2023–26",
-    item: (
-      <>
-        <Jump to="education">BS Physics in 3 years, highest honors</Jump> (CS &
-        math minors)
+        Co-founder & CTO of{" "}
+        <External href="https://aganswers.ai">AgAnswers</External>, doing solo
+        AI and robotics research, playing competitive chess (2000 OTB) and
+        tennis,{" "}
+        <Internal to="/reading-list?filter=Berkeley+Research">reading</Internal>
+        , and learning piano.
       </>
     ),
   },
   {
-    year: "2026",
-    item: (
+    label: "2023–26",
+    text: (
       <>
+        <Jump to="education">Graduated UIUC in 3 years</Jump> with highest
+        honors in physics (CS & math minors), sole recipient of the 2026{" "}
         <External href="https://landuyt.illinois.edu/news/82729">
           Illinois Innovation Award
-        </External>{" "}
-        (sole recipient)
-      </>
-    ),
-  },
-  {
-    year: "2025–26",
-    item: (
-      <>
-        AI research, <Jump to="berkeley">Berkeley (BAIR)</Jump>; IEEE CDC paper
-        (accepted)
-      </>
-    ),
-  },
-  {
-    year: "2024–26",
-    item: (
-      <>
-        Research at <Jump to="aifarms">UIUC</Jump>: AI agents,{" "}
-        <Internal to="/research/g1">humanoid robotics</Internal> (Unitree G1)
-      </>
-    ),
-  },
-  {
-    year: "2024–26",
-    item: (
-      <>
-        14k+{" "}
-        <External href="https://www.youtube.com/@aidanandrews">YouTube</External>{" "}
-        subscribers, 1.7M+ views, 1k+ Discord
-      </>
-    ),
-  },
-  {
-    year: "2023–25",
-    item: (
-      <>
-        Founded <External href="https://voxed.ai">voxed.ai</External>{" "}
+        </External>
+        , <Jump to="work-experience">years of work experience</Jump> including AI
+        research at <Jump to="berkeley">Berkeley (BAIR)</Jump> with a paper
+        accepted to IEEE CDC, AI agents and{" "}
+        <Internal to="/research/g1">humanoid robotics</Internal> research at{" "}
+        <Jump to="aifarms">UIUC</Jump>, D1 ACHA hockey, the NYC Marathon,
+        founding <External href="https://voxed.ai">voxed.ai</External>{" "}
         (acqui-hired),{" "}
         <External href="https://www.illiniplan.com">IlliniPlan</External> (1k+
-        users), <Jump to="nvralone">NVRALONE</Jump> ($10K a month)
+        users) and <Jump to="nvralone">NVRALONE</Jump> ($10K a month), a
+        14k-subscriber{" "}
+        <External href="https://www.youtube.com/@aidanandrews">
+          YouTube channel
+        </External>{" "}
+        (1.7M+ views), a 1k+ Discord, and many more{" "}
+        <Jump to="projects">projects</Jump> and startups.
       </>
     ),
-  },
-  {
-    year: "2024–25",
-    item: <>NYC Marathon, 2000-rated chess (OTB), D1 ACHA hockey</>,
   },
 ];
 
@@ -128,16 +95,16 @@ export default function TLDR() {
   return (
     <div className="p-6 max-w-xl mx-auto min-w-0">
       <h2 className="text-2xl sm:text-3xl font-bold mb-4 text-pretty">TL;DR</h2>
-      <ul className="space-y-1.5 text-sm sm:text-base leading-relaxed text-pretty">
-        {accomplishments.map(({ year, item }, index) => (
-          <li key={index} className="flex items-baseline gap-3">
-            <span className="w-[4.5rem] shrink-0 whitespace-nowrap text-center rounded-full border border-current px-1.5 text-[11px] leading-5 tabular-nums opacity-45">
-              {year}
+      <div className="space-y-4 text-sm sm:text-base leading-relaxed text-pretty">
+        {pools.map(({ label, text }) => (
+          <div key={label}>
+            <span className="inline-block rounded-full border border-current px-2 text-[11px] leading-5 tabular-nums opacity-45">
+              {label}
             </span>
-            <span className="min-w-0">{item}</span>
-          </li>
+            <p className="mt-1">{text}</p>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }
